@@ -1,13 +1,14 @@
 package com.adedom.myfood.domain.usecase.food
 
+import com.adedom.myfood.data.db.models.MyFoodEntity
 import com.adedom.myfood.data.repositories.food.FoodRepository
-import com.adedom.myfood.route.models.response.MyFoodResponse
+import com.adedom.myfood.route.models.response.base.BaseResponse
 
 class MyFoodUseCase(
     private val foodRepository: FoodRepository,
 ) {
 
-    operator fun invoke(): MyFoodResponse {
-        return foodRepository.myFood()
+    operator fun invoke(): BaseResponse<List<MyFoodEntity>> {
+        return foodRepository.getMyFood()
     }
 }
