@@ -1,4 +1,4 @@
-package com.adedom.myfood.data.db.table
+package com.adedom.myfood.data.database
 
 import org.jetbrains.exposed.sql.Table
 

@@ -1,4 +1,4 @@
-package com.adedom.myfood.data.db.models
+package com.adedom.myfood.route.models.entities
 
 @kotlinx.serialization.Serializable
 data class MyFoodEntity(

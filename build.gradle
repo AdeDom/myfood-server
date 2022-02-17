@@ -40,8 +40,6 @@ dependencies {
     implementation "ch.qos.logback:logback-classic:$logback_version"
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 
-    implementation "io.ktor:ktor-locations:$ktor_version"
-
     implementation "io.ktor:ktor-serialization:$ktor_version"
 
     implementation 'org.kodein.di:kodein-di-framework-ktor-server-jvm:7.10.0'
@@ -53,4 +51,7 @@ dependencies {
 
     implementation "mysql:mysql-connector-java:8.0.19"
     implementation "com.zaxxer:HikariCP:3.4.2"
+
+    implementation "io.ktor:ktor-auth:$ktor_version"
+    implementation "io.ktor:ktor-auth-jwt:$ktor_version"
 }

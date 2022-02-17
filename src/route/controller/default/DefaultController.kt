@@ -1,17 +1,27 @@
 package com.adedom.myfood.route.controller.default
 
-import com.adedom.myfood.route.models.request.DefaultRequest
+import com.adedom.myfood.route.models.response.base.BaseResponse
+import com.adedom.myfood.utility.constant.ResponseKeyConstant
+import com.adedom.myfood.utility.extension.getAuth
+import com.adedom.myfood.utility.userId
 import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.locations.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-@KtorExperimentalLocationsAPI
 fun Route.defaultRoute() {
 
-    get<DefaultRequest> {
+    get("/") {
         val messageString = "Welcome to my food."
         call.respond(HttpStatusCode.OK, messageString)
+    }
+
+    getAuth("/api/auth") {
+        val userId = call.userId
+
+        val response = BaseResponse<String>()
+        response.status = ResponseKeyConstant.SUCCESS
+        response.result = "Hello auth $userId"
+        call.respond(HttpStatusCode.OK, response)
     }
 }

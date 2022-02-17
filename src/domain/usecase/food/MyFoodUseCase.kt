@@ -1,7 +1,7 @@
 package com.adedom.myfood.domain.usecase.food
 
-import com.adedom.myfood.data.db.models.MyFoodEntity
 import com.adedom.myfood.data.repositories.food.FoodRepository
+import com.adedom.myfood.route.models.entities.MyFoodEntity
 import com.adedom.myfood.route.models.response.base.BaseResponse
 
 class MyFoodUseCase(

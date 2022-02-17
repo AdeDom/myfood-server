@@ -1,7 +1,7 @@
 package com.adedom.myfood.data.repositories.food
 
-import com.adedom.myfood.data.db.models.MyFoodEntity
 import com.adedom.myfood.data.resouce.remote.food.MyFoodRemoteDataSource
+import com.adedom.myfood.route.models.entities.MyFoodEntity
 import com.adedom.myfood.route.models.response.base.BaseResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 
