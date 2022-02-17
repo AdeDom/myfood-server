@@ -3,13 +3,15 @@ package com.adedom.myfood.data.resouce.remote.auth
 import com.adedom.myfood.data.database.UserTable
 import com.adedom.myfood.route.models.entities.UserEntity
 import com.adedom.myfood.route.models.request.LoginRequest
+import com.adedom.myfood.route.models.request.RegisterRequest
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
 
-    override fun callLogin(loginRequest: LoginRequest): UserEntity? {
+    override fun findUserByUsernameAndPassword(loginRequest: LoginRequest): UserEntity? {
         val (username, password) = loginRequest
 
         return transaction {
@@ -33,5 +35,34 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
                 }
                 .singleOrNull()
         }
+    }
+
+    override fun findUserByUsername(username: String): Long {
+        return transaction {
+            UserTable
+                .slice(
+                    UserTable.username,
+                )
+                .select {
+                    UserTable.username eq username
+                }
+                .count()
+        }
+    }
+
+    override fun insertUser(userId: String, registerRequest: RegisterRequest): Int? {
+        val (username, password, name) = registerRequest
+
+        val statement = transaction {
+            UserTable
+                .insert {
+                    it[UserTable.userId] = userId
+                    it[UserTable.username] = username!!
+                    it[UserTable.password] = password!!
+                    it[UserTable.name] = name!!
+                }
+        }
+
+        return statement.resultedValues?.size
     }
 }

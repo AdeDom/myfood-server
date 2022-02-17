@@ -8,10 +8,6 @@ import com.adedom.myfood.route.models.response.base.BaseResponse
 import com.adedom.myfood.route.models.response.base.TokenResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import com.adedom.myfood.utility.jwt.JwtHelper
-import java.io.UnsupportedEncodingException
-import java.math.BigInteger
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 class LoginUseCase(
     private val jwtHelper: JwtHelper,
@@ -32,7 +28,7 @@ class LoginUseCase(
                 Resource.Error(response)
             }
             else -> {
-                val userEntity = authRepository.callLogin(loginRequest.copy(password = encryptSHA(password)))
+                val userEntity = authRepository.findUserByUsernameAndPassword(loginRequest)
                 if (userEntity != null) {
                     response.status = ResponseKeyConstant.SUCCESS
                     response.result = TokenResponse(
@@ -46,20 +42,5 @@ class LoginUseCase(
                 }
             }
         }
-    }
-
-    private fun encryptSHA(password: String): String {
-        var sha = ""
-        try {
-            val messageDigest = MessageDigest.getInstance("SHA-512")
-            val byteArray = messageDigest.digest(password.toByteArray())
-            val bigInteger = BigInteger(1, byteArray)
-            sha = bigInteger.toString(16).padStart(64, '0')
-        } catch (e: NoSuchAlgorithmException) {
-            e.printStackTrace()
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-        }
-        return sha
     }
 }
