@@ -29,6 +29,7 @@ class AuthRepositoryImpl(
         return dataSource.insertUser(
             userId = UUID.randomUUID().toString().replace("-", ""),
             registerRequest = registerRequest.copy(password = encryptSHA(registerRequest.password!!)),
+            AppConstant.ACTIVE,
         )
     }
 

@@ -51,7 +51,7 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
         }
     }
 
-    override fun insertUser(userId: String, registerRequest: RegisterRequest): Int? {
+    override fun insertUser(userId: String, registerRequest: RegisterRequest, status: String): Int? {
         val (username, password, name) = registerRequest
 
         val statement = transaction {
@@ -61,6 +61,7 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
                     it[UserTable.username] = username!!
                     it[UserTable.password] = password!!
                     it[UserTable.name] = name!!
+                    it[UserTable.status] = status
                 }
         }
 
