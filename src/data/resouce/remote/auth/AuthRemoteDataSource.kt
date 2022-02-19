@@ -6,7 +6,7 @@ import com.adedom.myfood.route.models.request.RegisterRequest
 
 interface AuthRemoteDataSource {
 
-    fun findUserByUsernameAndPassword(loginRequest: LoginRequest): UserEntity?
+    fun findUserByUsernameAndPassword(loginRequest: LoginRequest, status: String): UserEntity?
 
     fun findUserByUsername(username: String): Long
 

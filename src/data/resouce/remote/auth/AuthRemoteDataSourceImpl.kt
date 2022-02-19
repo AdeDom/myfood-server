@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.update
 
 class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
 
-    override fun findUserByUsernameAndPassword(loginRequest: LoginRequest): UserEntity? {
+    override fun findUserByUsernameAndPassword(loginRequest: LoginRequest, status: String): UserEntity? {
         val (username, password) = loginRequest
 
         return transaction {
@@ -24,7 +24,7 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
                     UserTable.name,
                 )
                 .select {
-                    (UserTable.username eq username!!) and (UserTable.password eq password!!)
+                    (UserTable.username eq username!!) and (UserTable.password eq password!!) and (UserTable.status eq status)
                 }
                 .map { row ->
                     UserEntity(

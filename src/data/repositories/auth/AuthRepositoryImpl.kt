@@ -18,6 +18,7 @@ class AuthRepositoryImpl(
     override fun findUserByUsernameAndPassword(loginRequest: LoginRequest): UserEntity? {
         return dataSource.findUserByUsernameAndPassword(
             loginRequest = loginRequest.copy(password = encryptSHA(loginRequest.password!!)),
+            AppConstant.ACTIVE,
         )
     }
 
