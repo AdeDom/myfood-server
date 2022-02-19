@@ -2,6 +2,7 @@ package com.adedom.myfood.utility.extension
 
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
+import com.adedom.myfood.route.models.response.base.ErrorResponse
 import com.adedom.myfood.utility.constant.RequestKeyConstant
 import com.auth0.jwt.JWT
 import com.auth0.jwt.impl.PublicClaims
@@ -52,7 +53,10 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.authentication(body: 
             body(Unit)
         } else {
             val response = BaseResponse<Unit>()
-            val baseError = BaseError(code = "401-001", message = "Access token expire.")
+            val baseError = BaseError(
+                code = ErrorResponse.AccessTokenError.code,
+                message = ErrorResponse.AccessTokenError.message
+            )
             response.error = baseError
             call.respond(HttpStatusCode.Unauthorized, response)
         }

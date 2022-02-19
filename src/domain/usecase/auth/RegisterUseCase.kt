@@ -17,15 +17,15 @@ class RegisterUseCase(
         val (username, password, name) = registerRequest
         return when {
             username.isNullOrBlank() -> {
-                response.error = BaseError(code = "001", message = "Username is null or blank.")
+                response.error = BaseError(message = "Username is null or blank.")
                 Resource.Error(response)
             }
             password.isNullOrBlank() -> {
-                response.error = BaseError(code = "002", message = "Password is null or blank.")
+                response.error = BaseError(message = "Password is null or blank.")
                 Resource.Error(response)
             }
             name.isNullOrBlank() -> {
-                response.error = BaseError(code = "003", message = "Name is null or blank.")
+                response.error = BaseError(message = "Name is null or blank.")
                 Resource.Error(response)
             }
             else -> {
@@ -37,11 +37,11 @@ class RegisterUseCase(
                         response.result = "Register successfully"
                         Resource.Success(response)
                     } else {
-                        response.error = BaseError(code = "005", message = "Registration failed")
+                        response.error = BaseError(message = "Registration failed")
                         Resource.Error(response)
                     }
                 } else {
-                    response.error = BaseError(code = "004", message = "This username already exists.")
+                    response.error = BaseError(message = "This username already exists.")
                     Resource.Error(response)
                 }
             }

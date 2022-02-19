@@ -20,11 +20,11 @@ class LoginUseCase(
         val (username, password) = loginRequest
         return when {
             username.isNullOrBlank() -> {
-                response.error = BaseError(code = "001", message = "Username is null or blank.")
+                response.error = BaseError(message = "Username is null or blank.")
                 Resource.Error(response)
             }
             password.isNullOrBlank() -> {
-                response.error = BaseError(code = "002", message = "Password is null or blank.")
+                response.error = BaseError(message = "Password is null or blank.")
                 Resource.Error(response)
             }
             else -> {
@@ -37,7 +37,7 @@ class LoginUseCase(
                     )
                     Resource.Success(response)
                 } else {
-                    response.error = BaseError(code = "003", message = "Username or password incorrect.")
+                    response.error = BaseError(message = "Username or password incorrect.")
                     Resource.Error(response)
                 }
             }

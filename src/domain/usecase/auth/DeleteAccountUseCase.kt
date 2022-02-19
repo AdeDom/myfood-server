@@ -15,7 +15,7 @@ class DeleteAccountUseCase(
 
         return when {
             userId.isBlank() -> {
-                response.error = BaseError(code = "001", message = "User id is blank.")
+                response.error = BaseError(message = "User id is blank.")
                 Resource.Error(response)
             }
             else -> {
@@ -25,7 +25,7 @@ class DeleteAccountUseCase(
                     response.result = "Delete account successfully."
                     Resource.Success(response)
                 } else {
-                    response.error = BaseError(code = "002", message = "Delete account failed.")
+                    response.error = BaseError(message = "Delete account failed.")
                     Resource.Error(response)
                 }
             }

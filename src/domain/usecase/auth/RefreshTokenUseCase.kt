@@ -4,6 +4,7 @@ import com.adedom.myfood.domain.usecase.Resource
 import com.adedom.myfood.route.models.request.TokenRequest
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
+import com.adedom.myfood.route.models.response.base.ErrorResponse
 import com.adedom.myfood.route.models.response.base.TokenResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import com.adedom.myfood.utility.jwt.JwtHelper
@@ -18,15 +19,18 @@ class RefreshTokenUseCase(
         val (accessToken, refreshToken) = tokenRequest
         return when {
             accessToken.isNullOrBlank() -> {
-                response.error = BaseError(code = "001", message = "Access token is null or blank.")
+                response.error = BaseError(message = "Access token is null or blank.")
                 Resource.Error(response)
             }
             refreshToken.isNullOrBlank() -> {
-                response.error = BaseError(code = "002", message = "Refresh token is null or blank.")
+                response.error = BaseError(message = "Refresh token is null or blank.")
                 Resource.Error(response)
             }
             validateRefreshToken(refreshToken) -> {
-                response.error = BaseError(code = "401-002", message = "Refresh token expire.")
+                response.error = BaseError(
+                    code = ErrorResponse.RefreshTokenError.code,
+                    message = ErrorResponse.RefreshTokenError.message,
+                )
                 Resource.Error(response)
             }
             else -> {
