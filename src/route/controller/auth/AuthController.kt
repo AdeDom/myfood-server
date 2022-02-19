@@ -1,14 +1,12 @@
 package com.adedom.myfood.route.controller.auth
 
 import com.adedom.myfood.domain.usecase.Resource
-import com.adedom.myfood.domain.usecase.auth.DeleteAccountUseCase
-import com.adedom.myfood.domain.usecase.auth.LoginUseCase
-import com.adedom.myfood.domain.usecase.auth.RefreshTokenUseCase
-import com.adedom.myfood.domain.usecase.auth.RegisterUseCase
+import com.adedom.myfood.domain.usecase.auth.*
 import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.request.RegisterRequest
 import com.adedom.myfood.route.models.request.TokenRequest
 import com.adedom.myfood.utility.extension.deleteAuth
+import com.adedom.myfood.utility.extension.postAuth
 import com.adedom.myfood.utility.userId
 import io.ktor.application.*
 import io.ktor.http.*
@@ -70,6 +68,20 @@ fun Route.authRoute() {
 
         val userId = call.userId
         val resource = deleteAccountUseCase(userId)
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
+    }
+
+    postAuth("/api/auth/logout") {
+        val logoutUseCase by closestDI().instance<LogoutUseCase>()
+
+        val resource = logoutUseCase()
         when (resource) {
             is Resource.Success -> {
                 call.respond(HttpStatusCode.OK, resource.data)
