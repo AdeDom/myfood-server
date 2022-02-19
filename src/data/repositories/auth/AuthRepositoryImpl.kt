@@ -4,6 +4,7 @@ import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSource
 import com.adedom.myfood.route.models.entities.UserEntity
 import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.request.RegisterRequest
+import com.adedom.myfood.utility.constant.AppConstant
 import java.io.UnsupportedEncodingException
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -29,6 +30,10 @@ class AuthRepositoryImpl(
             userId = UUID.randomUUID().toString().replace("-", ""),
             registerRequest = registerRequest.copy(password = encryptSHA(registerRequest.password!!)),
         )
+    }
+
+    override fun updateUserStatusInActive(userId: String): Int {
+        return dataSource.updateUserStatus(userId, AppConstant.IN_ACTIVE)
     }
 
     private fun encryptSHA(password: String): String {

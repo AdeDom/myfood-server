@@ -1,5 +1,6 @@
 package com.adedom.myfood.di
 
+import com.adedom.myfood.domain.usecase.auth.DeleteAccountUseCase
 import com.adedom.myfood.domain.usecase.auth.LoginUseCase
 import com.adedom.myfood.domain.usecase.auth.RefreshTokenUseCase
 import com.adedom.myfood.domain.usecase.auth.RegisterUseCase
@@ -14,4 +15,5 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { LoginUseCase(instance(), instance()) }
     bindSingleton { RegisterUseCase(instance()) }
     bindSingleton { RefreshTokenUseCase(instance()) }
+    bindSingleton { DeleteAccountUseCase(instance()) }
 }

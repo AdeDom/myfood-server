@@ -8,6 +8,7 @@ object UserTable : Table("user") {
     val username = varchar(name = "username", length = 50)
     val password = varchar(name = "password", length = 150)
     val name = varchar(name = "name", length = 150)
+    val status = varchar(name = "status", length = 10)
 
     override val primaryKey: PrimaryKey
         get() = PrimaryKey(userId, name = "PK_User_ID")

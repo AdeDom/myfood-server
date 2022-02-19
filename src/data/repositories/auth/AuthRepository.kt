@@ -11,4 +11,6 @@ interface AuthRepository {
     fun findUserByUsername(username: String): Long
 
     fun insertUser(registerRequest: RegisterRequest): Int?
+
+    fun updateUserStatusInActive(userId: String): Int
 }
