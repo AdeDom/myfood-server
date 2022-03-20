@@ -2,6 +2,7 @@ package com.adedom.myfood.route.controller.profile
 
 import com.adedom.myfood.domain.usecase.Resource
 import com.adedom.myfood.domain.usecase.profile.DeleteAccountUseCase
+import com.adedom.myfood.domain.usecase.profile.UserProfileUseCase
 import com.adedom.myfood.utility.extension.deleteAuth
 import com.adedom.myfood.utility.extension.getAuth
 import com.adedom.myfood.utility.extension.putAuth
@@ -16,6 +17,18 @@ import org.kodein.di.ktor.closestDI
 fun Route.profileRoute() {
 
     getAuth("/api/profile/user") {
+        val userProfileUseCase by closestDI().instance<UserProfileUseCase>()
+
+        val userId = call.userId
+        val resource = userProfileUseCase(userId)
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
     }
 
     putAuth("/api/profile/changeprofile") {

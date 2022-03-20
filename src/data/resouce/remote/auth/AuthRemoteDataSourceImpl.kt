@@ -23,6 +23,12 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
                     UserTable.username,
                     UserTable.password,
                     UserTable.name,
+                    UserTable.email,
+                    UserTable.mobileNo,
+                    UserTable.address,
+                    UserTable.status,
+                    UserTable.created,
+                    UserTable.updated,
                 )
                 .select {
                     (UserTable.username eq username!!) and (UserTable.password eq password!!) and (UserTable.status eq status)
@@ -33,6 +39,12 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
                         username = row[UserTable.username],
                         password = row[UserTable.password],
                         name = row[UserTable.name],
+                        email = row[UserTable.email],
+                        mobileNo = row[UserTable.mobileNo],
+                        address = row[UserTable.address],
+                        status = row[UserTable.status],
+                        created = row[UserTable.created],
+                        updated = row[UserTable.updated],
                     )
                 }
                 .singleOrNull()
