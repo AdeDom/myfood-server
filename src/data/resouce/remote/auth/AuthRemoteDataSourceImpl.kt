@@ -79,6 +79,7 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
         return transaction {
             UserTable.update({ UserTable.userId eq userId }) {
                 it[UserTable.status] = status
+                it[updated] = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
             }
         }
     }
