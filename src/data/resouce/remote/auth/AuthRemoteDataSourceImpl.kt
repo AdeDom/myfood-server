@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 
 class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
@@ -84,5 +85,24 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
         }
 
         return statement.resultedValues?.size
+    }
+
+    override fun findUserByUserIdAndPassword(userId: String, password: String): Long {
+        return transaction {
+            UserTable
+                .select {
+                    (UserTable.userId eq userId) and (UserTable.password eq password)
+                }
+                .count()
+        }
+    }
+
+    override fun updateUserPassword(userId: String, password: String): Int {
+        return transaction {
+            UserTable.update({ UserTable.userId eq userId }) {
+                it[UserTable.password] = password
+                it[updated] = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
+            }
+        }
     }
 }

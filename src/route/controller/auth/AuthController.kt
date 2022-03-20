@@ -1,15 +1,14 @@
 package com.adedom.myfood.route.controller.auth
 
 import com.adedom.myfood.domain.usecase.Resource
-import com.adedom.myfood.domain.usecase.auth.LoginUseCase
-import com.adedom.myfood.domain.usecase.auth.LogoutUseCase
-import com.adedom.myfood.domain.usecase.auth.RefreshTokenUseCase
-import com.adedom.myfood.domain.usecase.auth.RegisterUseCase
+import com.adedom.myfood.domain.usecase.auth.*
+import com.adedom.myfood.route.models.request.ChangePasswordRequest
 import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.request.RegisterRequest
 import com.adedom.myfood.route.models.request.TokenRequest
 import com.adedom.myfood.utility.extension.postAuth
 import com.adedom.myfood.utility.extension.putAuth
+import com.adedom.myfood.utility.userId
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
@@ -80,5 +79,18 @@ fun Route.authRoute() {
     }
 
     putAuth("/api/auth/changepassword") {
+        val changePasswordUseCase by closestDI().instance<ChangePasswordUseCase>()
+
+        val userId = call.userId
+        val request = call.receive<ChangePasswordRequest>()
+        val resource = changePasswordUseCase(userId, request)
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
     }
 }

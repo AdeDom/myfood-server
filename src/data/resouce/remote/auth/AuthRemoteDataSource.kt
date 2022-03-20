@@ -11,4 +11,8 @@ interface AuthRemoteDataSource {
     fun findUserByUsername(username: String): Long
 
     fun insertUser(userId: String, registerRequest: RegisterRequest, status: String): Int?
+
+    fun findUserByUserIdAndPassword(userId: String, password: String): Long
+
+    fun updateUserPassword(userId: String, password: String): Int
 }

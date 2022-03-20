@@ -48,4 +48,12 @@ class AuthRepositoryImpl(
         }
         return sha
     }
+
+    override fun findUserByUserIdAndPassword(userId: String, password: String): Long {
+        return authRemoteDataSource.findUserByUserIdAndPassword(userId, encryptSHA(password))
+    }
+
+    override fun updateUserPassword(userId: String, password: String): Int {
+        return authRemoteDataSource.updateUserPassword(userId, encryptSHA(password))
+    }
 }
