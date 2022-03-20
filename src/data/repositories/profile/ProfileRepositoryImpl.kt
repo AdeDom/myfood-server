@@ -2,6 +2,7 @@ package com.adedom.myfood.data.repositories.profile
 
 import com.adedom.myfood.data.resouce.remote.profile.ProfileRemoteDataSource
 import com.adedom.myfood.route.models.entities.UserEntity
+import com.adedom.myfood.route.models.request.ChangeProfileRequest
 import com.adedom.myfood.utility.constant.AppConstant
 
 class ProfileRepositoryImpl(
@@ -10,6 +11,10 @@ class ProfileRepositoryImpl(
 
     override fun getUserProfile(userId: String): UserEntity {
         return profileRemoteDataSource.getUserByUserId(userId)
+    }
+
+    override fun updateUserProfile(userId: String, changeProfileRequest: ChangeProfileRequest): Int {
+        return profileRemoteDataSource.updateUserProfile(userId, changeProfileRequest)
     }
 
     override fun updateUserStatusInActive(userId: String): Int {

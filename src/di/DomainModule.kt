@@ -5,6 +5,7 @@ import com.adedom.myfood.domain.usecase.auth.LogoutUseCase
 import com.adedom.myfood.domain.usecase.auth.RefreshTokenUseCase
 import com.adedom.myfood.domain.usecase.auth.RegisterUseCase
 import com.adedom.myfood.domain.usecase.food.MyFoodUseCase
+import com.adedom.myfood.domain.usecase.profile.ChangeProfileUseCase
 import com.adedom.myfood.domain.usecase.profile.DeleteAccountUseCase
 import com.adedom.myfood.domain.usecase.profile.UserProfileUseCase
 import org.kodein.di.DI
@@ -20,4 +21,5 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { DeleteAccountUseCase(instance()) }
     bindSingleton { LogoutUseCase() }
     bindSingleton { UserProfileUseCase(instance()) }
+    bindSingleton { ChangeProfileUseCase(instance()) }
 }

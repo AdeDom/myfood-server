@@ -2,6 +2,7 @@ package com.adedom.myfood.data.resouce.remote.profile
 
 import com.adedom.myfood.data.database.UserTable
 import com.adedom.myfood.route.models.entities.UserEntity
+import com.adedom.myfood.route.models.request.ChangeProfileRequest
 import com.adedom.myfood.utility.constant.AppConstant
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -43,6 +44,20 @@ class ProfileRemoteDataSourceImpl : ProfileRemoteDataSource {
                     )
                 }
                 .single()
+        }
+    }
+
+    override fun updateUserProfile(userId: String, changeProfileRequest: ChangeProfileRequest): Int {
+        val (name, email, mobileNo, address) = changeProfileRequest
+
+        return transaction {
+            UserTable.update({ UserTable.userId eq userId }) {
+                it[UserTable.name] = name!!
+                it[UserTable.email] = email
+                it[UserTable.mobileNo] = mobileNo
+                it[UserTable.address] = address
+                it[updated] = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
+            }
         }
     }
 
