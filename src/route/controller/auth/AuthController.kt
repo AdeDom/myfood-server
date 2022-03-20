@@ -9,6 +9,7 @@ import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.request.RegisterRequest
 import com.adedom.myfood.route.models.request.TokenRequest
 import com.adedom.myfood.utility.extension.postAuth
+import com.adedom.myfood.utility.extension.putAuth
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
@@ -76,5 +77,8 @@ fun Route.authRoute() {
                 call.respond(HttpStatusCode.BadRequest, resource.error)
             }
         }
+    }
+
+    putAuth("/api/auth/changepassword") {
     }
 }

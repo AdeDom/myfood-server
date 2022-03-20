@@ -1,13 +1,13 @@
-package com.adedom.myfood.domain.usecase.auth
+package com.adedom.myfood.domain.usecase.profile
 
-import com.adedom.myfood.data.repositories.auth.AuthRepository
+import com.adedom.myfood.data.repositories.profile.ProfileRepository
 import com.adedom.myfood.domain.usecase.Resource
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 
 class DeleteAccountUseCase(
-    private val authRepository: AuthRepository,
+    private val profileRepository: ProfileRepository,
 ) {
 
     operator fun invoke(userId: String): Resource<BaseResponse<String>> {
@@ -19,7 +19,7 @@ class DeleteAccountUseCase(
                 Resource.Error(response)
             }
             else -> {
-                val isUpdateStatus = authRepository.updateUserStatusInActive(userId) == 1
+                val isUpdateStatus = profileRepository.updateUserStatusInActive(userId) == 1
                 if (isUpdateStatus) {
                     response.status = ResponseKeyConstant.SUCCESS
                     response.result = "Delete account successfully."

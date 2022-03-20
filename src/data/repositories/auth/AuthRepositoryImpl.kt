@@ -12,30 +12,26 @@ import java.security.NoSuchAlgorithmException
 import java.util.*
 
 class AuthRepositoryImpl(
-    private val dataSource: AuthRemoteDataSource,
+    private val authRemoteDataSource: AuthRemoteDataSource,
 ) : AuthRepository {
 
     override fun findUserByUsernameAndPassword(loginRequest: LoginRequest): UserEntity? {
-        return dataSource.findUserByUsernameAndPassword(
+        return authRemoteDataSource.findUserByUsernameAndPassword(
             loginRequest = loginRequest.copy(password = encryptSHA(loginRequest.password!!)),
             AppConstant.ACTIVE,
         )
     }
 
     override fun findUserByUsername(username: String): Long {
-        return dataSource.findUserByUsername(username)
+        return authRemoteDataSource.findUserByUsername(username)
     }
 
     override fun insertUser(registerRequest: RegisterRequest): Int? {
-        return dataSource.insertUser(
+        return authRemoteDataSource.insertUser(
             userId = UUID.randomUUID().toString().replace("-", ""),
             registerRequest = registerRequest.copy(password = encryptSHA(registerRequest.password!!)),
             AppConstant.ACTIVE,
         )
-    }
-
-    override fun updateUserStatusInActive(userId: String): Int {
-        return dataSource.updateUserStatus(userId, AppConstant.IN_ACTIVE)
     }
 
     private fun encryptSHA(password: String): String {

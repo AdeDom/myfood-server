@@ -9,7 +9,6 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 
 class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
@@ -73,14 +72,5 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
         }
 
         return statement.resultedValues?.size
-    }
-
-    override fun updateUserStatus(userId: String, status: String): Int {
-        return transaction {
-            UserTable.update({ UserTable.userId eq userId }) {
-                it[UserTable.status] = status
-                it[updated] = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
-            }
-        }
     }
 }
