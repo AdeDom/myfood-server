@@ -9,6 +9,8 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 
 class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
 
@@ -52,7 +54,7 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
     }
 
     override fun insertUser(userId: String, registerRequest: RegisterRequest, status: String): Int? {
-        val (username, password, name) = registerRequest
+        val (username, password, name, email, mobileNo, address) = registerRequest
 
         val statement = transaction {
             UserTable
@@ -61,7 +63,12 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
                     it[UserTable.username] = username!!
                     it[UserTable.password] = password!!
                     it[UserTable.name] = name!!
+                    it[UserTable.email] = email
+                    it[UserTable.mobileNo] = mobileNo
+                    it[UserTable.address] = address
                     it[UserTable.status] = status
+                    it[UserTable.created] = DateTime(System.currentTimeMillis(), DateTimeZone.forOffsetHours(7))
+                    it[UserTable.updated] = null
                 }
         }
 
