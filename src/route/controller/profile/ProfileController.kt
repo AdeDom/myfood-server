@@ -11,7 +11,7 @@ import io.ktor.routing.*
 import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
 
-fun Route.profile() {
+fun Route.profileRoute() {
 
     deleteAuth("/api/profile/deleteaccount") {
         val deleteAccountUseCase by closestDI().instance<DeleteAccountUseCase>()

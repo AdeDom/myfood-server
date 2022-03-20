@@ -6,7 +6,7 @@ import com.adedom.myfood.di.repositoryModule
 import com.adedom.myfood.route.controller.auth.authRoute
 import com.adedom.myfood.route.controller.default.defaultRoute
 import com.adedom.myfood.route.controller.food.foodRoute
-import com.adedom.myfood.route.controller.profile.profile
+import com.adedom.myfood.route.controller.profile.profileRoute
 import com.adedom.myfood.utility.jwt.JwtConfig
 import com.adedom.myfood.utility.jwt.JwtHelper
 import com.zaxxer.hikari.HikariConfig
@@ -85,7 +85,7 @@ fun Application.module() {
     install(Routing) {
         defaultRoute()
         authRoute()
-        profile()
+        profileRoute()
         foodRoute()
     }
 }
