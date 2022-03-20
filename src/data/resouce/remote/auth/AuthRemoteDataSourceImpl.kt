@@ -4,13 +4,13 @@ import com.adedom.myfood.data.database.UserTable
 import com.adedom.myfood.route.models.entities.UserEntity
 import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.request.RegisterRequest
+import com.adedom.myfood.utility.constant.AppConstant
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
 
 class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
 
@@ -67,8 +67,8 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
                     it[UserTable.mobileNo] = mobileNo
                     it[UserTable.address] = address
                     it[UserTable.status] = status
-                    it[UserTable.created] = DateTime(System.currentTimeMillis(), DateTimeZone.forOffsetHours(7))
-                    it[UserTable.updated] = null
+                    it[created] = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
+                    it[updated] = null
                 }
         }
 
