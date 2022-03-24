@@ -4,6 +4,7 @@ import com.adedom.myfood.di.domainModule
 import com.adedom.myfood.di.remoteDataSourceModule
 import com.adedom.myfood.di.repositoryModule
 import com.adedom.myfood.route.controller.auth.authRoute
+import com.adedom.myfood.route.controller.category.categoryRoute
 import com.adedom.myfood.route.controller.default.defaultRoute
 import com.adedom.myfood.route.controller.food.foodRoute
 import com.adedom.myfood.route.controller.profile.profileRoute
@@ -87,5 +88,6 @@ fun Application.module() {
         authRoute()
         profileRoute()
         foodRoute()
+        categoryRoute()
     }
 }
