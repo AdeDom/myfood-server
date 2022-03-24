@@ -12,6 +12,7 @@ object FoodTable : Table(name = "food") {
     val price = double(name = "price")
     val description = varchar(name = "description", length = 1000).nullable()
     val categoryId = integer(name = "category_id").references(CategoryTable.categoryId)
+    val status = varchar(name = "status", length = 10)
     val created = datetime(name = "created")
     val updated = datetime(name = "updated").nullable()
 

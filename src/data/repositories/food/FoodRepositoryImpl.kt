@@ -5,6 +5,7 @@ import com.adedom.myfood.data.resouce.remote.food.MyFoodRemoteDataSource
 import com.adedom.myfood.route.models.entities.MyFoodEntity
 import com.adedom.myfood.route.models.request.InsertFoodRequest
 import com.adedom.myfood.route.models.response.base.BaseResponse
+import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 
 class FoodRepositoryImpl(
@@ -23,6 +24,6 @@ class FoodRepositoryImpl(
     }
 
     override fun insertFood(insertFoodRequest: InsertFoodRequest): Int? {
-        return foodRemoteDataSource.insertFood(insertFoodRequest)
+        return foodRemoteDataSource.insertFood(insertFoodRequest, AppConstant.ACTIVE)
     }
 }

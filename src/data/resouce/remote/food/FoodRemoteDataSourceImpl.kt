@@ -9,7 +9,7 @@ import org.joda.time.DateTime
 
 class FoodRemoteDataSourceImpl : FoodRemoteDataSource {
 
-    override fun insertFood(insertFoodRequest: InsertFoodRequest): Int? {
+    override fun insertFood(insertFoodRequest: InsertFoodRequest, status: String): Int? {
         val (foodName, alias, image, price, description, categoryId) = insertFoodRequest
 
         val statement = transaction {
@@ -20,6 +20,7 @@ class FoodRemoteDataSourceImpl : FoodRemoteDataSource {
                 it[FoodTable.price] = price!!
                 it[FoodTable.description] = description
                 it[FoodTable.categoryId] = categoryId!!
+                it[FoodTable.status] = status
                 it[created] = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
             }
         }

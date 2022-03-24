@@ -4,5 +4,5 @@ import com.adedom.myfood.route.models.request.InsertFoodRequest
 
 interface FoodRemoteDataSource {
 
-    fun insertFood(insertFoodRequest: InsertFoodRequest): Int?
+    fun insertFood(insertFoodRequest: InsertFoodRequest, status: String): Int?
 }
