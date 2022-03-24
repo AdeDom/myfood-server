@@ -23,5 +23,5 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { ChangeProfileUseCase(instance()) }
     bindSingleton { ChangePasswordUseCase(instance()) }
     bindSingleton { InsertCategoryUseCase(instance()) }
-    bindSingleton { InsertFoodUseCase(instance()) }
+    bindSingleton { InsertFoodUseCase(instance(), instance()) }
 }

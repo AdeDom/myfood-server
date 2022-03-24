@@ -7,6 +7,10 @@ class CategoryRepositoryImpl(
     private val categoryRemoteDataSource: CategoryRemoteDataSource,
 ) : CategoryRepository {
 
+    override fun findCategoryId(categoryId: Int): Long {
+        return categoryRemoteDataSource.findCategoryId(categoryId)
+    }
+
     override fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Int? {
         return categoryRemoteDataSource.insertCategory(insertCategoryRequest)
     }

@@ -1,5 +1,6 @@
 package com.adedom.myfood.domain.usecase.food
 
+import com.adedom.myfood.data.repositories.category.CategoryRepository
 import com.adedom.myfood.data.repositories.food.FoodRepository
 import com.adedom.myfood.domain.usecase.Resource
 import com.adedom.myfood.route.models.request.InsertFoodRequest
@@ -8,6 +9,7 @@ import com.adedom.myfood.route.models.response.base.BaseResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 
 class InsertFoodUseCase(
+    private val categoryRepository: CategoryRepository,
     private val foodRepository: FoodRepository,
 ) {
 
@@ -32,6 +34,10 @@ class InsertFoodUseCase(
                 response.error = BaseError(message = "Category id is null or blank.")
                 Resource.Error(response)
             }
+            hasCategory(categoryId) -> {
+                response.error = BaseError(message = "Category id not found.")
+                Resource.Error(response)
+            }
             else -> {
                 val isInsertFood = foodRepository.insertFood(insertFoodRequest) == 1
                 if (isInsertFood) {
@@ -44,5 +50,10 @@ class InsertFoodUseCase(
                 }
             }
         }
+    }
+
+    private fun hasCategory(categoryId: Int): Boolean {
+        val isFindCategoryId = categoryRepository.findCategoryId(categoryId)
+        return isFindCategoryId == 0L
     }
 }
