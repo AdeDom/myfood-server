@@ -1,9 +1,11 @@
 package com.adedom.myfood.data.resouce.remote.food
 
 import com.adedom.myfood.data.database.FoodTable
+import com.adedom.myfood.route.models.entities.FoodEntity
 import com.adedom.myfood.route.models.request.InsertFoodRequest
 import com.adedom.myfood.utility.constant.AppConstant
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
@@ -26,5 +28,41 @@ class FoodRemoteDataSourceImpl : FoodRemoteDataSource {
         }
 
         return statement.resultedValues?.size
+    }
+
+    override fun getFoodDetail(foodId: Int): FoodEntity? {
+        return transaction {
+            FoodTable
+                .slice(
+                    FoodTable.foodId,
+                    FoodTable.foodName,
+                    FoodTable.alias,
+                    FoodTable.image,
+                    FoodTable.price,
+                    FoodTable.description,
+                    FoodTable.categoryId,
+                    FoodTable.status,
+                    FoodTable.created,
+                    FoodTable.updated,
+                )
+                .select {
+                    FoodTable.foodId eq foodId
+                }
+                .map { row ->
+                    FoodEntity(
+                        foodId = row[FoodTable.foodId],
+                        foodName = row[FoodTable.foodName],
+                        alias = row[FoodTable.alias],
+                        image = row[FoodTable.image],
+                        price = row[FoodTable.price],
+                        description = row[FoodTable.description],
+                        categoryId = row[FoodTable.categoryId],
+                        status = row[FoodTable.status],
+                        created = row[FoodTable.created],
+                        updated = row[FoodTable.updated],
+                    )
+                }
+                .singleOrNull()
+        }
     }
 }
