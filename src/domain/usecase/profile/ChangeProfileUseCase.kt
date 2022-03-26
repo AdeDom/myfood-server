@@ -5,7 +5,6 @@ import com.adedom.myfood.data.repositories.profile.ProfileRepository
 import com.adedom.myfood.route.models.request.ChangeProfileRequest
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
-import com.adedom.myfood.utility.constant.ResponseKeyConstant
 
 class ChangeProfileUseCase(
     private val profileRepository: ProfileRepository,
@@ -33,15 +32,7 @@ class ChangeProfileUseCase(
                 Resource.Error(response)
             }
             else -> {
-                val isUpdateUserProfile = profileRepository.updateUserProfile(userId, changeProfileRequest) == 1
-                if (isUpdateUserProfile) {
-                    response.status = ResponseKeyConstant.SUCCESS
-                    response.result = "Change profile success."
-                    Resource.Success(response)
-                } else {
-                    response.error = BaseError(message = "Change profile failed.")
-                    Resource.Error(response)
-                }
+                profileRepository.changeProfile(userId, changeProfileRequest)
             }
         }
     }
