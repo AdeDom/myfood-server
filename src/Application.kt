@@ -3,6 +3,7 @@ package com.adedom.myfood
 import com.adedom.myfood.data.database.CategoryTable
 import com.adedom.myfood.data.database.FoodTable
 import com.adedom.myfood.di.domainModule
+import com.adedom.myfood.di.localDataSourceModule
 import com.adedom.myfood.di.remoteDataSourceModule
 import com.adedom.myfood.di.repositoryModule
 import com.adedom.myfood.route.controller.auth.authRoute
@@ -82,6 +83,7 @@ fun Application.module() {
         bindSingleton(tag = AppConstant.H2_DB) { dbH2 }
 
         importAll(
+            localDataSourceModule,
             remoteDataSourceModule,
             repositoryModule,
             domainModule,
