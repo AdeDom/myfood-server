@@ -1,10 +1,7 @@
 package com.adedom.myfood.route.controller.food
 
 import com.adedom.myfood.data.repositories.Resource
-import com.adedom.myfood.domain.usecase.food.GetFoodByCategoryIdUseCase
-import com.adedom.myfood.domain.usecase.food.GetFoodDetailUseCase
-import com.adedom.myfood.domain.usecase.food.InsertFoodUseCase
-import com.adedom.myfood.domain.usecase.food.MyFoodUseCase
+import com.adedom.myfood.domain.usecase.food.*
 import com.adedom.myfood.route.models.request.InsertFoodRequest
 import io.ktor.application.*
 import io.ktor.http.*
@@ -57,6 +54,20 @@ fun Route.foodRoute() {
 
         val categoryId = call.parameters["categoryId"]
         val resource = getFoodByCategoryIdUseCase(categoryId)
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
+    }
+
+    get("/api/food/all") {
+        val getFoodAllUseCase by closestDI().instance<GetFoodAllUseCase>()
+
+        val resource = getFoodAllUseCase()
         when (resource) {
             is Resource.Success -> {
                 call.respond(HttpStatusCode.OK, resource.data)

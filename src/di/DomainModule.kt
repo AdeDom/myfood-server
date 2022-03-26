@@ -3,10 +3,7 @@ package com.adedom.myfood.di
 import com.adedom.myfood.domain.usecase.auth.*
 import com.adedom.myfood.domain.usecase.category.GetCategoryAllUseCase
 import com.adedom.myfood.domain.usecase.category.InsertCategoryUseCase
-import com.adedom.myfood.domain.usecase.food.GetFoodByCategoryIdUseCase
-import com.adedom.myfood.domain.usecase.food.GetFoodDetailUseCase
-import com.adedom.myfood.domain.usecase.food.InsertFoodUseCase
-import com.adedom.myfood.domain.usecase.food.MyFoodUseCase
+import com.adedom.myfood.domain.usecase.food.*
 import com.adedom.myfood.domain.usecase.profile.ChangeProfileUseCase
 import com.adedom.myfood.domain.usecase.profile.DeleteAccountUseCase
 import com.adedom.myfood.domain.usecase.profile.UserProfileUseCase
@@ -30,4 +27,5 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { GetFoodDetailUseCase(instance()) }
     bindSingleton { GetCategoryAllUseCase(instance()) }
     bindSingleton { GetFoodByCategoryIdUseCase(instance()) }
+    bindSingleton { GetFoodAllUseCase(instance()) }
 }
