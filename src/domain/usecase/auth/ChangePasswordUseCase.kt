@@ -24,23 +24,25 @@ class ChangePasswordUseCase(
                 response.error = BaseError(message = "New password is null or blank.")
                 Resource.Error(response)
             }
+            isPasswordInvalid(userId, oldPassword) -> {
+                response.error = BaseError(message = "The old password is invalid.")
+                Resource.Error(response)
+            }
             else -> {
-                val isOldPassword = authRepository.findUserByUserIdAndPassword(userId, oldPassword) == 1L
-                if (isOldPassword) {
-                    val isUpdateUserPassword = authRepository.updateUserPassword(userId, newPassword) == 1
-                    if (isUpdateUserPassword) {
-                        response.status = ResponseKeyConstant.SUCCESS
-                        response.result = "Change password success."
-                        Resource.Success(response)
-                    } else {
-                        response.error = BaseError(message = "Change password failed.")
-                        Resource.Error(response)
-                    }
+                val isUpdateUserPassword = authRepository.updateUserPassword(userId, newPassword) == 1
+                if (isUpdateUserPassword) {
+                    response.status = ResponseKeyConstant.SUCCESS
+                    response.result = "Change password success."
+                    Resource.Success(response)
                 } else {
-                    response.error = BaseError(message = "The old password is invalid.")
+                    response.error = BaseError(message = "Change password failed.")
                     Resource.Error(response)
                 }
             }
         }
+    }
+
+    private fun isPasswordInvalid(userId: String, oldPassword: String): Boolean {
+        return authRepository.findUserByUserIdAndPassword(userId, oldPassword) == 0L
     }
 }
