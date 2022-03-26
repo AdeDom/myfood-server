@@ -10,4 +10,8 @@ interface CategoryLocalDataSource {
     fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Int?
 
     fun getCategoryAll(): List<CategoryEntity>
+
+    fun insertCategoryAll(categoryList: List<CategoryEntity>): Int
+
+    fun deleteCategoryAll(): Int
 }

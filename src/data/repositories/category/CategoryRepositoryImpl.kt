@@ -36,7 +36,16 @@ class CategoryRepositoryImpl(
     override fun getCategoryAll(): Resource<BaseResponse<List<CategoryResponse>>> {
         val response = BaseResponse<List<CategoryResponse>>()
 
-        val getCategoryAll = categoryRemoteDataSource.getCategoryAll()
+        var getCategoryAll = categoryLocalDataSource.getCategoryAll()
+        if (getCategoryAll.isEmpty()) {
+            getCategoryAll = categoryRemoteDataSource.getCategoryAll()
+
+            val listLocalCount = categoryLocalDataSource.insertCategoryAll(getCategoryAll)
+            if (listLocalCount != getCategoryAll.size) {
+                categoryLocalDataSource.deleteCategoryAll()
+            }
+        }
+
         val getCategoryAllResponse = getCategoryAll.map { categoryEntity ->
             CategoryResponse(
                 categoryId = categoryEntity.categoryId,
