@@ -70,4 +70,27 @@ class FoodRepositoryImpl(
     private fun toDateTimeString(dateTime: DateTime?): String? {
         return dateTime?.toString("d/M/yyyy H:m")
     }
+
+    override fun getFoodByCategoryId(categoryId: Int): Resource<BaseResponse<List<FoodDetailResponse>>> {
+        val response = BaseResponse<List<FoodDetailResponse>>()
+
+        val foodList = foodRemoteDataSource.getFoodByCategoryId(categoryId)
+        val foodListResponse = foodList.map { foodEntity ->
+            FoodDetailResponse(
+                foodId = foodEntity.foodId,
+                foodName = foodEntity.foodName,
+                alias = foodEntity.alias,
+                image = foodEntity.image,
+                price = foodEntity.price,
+                description = foodEntity.description,
+                categoryId = foodEntity.categoryId,
+                status = foodEntity.status,
+                created = toDateTimeString(foodEntity.created).orEmpty(),
+                updated = toDateTimeString(foodEntity.updated),
+            )
+        }
+        response.status = ResponseKeyConstant.SUCCESS
+        response.result = foodListResponse
+        return Resource.Success(response)
+    }
 }

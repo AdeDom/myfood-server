@@ -13,4 +13,6 @@ interface FoodRepository {
     fun insertFood(insertFoodRequest: InsertFoodRequest): Resource<BaseResponse<String>>
 
     fun getFoodDetail(foodId: Int): Resource<BaseResponse<FoodDetailResponse>>
+
+    fun getFoodByCategoryId(categoryId: Int): Resource<BaseResponse<List<FoodDetailResponse>>>
 }

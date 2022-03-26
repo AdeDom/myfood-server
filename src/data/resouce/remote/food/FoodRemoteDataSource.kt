@@ -8,4 +8,6 @@ interface FoodRemoteDataSource {
     fun insertFood(insertFoodRequest: InsertFoodRequest, status: String): Int?
 
     fun getFoodDetail(foodId: Int): FoodEntity?
+
+    fun getFoodByCategoryId(categoryId: Int): List<FoodEntity>
 }
