@@ -2,19 +2,40 @@ package com.adedom.myfood.data.repositories.profile
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.remote.profile.ProfileRemoteDataSource
-import com.adedom.myfood.route.models.entities.UserEntity
 import com.adedom.myfood.route.models.request.ChangeProfileRequest
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
+import com.adedom.myfood.route.models.response.base.UserProfileResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
+import org.joda.time.DateTime
 
 class ProfileRepositoryImpl(
     private val profileRemoteDataSource: ProfileRemoteDataSource,
 ) : ProfileRepository {
 
-    override fun getUserProfile(userId: String): UserEntity {
-        return profileRemoteDataSource.getUserByUserId(userId)
+    override fun userProfile(userId: String): Resource<BaseResponse<UserProfileResponse>> {
+        val response = BaseResponse<UserProfileResponse>()
+
+        val userEntity = profileRemoteDataSource.getUserByUserId(userId)
+        val userProfileResponse = UserProfileResponse(
+            userId = userEntity.userId,
+            username = userEntity.username,
+            name = userEntity.name,
+            email = userEntity.email,
+            mobileNo = userEntity.mobileNo,
+            address = userEntity.address,
+            status = userEntity.status,
+            created = toDateTimeString(userEntity.created).orEmpty(),
+            updated = toDateTimeString(userEntity.updated),
+        )
+        response.status = ResponseKeyConstant.SUCCESS
+        response.result = userProfileResponse
+        return Resource.Success(response)
+    }
+
+    private fun toDateTimeString(dateTime: DateTime?): String? {
+        return dateTime?.toString("d/M/yyyy H:m")
     }
 
     override fun changeProfile(
