@@ -1,7 +1,7 @@
 package com.adedom.myfood.data.resouce.remote.category
 
 import com.adedom.myfood.route.models.request.InsertCategoryRequest
-import com.adedom.myfood.route.models.response.base.CategoryEntity
+import com.adedom.myfood.route.models.entities.CategoryEntity
 
 interface CategoryRemoteDataSource {
 
