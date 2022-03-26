@@ -7,8 +7,10 @@ import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.request.RegisterRequest
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
+import com.adedom.myfood.route.models.response.base.TokenResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
+import com.adedom.myfood.utility.jwt.JwtHelper
 import java.io.UnsupportedEncodingException
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -16,6 +18,7 @@ import java.security.NoSuchAlgorithmException
 import java.util.*
 
 class AuthRepositoryImpl(
+    private val jwtHelper: JwtHelper,
     private val authRemoteDataSource: AuthRemoteDataSource,
 ) : AuthRepository {
 
@@ -30,12 +33,29 @@ class AuthRepositoryImpl(
         return authRemoteDataSource.findUserByUsername(username)
     }
 
-    override fun insertUser(registerRequest: RegisterRequest): Int? {
-        return authRemoteDataSource.insertUser(
+    override fun register(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>> {
+        val (username, password) = registerRequest
+        val response = BaseResponse<TokenResponse>()
+
+        val isSuccess = authRemoteDataSource.insertUser(
             userId = UUID.randomUUID().toString().replace("-", ""),
             registerRequest = registerRequest.copy(password = encryptSHA(registerRequest.password!!)),
             AppConstant.ACTIVE,
-        )
+        ) ?: 0
+        val loginRequest = LoginRequest(username, password)
+        val userEntity = findUserByUsernameAndPassword(loginRequest)
+        return if (isSuccess > 0 && userEntity != null) {
+            response.status = ResponseKeyConstant.SUCCESS
+            val tokenResponse = TokenResponse(
+                accessToken = jwtHelper.encodeAccessToken(userEntity.userId),
+                refreshToken = jwtHelper.encodeRefreshToken(userEntity.userId)
+            )
+            response.result = tokenResponse
+            Resource.Success(response)
+        } else {
+            response.error = BaseError(message = "Registration failed")
+            Resource.Error(response)
+        }
     }
 
     private fun encryptSHA(password: String): String {

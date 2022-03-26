@@ -15,7 +15,7 @@ val domainModule = DI.Module(name = "domain") {
 
     bindSingleton { MyFoodUseCase(instance()) }
     bindSingleton { LoginUseCase(instance(), instance()) }
-    bindSingleton { RegisterUseCase(instance(), instance()) }
+    bindSingleton { RegisterUseCase(instance()) }
     bindSingleton { RefreshTokenUseCase(instance()) }
     bindSingleton { DeleteAccountUseCase(instance()) }
     bindSingleton { LogoutUseCase() }

@@ -5,6 +5,7 @@ import com.adedom.myfood.route.models.entities.UserEntity
 import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.request.RegisterRequest
 import com.adedom.myfood.route.models.response.base.BaseResponse
+import com.adedom.myfood.route.models.response.base.TokenResponse
 
 interface AuthRepository {
 
@@ -12,7 +13,7 @@ interface AuthRepository {
 
     fun findUserByUsername(username: String): Long
 
-    fun insertUser(registerRequest: RegisterRequest): Int?
+    fun register(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>>
 
     fun findUserByUserIdAndPassword(userId: String, password: String): Long
 

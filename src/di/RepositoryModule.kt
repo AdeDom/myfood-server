@@ -15,7 +15,7 @@ import org.kodein.di.instance
 val repositoryModule = DI.Module(name = "repository") {
 
     bindSingleton<FoodRepository> { FoodRepositoryImpl(instance(), instance()) }
-    bindSingleton<AuthRepository> { AuthRepositoryImpl(instance()) }
+    bindSingleton<AuthRepository> { AuthRepositoryImpl(instance(), instance()) }
     bindSingleton<ProfileRepository> { ProfileRepositoryImpl(instance()) }
     bindSingleton<CategoryRepository> { CategoryRepositoryImpl(instance()) }
 }

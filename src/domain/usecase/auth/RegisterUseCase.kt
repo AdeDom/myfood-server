@@ -2,16 +2,12 @@ package com.adedom.myfood.domain.usecase.auth
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.auth.AuthRepository
-import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.request.RegisterRequest
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
 import com.adedom.myfood.route.models.response.base.TokenResponse
-import com.adedom.myfood.utility.constant.ResponseKeyConstant
-import com.adedom.myfood.utility.jwt.JwtHelper
 
 class RegisterUseCase(
-    private val jwtHelper: JwtHelper,
     private val authRepository: AuthRepository,
 ) {
 
@@ -37,21 +33,7 @@ class RegisterUseCase(
                 Resource.Error(response)
             }
             else -> {
-                val isSuccess = authRepository.insertUser(registerRequest) ?: 0
-                val loginRequest = LoginRequest(username, password)
-                val userEntity = authRepository.findUserByUsernameAndPassword(loginRequest)
-                if (isSuccess > 0 && userEntity != null) {
-                    response.status = ResponseKeyConstant.SUCCESS
-                    val tokenResponse = TokenResponse(
-                        accessToken = jwtHelper.encodeAccessToken(userEntity.userId),
-                        refreshToken = jwtHelper.encodeRefreshToken(userEntity.userId)
-                    )
-                    response.result = tokenResponse
-                    Resource.Success(response)
-                } else {
-                    response.error = BaseError(message = "Registration failed")
-                    Resource.Error(response)
-                }
+                authRepository.register(registerRequest)
             }
         }
     }
