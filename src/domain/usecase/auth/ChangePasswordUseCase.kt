@@ -28,7 +28,7 @@ class ChangePasswordUseCase(
                 Resource.Error(response)
             }
             else -> {
-                authRepository.updateUserPassword(userId, newPassword)
+                authRepository.changePassword(userId, newPassword)
             }
         }
     }

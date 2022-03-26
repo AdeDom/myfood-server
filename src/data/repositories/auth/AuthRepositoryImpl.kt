@@ -57,7 +57,7 @@ class AuthRepositoryImpl(
         return authRemoteDataSource.findUserByUserIdAndPassword(userId, encryptSHA(password))
     }
 
-    override fun updateUserPassword(userId: String, newPassword: String): Resource<BaseResponse<String>> {
+    override fun changePassword(userId: String, newPassword: String): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val isUpdateUserPassword = authRemoteDataSource.updateUserPassword(userId, encryptSHA(newPassword)) == 1

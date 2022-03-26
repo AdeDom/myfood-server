@@ -16,5 +16,5 @@ interface AuthRepository {
 
     fun findUserByUserIdAndPassword(userId: String, password: String): Long
 
-    fun updateUserPassword(userId: String, newPassword: String): Resource<BaseResponse<String>>
+    fun changePassword(userId: String, newPassword: String): Resource<BaseResponse<String>>
 }
