@@ -46,7 +46,8 @@ fun Route.deleteAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCa
 private suspend fun PipelineContext<Unit, ApplicationCall>.authentication(body: PipelineInterceptor<Unit, ApplicationCall>) {
     val authKey = call.request.header(RequestKeyConstant.AUTHORIZATION_KEY)
     if (authKey != null) {
-        val expiresAtClaim = JWT().decodeJwt(authKey).getClaim(PublicClaims.EXPIRES_AT).asLong()
+        val accessToken = authKey.replace("Bearer", "").trim()
+        val expiresAtClaim = JWT().decodeJwt(accessToken).getClaim(PublicClaims.EXPIRES_AT).asLong()
         val currentTime = System.currentTimeMillis() / 1_000L
         val isTokenExpire = expiresAtClaim.minus(currentTime) > 0
         if (isTokenExpire) {

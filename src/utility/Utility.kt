@@ -8,7 +8,8 @@ import io.ktor.request.*
 
 val ApplicationCall.userId: String
     get() = run {
-        val token = request.header(RequestKeyConstant.AUTHORIZATION_KEY)
-        val userId = JWT().decodeJwt(token).getClaim(JwtHelper.USER_ID).asString()
+        val authKey = request.header(RequestKeyConstant.AUTHORIZATION_KEY)
+        val accessToken = authKey?.replace("Bearer", "")?.trim()
+        val userId = JWT().decodeJwt(accessToken).getClaim(JwtHelper.USER_ID).asString()
         userId
     }
