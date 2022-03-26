@@ -2,7 +2,6 @@ package com.adedom.myfood.data.resouce.remote.auth
 
 import com.adedom.myfood.data.database.UserTable
 import com.adedom.myfood.route.models.entities.UserEntity
-import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.request.RegisterRequest
 import com.adedom.myfood.utility.constant.AppConstant
 import org.jetbrains.exposed.sql.and
@@ -14,9 +13,7 @@ import org.joda.time.DateTime
 
 class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
 
-    override fun findUserByUsernameAndPassword(loginRequest: LoginRequest, status: String): UserEntity? {
-        val (username, password) = loginRequest
-
+    override fun findUserByUsernameAndPassword(username: String, password: String, status: String): UserEntity? {
         return transaction {
             UserTable
                 .slice(
@@ -32,7 +29,7 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
                     UserTable.updated,
                 )
                 .select {
-                    (UserTable.username eq username!!) and (UserTable.password eq password!!) and (UserTable.status eq status)
+                    (UserTable.username eq username) and (UserTable.password eq password) and (UserTable.status eq status)
                 }
                 .map { row ->
                     UserEntity(

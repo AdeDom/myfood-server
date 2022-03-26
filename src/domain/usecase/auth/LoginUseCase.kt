@@ -28,7 +28,7 @@ class LoginUseCase(
                 Resource.Error(response)
             }
             else -> {
-                val userEntity = authRepository.findUserByUsernameAndPassword(loginRequest)
+                val userEntity = authRepository.findUserByUsernameAndPassword(username, password)
                 if (userEntity != null) {
                     response.status = ResponseKeyConstant.SUCCESS
                     response.result = TokenResponse(
