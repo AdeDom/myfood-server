@@ -32,29 +32,31 @@ class RegisterUseCase(
                 response.error = BaseError(message = "Name is null or blank.")
                 Resource.Error(response)
             }
+            isValidateUsername(username) -> {
+                response.error = BaseError(message = "This username already exists.")
+                Resource.Error(response)
+            }
             else -> {
-                val usernameCount = authRepository.findUserByUsername(username)
-                if (usernameCount == 0L) {
-                    val isSuccess = authRepository.insertUser(registerRequest) ?: 0
-                    val loginRequest = LoginRequest(username, password)
-                    val userEntity = authRepository.findUserByUsernameAndPassword(loginRequest)
-                    if (isSuccess > 0 && userEntity != null) {
-                        response.status = ResponseKeyConstant.SUCCESS
-                        val tokenResponse = TokenResponse(
-                            accessToken = jwtHelper.encodeAccessToken(userEntity.userId),
-                            refreshToken = jwtHelper.encodeRefreshToken(userEntity.userId)
-                        )
-                        response.result = tokenResponse
-                        Resource.Success(response)
-                    } else {
-                        response.error = BaseError(message = "Registration failed")
-                        Resource.Error(response)
-                    }
+                val isSuccess = authRepository.insertUser(registerRequest) ?: 0
+                val loginRequest = LoginRequest(username, password)
+                val userEntity = authRepository.findUserByUsernameAndPassword(loginRequest)
+                if (isSuccess > 0 && userEntity != null) {
+                    response.status = ResponseKeyConstant.SUCCESS
+                    val tokenResponse = TokenResponse(
+                        accessToken = jwtHelper.encodeAccessToken(userEntity.userId),
+                        refreshToken = jwtHelper.encodeRefreshToken(userEntity.userId)
+                    )
+                    response.result = tokenResponse
+                    Resource.Success(response)
                 } else {
-                    response.error = BaseError(message = "This username already exists.")
+                    response.error = BaseError(message = "Registration failed")
                     Resource.Error(response)
                 }
             }
         }
+    }
+
+    private fun isValidateUsername(username: String): Boolean {
+        return authRepository.findUserByUsername(username) > 0
     }
 }
