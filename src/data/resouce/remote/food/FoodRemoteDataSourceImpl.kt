@@ -6,18 +6,21 @@ import com.adedom.myfood.route.models.entities.FoodAllEntity
 import com.adedom.myfood.route.models.entities.FoodEntity
 import com.adedom.myfood.route.models.request.InsertFoodRequest
 import com.adedom.myfood.utility.constant.AppConstant
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
-class FoodRemoteDataSourceImpl : FoodRemoteDataSource {
+class FoodRemoteDataSourceImpl(
+    private val db: Database,
+) : FoodRemoteDataSource {
 
     override fun insertFood(insertFoodRequest: InsertFoodRequest, status: String): Int? {
         val (foodName, alias, image, price, description, categoryId) = insertFoodRequest
 
-        val statement = transaction {
+        val statement = transaction(db) {
             FoodTable.insert {
                 it[FoodTable.foodName] = foodName!!
                 it[FoodTable.alias] = alias
@@ -34,7 +37,7 @@ class FoodRemoteDataSourceImpl : FoodRemoteDataSource {
     }
 
     override fun getFoodDetail(foodId: Int): FoodEntity? {
-        return transaction {
+        return transaction(db) {
             FoodTable
                 .slice(
                     FoodTable.foodId,
@@ -70,7 +73,7 @@ class FoodRemoteDataSourceImpl : FoodRemoteDataSource {
     }
 
     override fun getFoodByCategoryId(categoryId: Int): List<FoodEntity> {
-        return transaction {
+        return transaction(db) {
             FoodTable
                 .slice(
                     FoodTable.foodId,
@@ -105,7 +108,7 @@ class FoodRemoteDataSourceImpl : FoodRemoteDataSource {
     }
 
     override fun getFoodAll(): List<FoodAllEntity> {
-        return transaction {
+        return transaction(db) {
             (FoodTable innerJoin CategoryTable)
                 .slice(
                     FoodTable.foodId,

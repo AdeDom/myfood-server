@@ -32,6 +32,7 @@ sourceSets {
 repositories {
     mavenLocal()
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -51,6 +52,8 @@ dependencies {
 
     implementation "mysql:mysql-connector-java:8.0.19"
     implementation "com.zaxxer:HikariCP:3.4.2"
+
+    implementation 'com.h2database:h2:2.1.210'
 
     implementation "io.ktor:ktor-auth:$ktor_version"
     implementation "io.ktor:ktor-auth-jwt:$ktor_version"

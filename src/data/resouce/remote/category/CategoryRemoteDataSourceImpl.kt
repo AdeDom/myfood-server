@@ -1,19 +1,22 @@
 package com.adedom.myfood.data.resouce.remote.category
 
 import com.adedom.myfood.data.database.CategoryTable
-import com.adedom.myfood.route.models.request.InsertCategoryRequest
 import com.adedom.myfood.route.models.entities.CategoryEntity
+import com.adedom.myfood.route.models.request.InsertCategoryRequest
 import com.adedom.myfood.utility.constant.AppConstant
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 
-class CategoryRemoteDataSourceImpl : CategoryRemoteDataSource {
+class CategoryRemoteDataSourceImpl(
+    private val db: Database,
+) : CategoryRemoteDataSource {
 
     override fun findCategoryId(categoryId: Int): Long {
-        return transaction {
+        return transaction(db) {
             CategoryTable
                 .select {
                     CategoryTable.categoryId eq categoryId
@@ -25,7 +28,7 @@ class CategoryRemoteDataSourceImpl : CategoryRemoteDataSource {
     override fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Int? {
         val (categoryName, image) = insertCategoryRequest
 
-        val statement = transaction {
+        val statement = transaction(db) {
             CategoryTable.insert {
                 it[CategoryTable.categoryName] = categoryName!!
                 it[CategoryTable.image] = image!!
@@ -37,7 +40,7 @@ class CategoryRemoteDataSourceImpl : CategoryRemoteDataSource {
     }
 
     override fun getCategoryAll(): List<CategoryEntity> {
-        return transaction {
+        return transaction(db) {
             CategoryTable
                 .slice(
                     CategoryTable.categoryId,

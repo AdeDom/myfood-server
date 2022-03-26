@@ -3,17 +3,16 @@ package com.adedom.myfood.data.resouce.remote.auth
 import com.adedom.myfood.data.database.UserTable
 import com.adedom.myfood.route.models.request.RegisterRequest
 import com.adedom.myfood.utility.constant.AppConstant
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 
-class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
+class AuthRemoteDataSourceImpl(
+    private val db: Database,
+) : AuthRemoteDataSource {
 
     override fun findUserIdByUsernameAndPassword(username: String, password: String, status: String): String? {
-        return transaction {
+        return transaction(db) {
             UserTable
                 .slice(
                     UserTable.userId,
@@ -29,7 +28,7 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
     }
 
     override fun findUserByUsername(username: String): Long {
-        return transaction {
+        return transaction(db) {
             UserTable
                 .slice(
                     UserTable.username,
@@ -44,7 +43,7 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
     override fun insertUser(userId: String, registerRequest: RegisterRequest, status: String): Int? {
         val (username, password, name, email, mobileNo, address) = registerRequest
 
-        val statement = transaction {
+        val statement = transaction(db) {
             UserTable
                 .insert {
                     it[UserTable.userId] = userId
@@ -64,7 +63,7 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
     }
 
     override fun findUserByUserIdAndPassword(userId: String, password: String): Long {
-        return transaction {
+        return transaction(db) {
             UserTable
                 .select {
                     (UserTable.userId eq userId) and (UserTable.password eq password)
@@ -74,7 +73,7 @@ class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
     }
 
     override fun updateUserPassword(userId: String, password: String): Int {
-        return transaction {
+        return transaction(db) {
             UserTable.update({ UserTable.userId eq userId }) {
                 it[UserTable.password] = password
                 it[updated] = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
