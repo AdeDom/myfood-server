@@ -2,9 +2,9 @@ package com.adedom.myfood.domain.usecase.profile
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.profile.ProfileRepository
+import com.adedom.myfood.route.models.base.BaseError
+import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.request.ChangeProfileRequest
-import com.adedom.myfood.route.models.response.base.BaseError
-import com.adedom.myfood.route.models.response.base.BaseResponse
 
 class ChangeProfileUseCase(
     private val profileRepository: ProfileRepository,

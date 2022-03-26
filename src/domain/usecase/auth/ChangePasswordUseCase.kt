@@ -2,9 +2,9 @@ package com.adedom.myfood.domain.usecase.auth
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.auth.AuthRepository
+import com.adedom.myfood.route.models.base.BaseError
+import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.request.ChangePasswordRequest
-import com.adedom.myfood.route.models.response.base.BaseError
-import com.adedom.myfood.route.models.response.base.BaseResponse
 
 class ChangePasswordUseCase(
     private val authRepository: AuthRepository,

@@ -2,10 +2,10 @@ package com.adedom.myfood.domain.usecase.auth
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.auth.AuthRepository
+import com.adedom.myfood.route.models.base.BaseError
+import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.request.LoginRequest
-import com.adedom.myfood.route.models.response.base.BaseError
-import com.adedom.myfood.route.models.response.base.BaseResponse
-import com.adedom.myfood.route.models.response.base.TokenResponse
+import com.adedom.myfood.route.models.response.TokenResponse
 
 class LoginUseCase(
     private val authRepository: AuthRepository,

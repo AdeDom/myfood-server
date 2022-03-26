@@ -1,7 +1,7 @@
 package com.adedom.myfood.domain.usecase.auth
 
 import com.adedom.myfood.data.repositories.Resource
-import com.adedom.myfood.route.models.response.base.BaseResponse
+import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 
 class LogoutUseCase {

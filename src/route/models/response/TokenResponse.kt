@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.models.response.base
+package com.adedom.myfood.route.models.response
 
 @kotlinx.serialization.Serializable
 data class TokenResponse(

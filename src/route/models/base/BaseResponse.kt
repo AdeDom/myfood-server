@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.models.response.base
+package com.adedom.myfood.route.models.base
 
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 

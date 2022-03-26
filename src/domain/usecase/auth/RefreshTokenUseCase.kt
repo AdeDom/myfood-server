@@ -1,11 +1,11 @@
 package com.adedom.myfood.domain.usecase.auth
 
 import com.adedom.myfood.data.repositories.Resource
+import com.adedom.myfood.route.models.base.BaseError
+import com.adedom.myfood.route.models.base.BaseResponse
+import com.adedom.myfood.route.models.base.ErrorResponse
 import com.adedom.myfood.route.models.request.TokenRequest
-import com.adedom.myfood.route.models.response.base.BaseError
-import com.adedom.myfood.route.models.response.base.BaseResponse
-import com.adedom.myfood.route.models.response.base.ErrorResponse
-import com.adedom.myfood.route.models.response.base.TokenResponse
+import com.adedom.myfood.route.models.response.TokenResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import com.adedom.myfood.utility.jwt.JwtHelper
 

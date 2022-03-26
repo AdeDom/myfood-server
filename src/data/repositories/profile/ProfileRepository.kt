@@ -1,9 +1,9 @@
 package com.adedom.myfood.data.repositories.profile
 
 import com.adedom.myfood.data.repositories.Resource
+import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.request.ChangeProfileRequest
-import com.adedom.myfood.route.models.response.base.BaseResponse
-import com.adedom.myfood.route.models.response.base.UserProfileResponse
+import com.adedom.myfood.route.models.response.UserProfileResponse
 
 interface ProfileRepository {
 

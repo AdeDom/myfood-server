@@ -3,11 +3,11 @@ package com.adedom.myfood.data.repositories.food
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.remote.food.FoodRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.food.MyFoodRemoteDataSource
+import com.adedom.myfood.route.models.base.BaseError
+import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.entities.MyFoodEntity
 import com.adedom.myfood.route.models.request.InsertFoodRequest
-import com.adedom.myfood.route.models.response.base.BaseError
-import com.adedom.myfood.route.models.response.base.BaseResponse
-import com.adedom.myfood.route.models.response.base.FoodDetailResponse
+import com.adedom.myfood.route.models.response.FoodDetailResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import org.joda.time.DateTime

@@ -2,10 +2,10 @@ package com.adedom.myfood.data.repositories.category
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.remote.category.CategoryRemoteDataSource
+import com.adedom.myfood.route.models.base.BaseError
+import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.request.InsertCategoryRequest
-import com.adedom.myfood.route.models.response.base.BaseError
-import com.adedom.myfood.route.models.response.base.BaseResponse
-import com.adedom.myfood.route.models.response.base.CategoryResponse
+import com.adedom.myfood.route.models.response.CategoryResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import org.joda.time.DateTime
 
