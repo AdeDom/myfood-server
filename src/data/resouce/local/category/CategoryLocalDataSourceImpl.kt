@@ -2,39 +2,15 @@ package com.adedom.myfood.data.resouce.local.category
 
 import com.adedom.myfood.data.database.CategoryTable
 import com.adedom.myfood.route.models.entities.CategoryEntity
-import com.adedom.myfood.route.models.request.InsertCategoryRequest
-import com.adedom.myfood.utility.constant.AppConstant
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.deleteAll
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.joda.time.DateTime
 
 class CategoryLocalDataSourceImpl(
     private val db: Database,
 ) : CategoryLocalDataSource {
-
-    override fun findCategoryId(categoryId: Int): Long {
-        return transaction(db) {
-            CategoryTable
-                .select {
-                    CategoryTable.categoryId eq categoryId
-                }
-                .count()
-        }
-    }
-
-    override fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Int? {
-        val (categoryName, image) = insertCategoryRequest
-
-        val statement = transaction(db) {
-            CategoryTable.insert {
-                it[CategoryTable.categoryName] = categoryName!!
-                it[CategoryTable.image] = image!!
-                it[created] = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
-            }
-        }
-
-        return statement.resultedValues?.size
-    }
 
     override fun getCategoryAll(): List<CategoryEntity> {
         return transaction(db) {

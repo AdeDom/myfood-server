@@ -40,6 +40,7 @@ class CategoryRepositoryImpl(
         if (getCategoryAll.isEmpty()) {
             getCategoryAll = categoryRemoteDataSource.getCategoryAll()
 
+            categoryLocalDataSource.deleteCategoryAll()
             val listLocalCount = categoryLocalDataSource.insertCategoryAll(getCategoryAll)
             if (listLocalCount != getCategoryAll.size) {
                 categoryLocalDataSource.deleteCategoryAll()
