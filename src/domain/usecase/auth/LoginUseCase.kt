@@ -6,11 +6,8 @@ import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
 import com.adedom.myfood.route.models.response.base.TokenResponse
-import com.adedom.myfood.utility.constant.ResponseKeyConstant
-import com.adedom.myfood.utility.jwt.JwtHelper
 
 class LoginUseCase(
-    private val jwtHelper: JwtHelper,
     private val authRepository: AuthRepository,
 ) {
 
@@ -28,18 +25,7 @@ class LoginUseCase(
                 Resource.Error(response)
             }
             else -> {
-                val userId = authRepository.login(username, password)
-                if (userId != null) {
-                    response.status = ResponseKeyConstant.SUCCESS
-                    response.result = TokenResponse(
-                        accessToken = jwtHelper.encodeAccessToken(userId),
-                        refreshToken = jwtHelper.encodeRefreshToken(userId)
-                    )
-                    Resource.Success(response)
-                } else {
-                    response.error = BaseError(message = "Username or password incorrect.")
-                    Resource.Error(response)
-                }
+                authRepository.login(username, password)
             }
         }
     }

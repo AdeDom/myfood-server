@@ -14,7 +14,7 @@ import org.kodein.di.instance
 val domainModule = DI.Module(name = "domain") {
 
     bindSingleton { MyFoodUseCase(instance()) }
-    bindSingleton { LoginUseCase(instance(), instance()) }
+    bindSingleton { LoginUseCase(instance()) }
     bindSingleton { RegisterUseCase(instance()) }
     bindSingleton { RefreshTokenUseCase(instance()) }
     bindSingleton { DeleteAccountUseCase(instance()) }

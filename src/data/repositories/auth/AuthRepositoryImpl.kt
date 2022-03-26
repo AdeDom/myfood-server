@@ -20,29 +20,15 @@ class AuthRepositoryImpl(
     private val authRemoteDataSource: AuthRemoteDataSource,
 ) : AuthRepository {
 
-    override fun login(username: String, password: String): String? {
-        return authRemoteDataSource.findUserIdByUsernameAndPassword(
+    override fun login(username: String, password: String): Resource<BaseResponse<TokenResponse>> {
+        val response = BaseResponse<TokenResponse>()
+
+        val userId = authRemoteDataSource.findUserIdByUsernameAndPassword(
             username,
             encryptSHA(password),
             AppConstant.ACTIVE,
         )
-    }
-
-    override fun findUserByUsername(username: String): Long {
-        return authRemoteDataSource.findUserByUsername(username)
-    }
-
-    override fun register(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>> {
-        val (username, password) = registerRequest
-        val response = BaseResponse<TokenResponse>()
-
-        val isSuccess = authRemoteDataSource.insertUser(
-            userId = UUID.randomUUID().toString().replace("-", ""),
-            registerRequest = registerRequest.copy(password = encryptSHA(registerRequest.password!!)),
-            AppConstant.ACTIVE,
-        ) ?: 0
-        val userId = login(username!!, password!!)
-        return if (isSuccess > 0 && userId != null) {
+        return if (userId != null) {
             response.status = ResponseKeyConstant.SUCCESS
             val tokenResponse = TokenResponse(
                 accessToken = jwtHelper.encodeAccessToken(userId),
@@ -50,6 +36,26 @@ class AuthRepositoryImpl(
             )
             response.result = tokenResponse
             Resource.Success(response)
+        } else {
+            response.error = BaseError(message = "Username or password incorrect.")
+            Resource.Error(response)
+        }
+    }
+
+    override fun findUserByUsername(username: String): Long {
+        return authRemoteDataSource.findUserByUsername(username)
+    }
+
+    override fun register(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>> {
+        val response = BaseResponse<TokenResponse>()
+
+        val insertUserCount = authRemoteDataSource.insertUser(
+            userId = UUID.randomUUID().toString().replace("-", ""),
+            registerRequest = registerRequest.copy(password = encryptSHA(registerRequest.password!!)),
+            AppConstant.ACTIVE,
+        ) ?: 0
+        return if (insertUserCount > 0) {
+            login(registerRequest.username!!, registerRequest.password)
         } else {
             response.error = BaseError(message = "Registration failed")
             Resource.Error(response)
