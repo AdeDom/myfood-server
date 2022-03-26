@@ -1,11 +1,10 @@
 package com.adedom.myfood.domain.usecase.auth
 
+import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.auth.AuthRepository
-import com.adedom.myfood.domain.usecase.Resource
 import com.adedom.myfood.route.models.request.ChangePasswordRequest
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
-import com.adedom.myfood.utility.constant.ResponseKeyConstant
 
 class ChangePasswordUseCase(
     private val authRepository: AuthRepository,
@@ -29,15 +28,7 @@ class ChangePasswordUseCase(
                 Resource.Error(response)
             }
             else -> {
-                val isUpdateUserPassword = authRepository.updateUserPassword(userId, newPassword) == 1
-                if (isUpdateUserPassword) {
-                    response.status = ResponseKeyConstant.SUCCESS
-                    response.result = "Change password success."
-                    Resource.Success(response)
-                } else {
-                    response.error = BaseError(message = "Change password failed.")
-                    Resource.Error(response)
-                }
+                authRepository.updateUserPassword(userId, newPassword)
             }
         }
     }

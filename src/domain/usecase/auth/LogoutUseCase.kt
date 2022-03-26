@@ -1,6 +1,6 @@
 package com.adedom.myfood.domain.usecase.auth
 
-import com.adedom.myfood.domain.usecase.Resource
+import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.route.models.response.base.BaseResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 

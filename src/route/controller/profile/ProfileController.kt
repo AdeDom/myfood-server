@@ -1,6 +1,6 @@
 package com.adedom.myfood.route.controller.profile
 
-import com.adedom.myfood.domain.usecase.Resource
+import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.profile.ChangeProfileUseCase
 import com.adedom.myfood.domain.usecase.profile.DeleteAccountUseCase
 import com.adedom.myfood.domain.usecase.profile.UserProfileUseCase

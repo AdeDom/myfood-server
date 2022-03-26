@@ -1,4 +1,4 @@
-package com.adedom.myfood.domain.usecase
+package com.adedom.myfood.data.repositories
 
 sealed class Resource<out T : Any> {
     data class Success<out T : Any>(val data: T) : Resource<T>()

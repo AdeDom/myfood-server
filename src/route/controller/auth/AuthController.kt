@@ -1,6 +1,6 @@
 package com.adedom.myfood.route.controller.auth
 
-import com.adedom.myfood.domain.usecase.Resource
+import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.auth.*
 import com.adedom.myfood.route.models.request.ChangePasswordRequest
 import com.adedom.myfood.route.models.request.LoginRequest

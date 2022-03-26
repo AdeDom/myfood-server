@@ -1,6 +1,6 @@
 package com.adedom.myfood.route.controller.food
 
-import com.adedom.myfood.domain.usecase.Resource
+import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.food.InsertFoodUseCase
 import com.adedom.myfood.domain.usecase.food.MyFoodUseCase
 import com.adedom.myfood.route.models.request.InsertFoodRequest

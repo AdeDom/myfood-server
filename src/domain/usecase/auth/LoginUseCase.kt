@@ -1,7 +1,7 @@
 package com.adedom.myfood.domain.usecase.auth
 
+import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.auth.AuthRepository
-import com.adedom.myfood.domain.usecase.Resource
 import com.adedom.myfood.route.models.request.LoginRequest
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
