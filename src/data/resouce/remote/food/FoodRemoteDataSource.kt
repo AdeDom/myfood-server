@@ -12,5 +12,5 @@ interface FoodRemoteDataSource {
 
     fun getFoodByCategoryId(categoryId: Int): List<FoodEntity>
 
-    fun getFoodAll(): List<FoodAllEntity>
+    fun getFoodAndCategoryAll(): List<FoodAllEntity>
 }

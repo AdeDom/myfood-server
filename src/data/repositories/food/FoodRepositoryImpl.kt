@@ -97,10 +97,10 @@ class FoodRepositoryImpl(
         return Resource.Success(response)
     }
 
-    override fun getFoodAll(): Resource<BaseResponse<List<FoodAllResponse>>> {
+    override fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAllResponse>>> {
         val response = BaseResponse<List<FoodAllResponse>>()
 
-        val foodAllList = foodRemoteDataSource.getFoodAll()
+        val foodAllList = foodRemoteDataSource.getFoodAndCategoryAll()
         val foodAllListResponse = foodAllList.map { foodAllEntity ->
             FoodAllResponse(
                 foodId = foodAllEntity.foodId,

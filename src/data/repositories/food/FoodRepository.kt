@@ -17,5 +17,5 @@ interface FoodRepository {
 
     fun getFoodByCategoryId(categoryId: Int): Resource<BaseResponse<List<FoodDetailResponse>>>
 
-    fun getFoodAll(): Resource<BaseResponse<List<FoodAllResponse>>>
+    fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAllResponse>>>
 }

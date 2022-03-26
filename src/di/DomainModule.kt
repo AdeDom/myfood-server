@@ -27,5 +27,5 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { GetFoodDetailUseCase(instance()) }
     bindSingleton { GetCategoryAllUseCase(instance()) }
     bindSingleton { GetFoodByCategoryIdUseCase(instance()) }
-    bindSingleton { GetFoodAllUseCase(instance()) }
+    bindSingleton { GetFoodAndCategoryAllUseCase(instance()) }
 }

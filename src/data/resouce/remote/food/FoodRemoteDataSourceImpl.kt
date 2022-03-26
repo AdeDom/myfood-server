@@ -107,7 +107,7 @@ class FoodRemoteDataSourceImpl(
         }
     }
 
-    override fun getFoodAll(): List<FoodAllEntity> {
+    override fun getFoodAndCategoryAll(): List<FoodAllEntity> {
         return transaction(db) {
             (FoodTable innerJoin CategoryTable)
                 .slice(

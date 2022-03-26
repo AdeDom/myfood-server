@@ -5,14 +5,14 @@ import com.adedom.myfood.data.repositories.food.FoodRepository
 import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.response.FoodAllResponse
 
-class GetFoodAllUseCase(
+class GetFoodAndCategoryAllUseCase(
     private val foodRepository: FoodRepository,
 ) {
 
     operator fun invoke(): Resource<BaseResponse<List<FoodAllResponse>>> {
         return when {
             else -> {
-                foodRepository.getFoodAll()
+                foodRepository.getFoodAndCategoryAll()
             }
         }
     }

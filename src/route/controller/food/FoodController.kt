@@ -64,10 +64,10 @@ fun Route.foodRoute() {
         }
     }
 
-    get("/api/food/all") {
-        val getFoodAllUseCase by closestDI().instance<GetFoodAllUseCase>()
+    get("/api/food/getFoodAndCategoryAll") {
+        val getFoodAndCategoryAllUseCase by closestDI().instance<GetFoodAndCategoryAllUseCase>()
 
-        val resource = getFoodAllUseCase()
+        val resource = getFoodAndCategoryAllUseCase()
         when (resource) {
             is Resource.Success -> {
                 call.respond(HttpStatusCode.OK, resource.data)
