@@ -141,4 +141,37 @@ class FoodRemoteDataSourceImpl(
                 }
         }
     }
+
+    override fun getFoodAll(): List<FoodEntity> {
+        return transaction(db) {
+            FoodTable
+                .slice(
+                    FoodTable.foodId,
+                    FoodTable.foodName,
+                    FoodTable.alias,
+                    FoodTable.image,
+                    FoodTable.price,
+                    FoodTable.description,
+                    FoodTable.categoryId,
+                    FoodTable.status,
+                    FoodTable.created,
+                    FoodTable.updated,
+                )
+                .selectAll()
+                .map { row ->
+                    FoodEntity(
+                        foodId = row[FoodTable.foodId],
+                        foodName = row[FoodTable.foodName],
+                        alias = row[FoodTable.alias],
+                        image = row[FoodTable.image],
+                        price = row[FoodTable.price],
+                        description = row[FoodTable.description],
+                        categoryId = row[FoodTable.categoryId],
+                        status = row[FoodTable.status],
+                        created = row[FoodTable.created],
+                        updated = row[FoodTable.updated],
+                    )
+                }
+        }
+    }
 }
