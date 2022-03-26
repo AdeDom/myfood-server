@@ -1,6 +1,7 @@
 package com.adedom.myfood.di
 
 import com.adedom.myfood.domain.usecase.auth.*
+import com.adedom.myfood.domain.usecase.category.GetCategoryAllUseCase
 import com.adedom.myfood.domain.usecase.category.InsertCategoryUseCase
 import com.adedom.myfood.domain.usecase.food.GetFoodDetailUseCase
 import com.adedom.myfood.domain.usecase.food.InsertFoodUseCase
@@ -26,4 +27,5 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { InsertCategoryUseCase(instance()) }
     bindSingleton { InsertFoodUseCase(instance(), instance()) }
     bindSingleton { GetFoodDetailUseCase(instance()) }
+    bindSingleton { GetCategoryAllUseCase(instance()) }
 }
