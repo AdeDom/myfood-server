@@ -5,7 +5,7 @@ import com.adedom.myfood.route.models.request.ChangeProfileRequest
 
 interface ProfileRemoteDataSource {
 
-    fun getUserByUserId(userId: String): UserEntity
+    fun getUserByUserId(userId: String): UserEntity?
 
     fun updateUserProfile(userId: String, changeProfileRequest: ChangeProfileRequest): Int
 

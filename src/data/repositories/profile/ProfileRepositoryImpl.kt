@@ -18,20 +18,25 @@ class ProfileRepositoryImpl(
         val response = BaseResponse<UserProfileResponse>()
 
         val userEntity = profileRemoteDataSource.getUserByUserId(userId)
-        val userProfileResponse = UserProfileResponse(
-            userId = userEntity.userId,
-            username = userEntity.username,
-            name = userEntity.name,
-            email = userEntity.email,
-            mobileNo = userEntity.mobileNo,
-            address = userEntity.address,
-            status = userEntity.status,
-            created = toDateTimeString(userEntity.created).orEmpty(),
-            updated = toDateTimeString(userEntity.updated),
-        )
-        response.status = ResponseKeyConstant.SUCCESS
-        response.result = userProfileResponse
-        return Resource.Success(response)
+        return if (userEntity != null) {
+            val userProfileResponse = UserProfileResponse(
+                userId = userEntity.userId,
+                username = userEntity.username,
+                name = userEntity.name,
+                email = userEntity.email,
+                mobileNo = userEntity.mobileNo,
+                address = userEntity.address,
+                status = userEntity.status,
+                created = toDateTimeString(userEntity.created).orEmpty(),
+                updated = toDateTimeString(userEntity.updated),
+            )
+            response.status = ResponseKeyConstant.SUCCESS
+            response.result = userProfileResponse
+            Resource.Success(response)
+        } else {
+            response.error = BaseError(message = "User profile is null or empty.")
+            Resource.Error(response)
+        }
     }
 
     private fun toDateTimeString(dateTime: DateTime?): String? {

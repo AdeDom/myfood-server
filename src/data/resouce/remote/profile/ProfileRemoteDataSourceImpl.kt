@@ -11,7 +11,7 @@ import org.joda.time.DateTime
 
 class ProfileRemoteDataSourceImpl : ProfileRemoteDataSource {
 
-    override fun getUserByUserId(userId: String): UserEntity {
+    override fun getUserByUserId(userId: String): UserEntity? {
         return transaction {
             UserTable
                 .slice(
@@ -43,7 +43,7 @@ class ProfileRemoteDataSourceImpl : ProfileRemoteDataSource {
                         updated = row[UserTable.updated],
                     )
                 }
-                .single()
+                .singleOrNull()
         }
     }
 
