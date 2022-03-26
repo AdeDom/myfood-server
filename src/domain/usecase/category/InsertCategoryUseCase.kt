@@ -5,7 +5,6 @@ import com.adedom.myfood.data.repositories.category.CategoryRepository
 import com.adedom.myfood.route.models.request.InsertCategoryRequest
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
-import com.adedom.myfood.utility.constant.ResponseKeyConstant
 
 class InsertCategoryUseCase(
     private val categoryRepository: CategoryRepository,
@@ -25,15 +24,7 @@ class InsertCategoryUseCase(
                 Resource.Error(response)
             }
             else -> {
-                val isInsertCategory = categoryRepository.insertCategory(insertCategoryRequest) == 1
-                if (isInsertCategory) {
-                    response.status = ResponseKeyConstant.SUCCESS
-                    response.result = "Insert category success."
-                    Resource.Success(response)
-                } else {
-                    response.error = BaseError(message = "Insert category failed.")
-                    Resource.Error(response)
-                }
+                categoryRepository.insertCategory(insertCategoryRequest)
             }
         }
     }
