@@ -28,12 +28,12 @@ class LoginUseCase(
                 Resource.Error(response)
             }
             else -> {
-                val userEntity = authRepository.findUserByUsernameAndPassword(username, password)
-                if (userEntity != null) {
+                val userId = authRepository.login(username, password)
+                if (userId != null) {
                     response.status = ResponseKeyConstant.SUCCESS
                     response.result = TokenResponse(
-                        accessToken = jwtHelper.encodeAccessToken(userEntity.userId),
-                        refreshToken = jwtHelper.encodeRefreshToken(userEntity.userId)
+                        accessToken = jwtHelper.encodeAccessToken(userId),
+                        refreshToken = jwtHelper.encodeRefreshToken(userId)
                     )
                     Resource.Success(response)
                 } else {

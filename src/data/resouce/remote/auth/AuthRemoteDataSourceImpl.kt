@@ -1,7 +1,6 @@
 package com.adedom.myfood.data.resouce.remote.auth
 
 import com.adedom.myfood.data.database.UserTable
-import com.adedom.myfood.route.models.entities.UserEntity
 import com.adedom.myfood.route.models.request.RegisterRequest
 import com.adedom.myfood.utility.constant.AppConstant
 import org.jetbrains.exposed.sql.and
@@ -13,37 +12,17 @@ import org.joda.time.DateTime
 
 class AuthRemoteDataSourceImpl : AuthRemoteDataSource {
 
-    override fun findUserByUsernameAndPassword(username: String, password: String, status: String): UserEntity? {
+    override fun findUserIdByUsernameAndPassword(username: String, password: String, status: String): String? {
         return transaction {
             UserTable
                 .slice(
                     UserTable.userId,
-                    UserTable.username,
-                    UserTable.password,
-                    UserTable.name,
-                    UserTable.email,
-                    UserTable.mobileNo,
-                    UserTable.address,
-                    UserTable.status,
-                    UserTable.created,
-                    UserTable.updated,
                 )
                 .select {
                     (UserTable.username eq username) and (UserTable.password eq password) and (UserTable.status eq status)
                 }
                 .map { row ->
-                    UserEntity(
-                        userId = row[UserTable.userId],
-                        username = row[UserTable.username],
-                        password = row[UserTable.password],
-                        name = row[UserTable.name],
-                        email = row[UserTable.email],
-                        mobileNo = row[UserTable.mobileNo],
-                        address = row[UserTable.address],
-                        status = row[UserTable.status],
-                        created = row[UserTable.created],
-                        updated = row[UserTable.updated],
-                    )
+                    row[UserTable.userId]
                 }
                 .singleOrNull()
         }

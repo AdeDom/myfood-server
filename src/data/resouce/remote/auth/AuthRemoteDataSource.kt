@@ -1,11 +1,10 @@
 package com.adedom.myfood.data.resouce.remote.auth
 
-import com.adedom.myfood.route.models.entities.UserEntity
 import com.adedom.myfood.route.models.request.RegisterRequest
 
 interface AuthRemoteDataSource {
 
-    fun findUserByUsernameAndPassword(username: String, password: String, status: String): UserEntity?
+    fun findUserIdByUsernameAndPassword(username: String, password: String, status: String): String?
 
     fun findUserByUsername(username: String): Long
 

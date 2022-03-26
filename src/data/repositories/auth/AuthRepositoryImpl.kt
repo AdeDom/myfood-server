@@ -2,7 +2,6 @@ package com.adedom.myfood.data.repositories.auth
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSource
-import com.adedom.myfood.route.models.entities.UserEntity
 import com.adedom.myfood.route.models.request.RegisterRequest
 import com.adedom.myfood.route.models.response.base.BaseError
 import com.adedom.myfood.route.models.response.base.BaseResponse
@@ -21,8 +20,8 @@ class AuthRepositoryImpl(
     private val authRemoteDataSource: AuthRemoteDataSource,
 ) : AuthRepository {
 
-    override fun findUserByUsernameAndPassword(username: String, password: String): UserEntity? {
-        return authRemoteDataSource.findUserByUsernameAndPassword(
+    override fun login(username: String, password: String): String? {
+        return authRemoteDataSource.findUserIdByUsernameAndPassword(
             username,
             encryptSHA(password),
             AppConstant.ACTIVE,
@@ -42,12 +41,12 @@ class AuthRepositoryImpl(
             registerRequest = registerRequest.copy(password = encryptSHA(registerRequest.password!!)),
             AppConstant.ACTIVE,
         ) ?: 0
-        val userEntity = findUserByUsernameAndPassword(username!!, password!!)
-        return if (isSuccess > 0 && userEntity != null) {
+        val userId = login(username!!, password!!)
+        return if (isSuccess > 0 && userId != null) {
             response.status = ResponseKeyConstant.SUCCESS
             val tokenResponse = TokenResponse(
-                accessToken = jwtHelper.encodeAccessToken(userEntity.userId),
-                refreshToken = jwtHelper.encodeRefreshToken(userEntity.userId)
+                accessToken = jwtHelper.encodeAccessToken(userId),
+                refreshToken = jwtHelper.encodeRefreshToken(userId)
             )
             response.result = tokenResponse
             Resource.Success(response)
