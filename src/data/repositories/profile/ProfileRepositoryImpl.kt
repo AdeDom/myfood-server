@@ -34,7 +34,17 @@ class ProfileRepositoryImpl(
         }
     }
 
-    override fun updateUserStatusInActive(userId: String): Int {
-        return profileRemoteDataSource.updateUserStatus(userId, AppConstant.IN_ACTIVE)
+    override fun deleteAccount(userId: String): Resource<BaseResponse<String>> {
+        val response = BaseResponse<String>()
+
+        val isUpdateStatus = profileRemoteDataSource.updateUserStatus(userId, AppConstant.IN_ACTIVE) == 1
+        return if (isUpdateStatus) {
+            response.status = ResponseKeyConstant.SUCCESS
+            response.result = "Delete account successfully."
+            Resource.Success(response)
+        } else {
+            response.error = BaseError(message = "Delete account failed.")
+            Resource.Error(response)
+        }
     }
 }

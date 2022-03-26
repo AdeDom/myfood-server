@@ -11,5 +11,5 @@ interface ProfileRepository {
 
     fun changeProfile(userId: String, changeProfileRequest: ChangeProfileRequest): Resource<BaseResponse<String>>
 
-    fun updateUserStatusInActive(userId: String): Int
+    fun deleteAccount(userId: String): Resource<BaseResponse<String>>
 }
