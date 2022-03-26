@@ -7,6 +7,7 @@ import com.adedom.myfood.route.models.base.BaseError
 import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.entities.MyFoodEntity
 import com.adedom.myfood.route.models.request.InsertFoodRequest
+import com.adedom.myfood.route.models.response.FoodAllResponse
 import com.adedom.myfood.route.models.response.FoodDetailResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
@@ -91,6 +92,30 @@ class FoodRepositoryImpl(
         }
         response.status = ResponseKeyConstant.SUCCESS
         response.result = foodListResponse
+        return Resource.Success(response)
+    }
+
+    override fun getFoodAll(): Resource<BaseResponse<List<FoodAllResponse>>> {
+        val response = BaseResponse<List<FoodAllResponse>>()
+
+        val foodAllList = foodRemoteDataSource.getFoodAll()
+        val foodAllListResponse = foodAllList.map { foodAllEntity ->
+            FoodAllResponse(
+                foodId = foodAllEntity.foodId,
+                foodName = foodAllEntity.foodName,
+                alias = foodAllEntity.alias,
+                image = foodAllEntity.image,
+                price = foodAllEntity.price,
+                description = foodAllEntity.description,
+                status = foodAllEntity.status,
+                created = toDateTimeString(foodAllEntity.created).orEmpty(),
+                updated = toDateTimeString(foodAllEntity.updated),
+                categoryId = foodAllEntity.categoryId,
+                categoryName = foodAllEntity.categoryName,
+            )
+        }
+        response.status = ResponseKeyConstant.SUCCESS
+        response.result = foodAllListResponse
         return Resource.Success(response)
     }
 }
