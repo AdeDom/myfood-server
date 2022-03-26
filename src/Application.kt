@@ -1,7 +1,7 @@
 package com.adedom.myfood
 
 import com.adedom.myfood.data.database.CategoryTable
-import com.adedom.myfood.data.database.FoodTable
+import com.adedom.myfood.data.database.FoodTableH2
 import com.adedom.myfood.di.domainModule
 import com.adedom.myfood.di.localDataSourceModule
 import com.adedom.myfood.di.remoteDataSourceModule
@@ -77,7 +77,7 @@ fun Application.module() {
         transaction(dbH2) {
             SchemaUtils.create(
                 CategoryTable,
-                FoodTable,
+                FoodTableH2,
             )
         }
         bindSingleton(tag = AppConstant.H2_DB) { dbH2 }

@@ -77,7 +77,20 @@ class FoodRepositoryImpl(
     override fun getFoodByCategoryId(categoryId: Int): Resource<BaseResponse<List<FoodDetailResponse>>> {
         val response = BaseResponse<List<FoodDetailResponse>>()
 
-        val foodList = foodRemoteDataSource.getFoodByCategoryId(categoryId)
+        var foodList = foodLocalDataSource.getFoodAll()
+        foodList = if (foodList.isEmpty()) {
+            val foodAll = foodRemoteDataSource.getFoodAll()
+
+            foodLocalDataSource.deleteFoodAll()
+            val listLocalCount = foodLocalDataSource.insertFoodAll(foodAll)
+            if (listLocalCount != foodAll.size) {
+                foodLocalDataSource.deleteFoodAll()
+            }
+            foodLocalDataSource.getFoodByCategoryId(categoryId)
+        } else {
+            foodLocalDataSource.getFoodByCategoryId(categoryId)
+        }
+
         val foodListResponse = foodList.map { foodEntity ->
             FoodDetailResponse(
                 foodId = foodEntity.foodId,
