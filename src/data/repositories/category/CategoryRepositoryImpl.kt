@@ -1,6 +1,7 @@
 package com.adedom.myfood.data.repositories.category
 
 import com.adedom.myfood.data.repositories.Resource
+import com.adedom.myfood.data.resouce.local.category.CategoryLocalDataSource
 import com.adedom.myfood.data.resouce.remote.category.CategoryRemoteDataSource
 import com.adedom.myfood.route.models.base.BaseError
 import com.adedom.myfood.route.models.base.BaseResponse
@@ -10,6 +11,7 @@ import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import org.joda.time.DateTime
 
 class CategoryRepositoryImpl(
+    private val categoryLocalDataSource: CategoryLocalDataSource,
     private val categoryRemoteDataSource: CategoryRemoteDataSource,
 ) : CategoryRepository {
 

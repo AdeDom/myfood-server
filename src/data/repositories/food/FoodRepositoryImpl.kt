@@ -1,6 +1,7 @@
 package com.adedom.myfood.data.repositories.food
 
 import com.adedom.myfood.data.repositories.Resource
+import com.adedom.myfood.data.resouce.local.food.FoodLocalDataSource
 import com.adedom.myfood.data.resouce.remote.food.FoodRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.food.MyFoodRemoteDataSource
 import com.adedom.myfood.route.models.base.BaseError
@@ -14,14 +15,15 @@ import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import org.joda.time.DateTime
 
 class FoodRepositoryImpl(
-    private val dataSource: MyFoodRemoteDataSource,
+    private val myFoodRemoteDataSource: MyFoodRemoteDataSource,
+    private val foodLocalDataSource: FoodLocalDataSource,
     private val foodRemoteDataSource: FoodRemoteDataSource,
 ) : FoodRepository {
 
     override fun getMyFood(): BaseResponse<List<MyFoodEntity>> {
         val response = BaseResponse<List<MyFoodEntity>>()
 
-        val myFoods = dataSource.getMyFood()
+        val myFoods = myFoodRemoteDataSource.getMyFood()
         response.status = ResponseKeyConstant.SUCCESS
         response.result = myFoods
 
