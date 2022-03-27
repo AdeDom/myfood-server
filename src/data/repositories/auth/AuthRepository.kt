@@ -16,4 +16,8 @@ interface AuthRepository {
     suspend fun findUserByUserIdAndPassword(userId: String, password: String): Long
 
     suspend fun changePassword(userId: String, newPassword: String): Resource<BaseResponse<String>>
+
+    suspend fun logout(): Resource<BaseResponse<String>>
+
+    suspend fun refreshToken(refreshToken: String): Resource<BaseResponse<TokenResponse>>
 }

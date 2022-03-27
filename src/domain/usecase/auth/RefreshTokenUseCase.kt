@@ -1,19 +1,20 @@
 package com.adedom.myfood.domain.usecase.auth
 
 import com.adedom.myfood.data.repositories.Resource
+import com.adedom.myfood.data.repositories.auth.AuthRepository
 import com.adedom.myfood.route.models.base.BaseError
 import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.base.ErrorResponse
 import com.adedom.myfood.route.models.request.TokenRequest
 import com.adedom.myfood.route.models.response.TokenResponse
-import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import com.adedom.myfood.utility.jwt.JwtHelper
 
 class RefreshTokenUseCase(
     private val jwtHelper: JwtHelper,
+    private val authRepository: AuthRepository,
 ) {
 
-    operator fun invoke(tokenRequest: TokenRequest): Resource<BaseResponse<TokenResponse>> {
+    suspend operator fun invoke(tokenRequest: TokenRequest): Resource<BaseResponse<TokenResponse>> {
         val response = BaseResponse<TokenResponse>()
 
         val (accessToken, refreshToken) = tokenRequest
@@ -34,14 +35,7 @@ class RefreshTokenUseCase(
                 Resource.Error(response)
             }
             else -> {
-                response.status = ResponseKeyConstant.SUCCESS
-                val userId = jwtHelper.decodeJwtGetUserId(refreshToken)
-                val tokenResponse = TokenResponse(
-                    accessToken = jwtHelper.encodeAccessToken(userId),
-                    refreshToken = jwtHelper.encodeRefreshToken(userId),
-                )
-                response.result = tokenResponse
-                Resource.Success(response)
+                authRepository.refreshToken(refreshToken)
             }
         }
     }

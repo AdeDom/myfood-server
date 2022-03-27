@@ -19,14 +19,13 @@ class FoodRepositoryImpl(
     private val foodRemoteDataSource: FoodRemoteDataSource,
 ) : FoodRepository {
 
-    override suspend fun getMyFood(): BaseResponse<List<MyFoodEntity>> {
+    override suspend fun getMyFood(): Resource<BaseResponse<List<MyFoodEntity>>> {
         val response = BaseResponse<List<MyFoodEntity>>()
 
         val myFoods = myFoodRemoteDataSource.getMyFood()
         response.status = ResponseKeyConstant.SUCCESS
         response.result = myFoods
-
-        return response
+        return Resource.Success(response)
     }
 
     override suspend fun insertFood(insertFoodRequest: InsertFoodRequest): Resource<BaseResponse<String>> {

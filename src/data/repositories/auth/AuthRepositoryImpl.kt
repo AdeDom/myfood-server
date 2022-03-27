@@ -94,4 +94,25 @@ class AuthRepositoryImpl(
             Resource.Error(response)
         }
     }
+
+    override suspend fun logout(): Resource<BaseResponse<String>> {
+        val response = BaseResponse<String>()
+
+        response.status = ResponseKeyConstant.SUCCESS
+        response.result = "Logout success."
+        return Resource.Success(response)
+    }
+
+    override suspend fun refreshToken(refreshToken: String): Resource<BaseResponse<TokenResponse>> {
+        val response = BaseResponse<TokenResponse>()
+
+        val userId = jwtHelper.decodeJwtGetUserId(refreshToken)
+        val tokenResponse = TokenResponse(
+            accessToken = jwtHelper.encodeAccessToken(userId),
+            refreshToken = jwtHelper.encodeRefreshToken(userId),
+        )
+        response.status = ResponseKeyConstant.SUCCESS
+        response.result = tokenResponse
+        return Resource.Success(response)
+    }
 }

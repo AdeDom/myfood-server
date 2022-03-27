@@ -15,8 +15,16 @@ fun Route.foodRoute() {
 
     get("/api/my/food") {
         val myFoodUseCase by closestDI().instance<MyFoodUseCase>()
-        val messageString = myFoodUseCase()
-        call.respond(HttpStatusCode.OK, messageString)
+
+        val resource = myFoodUseCase()
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
     }
 
     post("/api/food/insert") {
