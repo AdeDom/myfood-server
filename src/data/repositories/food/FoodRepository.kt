@@ -9,7 +9,7 @@ import com.adedom.myfood.route.models.response.FoodDetailResponse
 
 interface FoodRepository {
 
-  suspend fun getMyFood(): BaseResponse<List<MyFoodEntity>>
+    suspend fun getMyFood(): BaseResponse<List<MyFoodEntity>>
 
     suspend fun insertFood(insertFoodRequest: InsertFoodRequest): Resource<BaseResponse<String>>
 

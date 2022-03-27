@@ -7,7 +7,7 @@ import com.adedom.myfood.route.models.response.CategoryResponse
 
 interface CategoryRepository {
 
-  suspend fun findCategoryId(categoryId: Int): Long
+    suspend fun findCategoryId(categoryId: Int): Long
 
     suspend fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Resource<BaseResponse<String>>
 

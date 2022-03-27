@@ -7,7 +7,7 @@ import com.adedom.myfood.route.models.response.TokenResponse
 
 interface AuthRepository {
 
-  suspend fun login(username: String, password: String): Resource<BaseResponse<TokenResponse>>
+    suspend fun login(username: String, password: String): Resource<BaseResponse<TokenResponse>>
 
     suspend fun findUserByUsername(username: String): Long
 
