@@ -1,7 +1,9 @@
 package com.adedom.myfood.data.repositories.profile
 
 import com.adedom.myfood.data.repositories.Resource
+import com.adedom.myfood.data.resouce.local.user.UserLocalDataSource
 import com.adedom.myfood.data.resouce.remote.profile.ProfileRemoteDataSource
+import com.adedom.myfood.data.resouce.remote.user.UserRemoteDataSource
 import com.adedom.myfood.route.models.base.BaseError
 import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.request.ChangeProfileRequest
@@ -10,13 +12,25 @@ import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 
 class ProfileRepositoryImpl(
+    private val userLocalDataSource: UserLocalDataSource,
+    private val userRemoteDataSource: UserRemoteDataSource,
     private val profileRemoteDataSource: ProfileRemoteDataSource,
 ) : ProfileRepository {
 
     override suspend fun userProfile(userId: String): Resource<BaseResponse<UserProfileResponse>> {
         val response = BaseResponse<UserProfileResponse>()
 
-        val userEntity = profileRemoteDataSource.getUserByUserId(userId)
+        val userLocalAll = userLocalDataSource.getUserAll()
+        if (userLocalAll.isEmpty()) {
+            val userRemoteAll = userRemoteDataSource.getUserAll()
+            userLocalDataSource.deleteUserAll()
+            val listLocalList = userLocalDataSource.insertUserAll(userRemoteAll)
+            if (listLocalList != userRemoteAll.size) {
+                userLocalDataSource.deleteUserAll()
+            }
+        }
+
+        val userEntity = userLocalDataSource.getUserByUserId(userId)
         return if (userEntity != null) {
             val userProfileResponse = UserProfileResponse(
                 userId = userEntity.userId,

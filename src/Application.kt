@@ -2,6 +2,7 @@ package com.adedom.myfood
 
 import com.adedom.myfood.data.database.CategoryTable
 import com.adedom.myfood.data.database.FoodTableH2
+import com.adedom.myfood.data.database.UserTable
 import com.adedom.myfood.di.domainModule
 import com.adedom.myfood.di.localDataSourceModule
 import com.adedom.myfood.di.remoteDataSourceModule
@@ -76,6 +77,7 @@ fun Application.module() {
         val dbH2 = Database.connect("jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", "org.h2.Driver")
         transaction(dbH2) {
             SchemaUtils.create(
+                UserTable,
                 CategoryTable,
                 FoodTableH2,
             )
