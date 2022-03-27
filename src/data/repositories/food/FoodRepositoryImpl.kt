@@ -8,7 +8,7 @@ import com.adedom.myfood.route.models.base.BaseError
 import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.entities.MyFoodEntity
 import com.adedom.myfood.route.models.request.InsertFoodRequest
-import com.adedom.myfood.route.models.response.FoodAllResponse
+import com.adedom.myfood.route.models.response.FoodAndCategoryResponse
 import com.adedom.myfood.route.models.response.FoodDetailResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
@@ -117,23 +117,27 @@ class FoodRepositoryImpl(
         return Resource.Success(response)
     }
 
-    override suspend fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAllResponse>>> {
-        val response = BaseResponse<List<FoodAllResponse>>()
+    override suspend fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAndCategoryResponse>>> {
+        val response = BaseResponse<List<FoodAndCategoryResponse>>()
 
         val foodAllList = foodRemoteDataSource.getFoodAndCategoryAll()
         val foodAllListResponse = foodAllList.map { foodAllEntity ->
-            FoodAllResponse(
+            FoodAndCategoryResponse(
+                foodAndCategoryId = foodAllEntity.foodAndCategoryId,
                 foodId = foodAllEntity.foodId,
                 foodName = foodAllEntity.foodName,
                 alias = foodAllEntity.alias,
-                image = foodAllEntity.image,
+                foodImage = foodAllEntity.foodImage,
                 price = foodAllEntity.price,
                 description = foodAllEntity.description,
                 status = foodAllEntity.status,
-                created = foodAllEntity.created.toString(AppConstant.DATE_TIME_FORMAT),
-                updated = foodAllEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT),
+                foodCreated = foodAllEntity.foodCreated.toString(AppConstant.DATE_TIME_FORMAT),
+                foodUpdated = foodAllEntity.foodUpdated?.toString(AppConstant.DATE_TIME_FORMAT),
                 categoryId = foodAllEntity.categoryId,
                 categoryName = foodAllEntity.categoryName,
+                categoryImage = foodAllEntity.categoryImage,
+                categoryCreated = foodAllEntity.categoryCreated.toString(AppConstant.DATE_TIME_FORMAT),
+                categoryUpdated = foodAllEntity.categoryUpdated?.toString(AppConstant.DATE_TIME_FORMAT),
             )
         }
         response.status = ResponseKeyConstant.SUCCESS

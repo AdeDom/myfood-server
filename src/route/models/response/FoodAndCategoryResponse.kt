@@ -1,16 +1,20 @@
 package com.adedom.myfood.route.models.response
 
 @kotlinx.serialization.Serializable
-data class FoodAllResponse(
+data class FoodAndCategoryResponse(
+    val foodAndCategoryId: Int,
     val foodId: Int,
     val foodName: String,
     val alias: String?,
-    val image: String,
+    val foodImage: String,
     val price: Double,
     val description: String?,
     val status: String,
-    val created: String,
-    val updated: String?,
+    val foodCreated: String,
+    val foodUpdated: String?,
     val categoryId: Int,
     val categoryName: String,
+    val categoryImage: String,
+    val categoryCreated: String,
+    val categoryUpdated: String?,
 )

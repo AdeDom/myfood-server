@@ -2,16 +2,20 @@ package com.adedom.myfood.route.models.entities
 
 import org.joda.time.DateTime
 
-data class FoodAllEntity(
+data class FoodAndCategoryEntity(
+    val foodAndCategoryId: Int,
     val foodId: Int,
     val foodName: String,
     val alias: String?,
-    val image: String,
+    val foodImage: String,
     val price: Double,
     val description: String?,
     val status: String,
-    val created: DateTime,
-    val updated: DateTime?,
+    val foodCreated: DateTime,
+    val foodUpdated: DateTime?,
     val categoryId: Int,
     val categoryName: String,
+    val categoryImage: String,
+    val categoryCreated: DateTime,
+    val categoryUpdated: DateTime?,
 )

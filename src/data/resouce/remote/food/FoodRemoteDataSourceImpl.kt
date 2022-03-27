@@ -2,7 +2,7 @@ package com.adedom.myfood.data.resouce.remote.food
 
 import com.adedom.myfood.data.database.remote.CategoryTable
 import com.adedom.myfood.data.database.remote.FoodTable
-import com.adedom.myfood.route.models.entities.FoodAllEntity
+import com.adedom.myfood.route.models.entities.FoodAndCategoryEntity
 import com.adedom.myfood.route.models.entities.FoodEntity
 import com.adedom.myfood.route.models.request.InsertFoodRequest
 import com.adedom.myfood.utility.constant.AppConstant
@@ -108,7 +108,7 @@ class FoodRemoteDataSourceImpl(
         }
     }
 
-    override suspend fun getFoodAndCategoryAll(): List<FoodAllEntity> {
+    override suspend fun getFoodAndCategoryAll(): List<FoodAndCategoryEntity> {
         return newSuspendedTransaction(Dispatchers.IO, db) {
             (FoodTable innerJoin CategoryTable)
                 .slice(
@@ -123,21 +123,28 @@ class FoodRemoteDataSourceImpl(
                     FoodTable.updated,
                     CategoryTable.categoryId,
                     CategoryTable.categoryName,
+                    CategoryTable.image,
+                    CategoryTable.created,
+                    CategoryTable.updated,
                 )
                 .selectAll()
                 .map { row ->
-                    FoodAllEntity(
+                    FoodAndCategoryEntity(
+                        foodAndCategoryId = 0,
                         foodId = row[FoodTable.foodId],
                         foodName = row[FoodTable.foodName],
                         alias = row[FoodTable.alias],
-                        image = row[FoodTable.image],
+                        foodImage = row[FoodTable.image],
                         price = row[FoodTable.price],
                         description = row[FoodTable.description],
                         status = row[FoodTable.status],
-                        created = row[FoodTable.created],
-                        updated = row[FoodTable.updated],
+                        foodCreated = row[FoodTable.created],
+                        foodUpdated = row[FoodTable.updated],
                         categoryId = row[CategoryTable.categoryId],
                         categoryName = row[CategoryTable.categoryName],
+                        categoryImage = row[CategoryTable.image],
+                        categoryCreated = row[CategoryTable.created],
+                        categoryUpdated = row[CategoryTable.updated],
                     )
                 }
         }
