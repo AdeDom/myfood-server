@@ -7,8 +7,8 @@ import com.adedom.myfood.route.models.base.BaseError
 import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.request.InsertCategoryRequest
 import com.adedom.myfood.route.models.response.CategoryResponse
+import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
-import org.joda.time.DateTime
 
 class CategoryRepositoryImpl(
     private val categoryLocalDataSource: CategoryLocalDataSource,
@@ -52,16 +52,12 @@ class CategoryRepositoryImpl(
                 categoryId = categoryEntity.categoryId,
                 categoryName = categoryEntity.categoryName,
                 image = categoryEntity.image,
-                created = toDateTimeString(categoryEntity.created).orEmpty(),
-                updated = toDateTimeString(categoryEntity.updated),
+                created = categoryEntity.created.toString(AppConstant.DATE_TIME_FORMAT),
+                updated = categoryEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT),
             )
         }
         response.status = ResponseKeyConstant.SUCCESS
         response.result = getCategoryAllResponse
         return Resource.Success(response)
-    }
-
-    private fun toDateTimeString(dateTime: DateTime?): String? {
-        return dateTime?.toString("d/M/yyyy H:m")
     }
 }

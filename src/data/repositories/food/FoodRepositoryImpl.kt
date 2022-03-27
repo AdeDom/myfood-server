@@ -12,7 +12,6 @@ import com.adedom.myfood.route.models.response.FoodAllResponse
 import com.adedom.myfood.route.models.response.FoodDetailResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
-import org.joda.time.DateTime
 
 class FoodRepositoryImpl(
     private val myFoodRemoteDataSource: MyFoodRemoteDataSource,
@@ -59,8 +58,8 @@ class FoodRepositoryImpl(
                 description = foodEntity.description,
                 categoryId = foodEntity.categoryId,
                 status = foodEntity.status,
-                created = toDateTimeString(foodEntity.created).orEmpty(),
-                updated = toDateTimeString(foodEntity.updated),
+                created = foodEntity.created.toString(AppConstant.DATE_TIME_FORMAT),
+                updated = foodEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT),
             )
             response.result = foodDetailResponse
             Resource.Success(response)
@@ -68,10 +67,6 @@ class FoodRepositoryImpl(
             response.error = BaseError(message = "Food is null or blank.")
             Resource.Error(response)
         }
-    }
-
-    private fun toDateTimeString(dateTime: DateTime?): String? {
-        return dateTime?.toString("d/M/yyyy H:m")
     }
 
     override fun getFoodByCategoryId(categoryId: Int): Resource<BaseResponse<List<FoodDetailResponse>>> {
@@ -101,8 +96,8 @@ class FoodRepositoryImpl(
                 description = foodEntity.description,
                 categoryId = foodEntity.categoryId,
                 status = foodEntity.status,
-                created = toDateTimeString(foodEntity.created).orEmpty(),
-                updated = toDateTimeString(foodEntity.updated),
+                created = foodEntity.created.toString(AppConstant.DATE_TIME_FORMAT),
+                updated = foodEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT),
             )
         }
         response.status = ResponseKeyConstant.SUCCESS
@@ -123,8 +118,8 @@ class FoodRepositoryImpl(
                 price = foodAllEntity.price,
                 description = foodAllEntity.description,
                 status = foodAllEntity.status,
-                created = toDateTimeString(foodAllEntity.created).orEmpty(),
-                updated = toDateTimeString(foodAllEntity.updated),
+                created = foodAllEntity.created.toString(AppConstant.DATE_TIME_FORMAT),
+                updated = foodAllEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT),
                 categoryId = foodAllEntity.categoryId,
                 categoryName = foodAllEntity.categoryName,
             )
