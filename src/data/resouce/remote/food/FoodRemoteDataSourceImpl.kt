@@ -1,7 +1,7 @@
 package com.adedom.myfood.data.resouce.remote.food
 
-import com.adedom.myfood.data.database.CategoryTable
-import com.adedom.myfood.data.database.FoodTable
+import com.adedom.myfood.data.database.remote.CategoryTable
+import com.adedom.myfood.data.database.remote.FoodTable
 import com.adedom.myfood.route.models.entities.FoodAllEntity
 import com.adedom.myfood.route.models.entities.FoodEntity
 import com.adedom.myfood.route.models.request.InsertFoodRequest

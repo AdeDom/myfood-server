@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.local.user
 
-import com.adedom.myfood.data.database.UserTable
+import com.adedom.myfood.data.database.remote.UserTable
 import com.adedom.myfood.route.models.entities.UserEntity
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*

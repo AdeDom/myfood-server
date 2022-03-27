@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.local.category
 
-import com.adedom.myfood.data.database.CategoryTable
+import com.adedom.myfood.data.database.remote.CategoryTable
 import com.adedom.myfood.route.models.entities.CategoryEntity
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database

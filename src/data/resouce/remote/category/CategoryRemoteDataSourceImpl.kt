@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.remote.category
 
-import com.adedom.myfood.data.database.CategoryTable
+import com.adedom.myfood.data.database.remote.CategoryTable
 import com.adedom.myfood.route.models.entities.CategoryEntity
 import com.adedom.myfood.route.models.request.InsertCategoryRequest
 import com.adedom.myfood.utility.constant.AppConstant

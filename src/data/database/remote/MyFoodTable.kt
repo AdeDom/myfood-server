@@ -1,4 +1,4 @@
-package com.adedom.myfood.data.database
+package com.adedom.myfood.data.database.remote
 
 import org.jetbrains.exposed.sql.Table
 

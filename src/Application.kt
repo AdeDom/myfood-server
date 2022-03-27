@@ -1,8 +1,8 @@
 package com.adedom.myfood
 
-import com.adedom.myfood.data.database.CategoryTable
-import com.adedom.myfood.data.database.FoodTableH2
-import com.adedom.myfood.data.database.UserTable
+import com.adedom.myfood.data.database.local.FoodTableH2
+import com.adedom.myfood.data.database.remote.CategoryTable
+import com.adedom.myfood.data.database.remote.UserTable
 import com.adedom.myfood.di.domainModule
 import com.adedom.myfood.di.localDataSourceModule
 import com.adedom.myfood.di.remoteDataSourceModule
