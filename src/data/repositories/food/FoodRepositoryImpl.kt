@@ -2,6 +2,7 @@ package com.adedom.myfood.data.repositories.food
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.food.FoodLocalDataSource
+import com.adedom.myfood.data.resouce.local.food_and_category.FoodAndCategoryLocalDataSource
 import com.adedom.myfood.data.resouce.remote.food.FoodRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.food.MyFoodRemoteDataSource
 import com.adedom.myfood.route.models.base.BaseError
@@ -14,8 +15,9 @@ import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 
 class FoodRepositoryImpl(
-    private val myFoodRemoteDataSource: MyFoodRemoteDataSource,
     private val foodLocalDataSource: FoodLocalDataSource,
+    private val foodAndCategoryLocalDataSource: FoodAndCategoryLocalDataSource,
+    private val myFoodRemoteDataSource: MyFoodRemoteDataSource,
     private val foodRemoteDataSource: FoodRemoteDataSource,
 ) : FoodRepository {
 
@@ -120,7 +122,17 @@ class FoodRepositoryImpl(
     override suspend fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAndCategoryResponse>>> {
         val response = BaseResponse<List<FoodAndCategoryResponse>>()
 
-        val foodAllList = foodRemoteDataSource.getFoodAndCategoryAll()
+        var foodAllList = foodAndCategoryLocalDataSource.getFoodAndCategoryAll()
+        if (foodAllList.isEmpty()) {
+            foodAllList = foodRemoteDataSource.getFoodAndCategoryAll()
+
+            foodAndCategoryLocalDataSource.deleteFoodAndCategoryAll()
+            val listLocalCount = foodAndCategoryLocalDataSource.insertFoodAndCategoryAll(foodAllList)
+            if (listLocalCount != foodAllList.size) {
+                foodAndCategoryLocalDataSource.deleteFoodAndCategoryAll()
+            }
+        }
+
         val foodAllListResponse = foodAllList.map { foodAllEntity ->
             FoodAndCategoryResponse(
                 foodAndCategoryId = foodAllEntity.foodAndCategoryId,

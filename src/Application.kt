@@ -1,5 +1,6 @@
 package com.adedom.myfood
 
+import com.adedom.myfood.data.database.local.FoodAndCategoryTableH2
 import com.adedom.myfood.data.database.local.FoodTableH2
 import com.adedom.myfood.data.database.remote.CategoryTable
 import com.adedom.myfood.data.database.remote.UserTable
@@ -80,6 +81,7 @@ fun Application.module() {
                 UserTable,
                 CategoryTable,
                 FoodTableH2,
+                FoodAndCategoryTableH2,
             )
         }
         bindSingleton(tag = AppConstant.H2_DB) { dbH2 }
