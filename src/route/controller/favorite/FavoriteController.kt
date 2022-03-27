@@ -1,68 +1,63 @@
 package com.adedom.myfood.route.controller.favorite
 
-import com.adedom.myfood.data.resouce.local.favorite.FavoriteLocalDataSource
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.response.FavoriteResponse
-import com.adedom.myfood.utility.constant.AppConstant
-import com.adedom.myfood.utility.constant.ResponseKeyConstant
+import com.adedom.myfood.data.repositories.Resource
+import com.adedom.myfood.domain.usecase.favorite.DeleteFavoriteAllUseCase
+import com.adedom.myfood.domain.usecase.favorite.GetFavoriteAllUseCase
+import com.adedom.myfood.domain.usecase.favorite.MyFavoriteUseCase
+import com.adedom.myfood.route.models.request.MyFavoriteRequest
 import com.adedom.myfood.utility.extension.postAuth
 import com.adedom.myfood.utility.userId
 import io.ktor.application.*
 import io.ktor.http.*
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import org.joda.time.DateTime
 import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
-import java.util.*
 
 fun Route.favoriteRoute() {
 
     get("/api/favorite/getFavoriteAll") {
-        val favoriteLocalDataSource by closestDI().instance<FavoriteLocalDataSource>()
+        val getFavoriteAllUseCase by closestDI().instance<GetFavoriteAllUseCase>()
 
-        val response = BaseResponse<List<FavoriteResponse>>()
-        val favoriteEntityList = favoriteLocalDataSource.getFavoriteAll()
-        val favoriteResponseList = favoriteEntityList.map { favoriteEntity ->
-            FavoriteResponse(
-                favoriteId = favoriteEntity.favoriteId,
-                userId = favoriteEntity.userId,
-                foodId = favoriteEntity.foodId,
-                backupState = favoriteEntity.backupState,
-                created = favoriteEntity.created,
-                updated = favoriteEntity.updated,
-            )
+        val resource = getFavoriteAllUseCase()
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
         }
-        response.result = favoriteResponseList
-        response.status = ResponseKeyConstant.SUCCESS
-        call.respond(HttpStatusCode.OK, response)
     }
 
-    postAuth("/api/favorite/myFavorite/{foodId}") {
-        val favoriteLocalDataSource by closestDI().instance<FavoriteLocalDataSource>()
+    postAuth("/api/favorite/myFavorite") {
+        val myFavoriteUseCase by closestDI().instance<MyFavoriteUseCase>()
 
-        val favoriteId = UUID.randomUUID().toString().replace("-", "")
         val userId = call.userId
-        val foodId = call.parameters["foodId"]?.toInt() ?: 0
-        val state = AppConstant.LOCAL_BACKUP
-        val currentDateTime = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
-        val created = currentDateTime.toString("yyyy/M/d H:m")
-        favoriteLocalDataSource.myFavorite(favoriteId, userId, foodId, state, created)
-
-        val response = BaseResponse<String>()
-        response.result = "Favorite is success."
-        response.status = ResponseKeyConstant.SUCCESS
-        call.respond(HttpStatusCode.OK, response)
+        val request = call.receive<MyFavoriteRequest>()
+        val resource = myFavoriteUseCase(userId, request)
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
     }
 
     delete("/api/favorite/deleteAll") {
-        val favoriteLocalDataSource by closestDI().instance<FavoriteLocalDataSource>()
+        val deleteFavoriteAllUseCase by closestDI().instance<DeleteFavoriteAllUseCase>()
 
-        favoriteLocalDataSource.deleteFavoriteAll()
-
-        val response = BaseResponse<String>()
-        response.result = "Delete favorite all success."
-        response.status = ResponseKeyConstant.SUCCESS
-        call.respond(HttpStatusCode.OK, response)
+        val resource = deleteFavoriteAllUseCase()
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
     }
 }
