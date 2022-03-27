@@ -11,7 +11,7 @@ class RegisterUseCase(
     private val authRepository: AuthRepository,
 ) {
 
-    operator fun invoke(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>> {
+    suspend operator fun invoke(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>> {
         val response = BaseResponse<TokenResponse>()
 
         val (username, password, name) = registerRequest
@@ -38,7 +38,7 @@ class RegisterUseCase(
         }
     }
 
-    private fun isValidateUsername(username: String): Boolean {
+    private suspend fun isValidateUsername(username: String): Boolean {
         return authRepository.findUserByUsername(username) > 0
     }
 }

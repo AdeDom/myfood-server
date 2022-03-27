@@ -15,11 +15,11 @@ class CategoryRepositoryImpl(
     private val categoryRemoteDataSource: CategoryRemoteDataSource,
 ) : CategoryRepository {
 
-    override fun findCategoryId(categoryId: Int): Long {
+    override suspend fun findCategoryId(categoryId: Int): Long {
         return categoryRemoteDataSource.findCategoryId(categoryId)
     }
 
-    override fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Resource<BaseResponse<String>> {
+    override suspend fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val isInsertCategory = categoryRemoteDataSource.insertCategory(insertCategoryRequest) == 1
@@ -33,7 +33,7 @@ class CategoryRepositoryImpl(
         }
     }
 
-    override fun getCategoryAll(): Resource<BaseResponse<List<CategoryResponse>>> {
+    override suspend fun getCategoryAll(): Resource<BaseResponse<List<CategoryResponse>>> {
         val response = BaseResponse<List<CategoryResponse>>()
 
         var getCategoryAll = categoryLocalDataSource.getCategoryAll()

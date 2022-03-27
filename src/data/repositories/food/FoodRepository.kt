@@ -9,13 +9,13 @@ import com.adedom.myfood.route.models.response.FoodDetailResponse
 
 interface FoodRepository {
 
-    fun getMyFood(): BaseResponse<List<MyFoodEntity>>
+  suspend fun getMyFood(): BaseResponse<List<MyFoodEntity>>
 
-    fun insertFood(insertFoodRequest: InsertFoodRequest): Resource<BaseResponse<String>>
+    suspend fun insertFood(insertFoodRequest: InsertFoodRequest): Resource<BaseResponse<String>>
 
-    fun getFoodDetail(foodId: Int): Resource<BaseResponse<FoodDetailResponse>>
+    suspend fun getFoodDetail(foodId: Int): Resource<BaseResponse<FoodDetailResponse>>
 
-    fun getFoodByCategoryId(categoryId: Int): Resource<BaseResponse<List<FoodDetailResponse>>>
+    suspend fun getFoodByCategoryId(categoryId: Int): Resource<BaseResponse<List<FoodDetailResponse>>>
 
-    fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAllResponse>>>
+    suspend fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAllResponse>>>
 }

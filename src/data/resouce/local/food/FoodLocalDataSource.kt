@@ -4,11 +4,11 @@ import com.adedom.myfood.route.models.entities.FoodEntity
 
 interface FoodLocalDataSource {
 
-    fun getFoodByCategoryId(categoryId: Int): List<FoodEntity>
+  suspend fun getFoodByCategoryId(categoryId: Int): List<FoodEntity>
 
-    fun getFoodAll(): List<FoodEntity>
+    suspend fun getFoodAll(): List<FoodEntity>
 
-    fun insertFoodAll(foodList: List<FoodEntity>): Int
+    suspend fun insertFoodAll(foodList: List<FoodEntity>): Int
 
-    fun deleteFoodAll(): Int
+    suspend fun deleteFoodAll(): Int
 }

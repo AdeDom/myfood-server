@@ -1,13 +1,13 @@
 package com.adedom.myfood.data.resouce.remote.category
 
-import com.adedom.myfood.route.models.request.InsertCategoryRequest
 import com.adedom.myfood.route.models.entities.CategoryEntity
+import com.adedom.myfood.route.models.request.InsertCategoryRequest
 
 interface CategoryRemoteDataSource {
 
-    fun findCategoryId(categoryId: Int): Long
+    suspend fun findCategoryId(categoryId: Int): Long
 
-    fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Int?
+    suspend fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Int?
 
-    fun getCategoryAll(): List<CategoryEntity>
+    suspend fun getCategoryAll(): List<CategoryEntity>
 }

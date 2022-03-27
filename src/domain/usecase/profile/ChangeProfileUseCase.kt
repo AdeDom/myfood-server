@@ -10,7 +10,10 @@ class ChangeProfileUseCase(
     private val profileRepository: ProfileRepository,
 ) {
 
-    operator fun invoke(userId: String, changeProfileRequest: ChangeProfileRequest): Resource<BaseResponse<String>> {
+    suspend operator fun invoke(
+        userId: String,
+        changeProfileRequest: ChangeProfileRequest
+    ): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val (name, email, mobileNo, address) = changeProfileRequest

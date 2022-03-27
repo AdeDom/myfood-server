@@ -11,7 +11,7 @@ class LoginUseCase(
     private val authRepository: AuthRepository,
 ) {
 
-    operator fun invoke(loginRequest: LoginRequest): Resource<BaseResponse<TokenResponse>> {
+    suspend operator fun invoke(loginRequest: LoginRequest): Resource<BaseResponse<TokenResponse>> {
         val response = BaseResponse<TokenResponse>()
 
         val (username, password) = loginRequest

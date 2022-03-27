@@ -12,7 +12,7 @@ class InsertFoodUseCase(
     private val foodRepository: FoodRepository,
 ) {
 
-    operator fun invoke(insertFoodRequest: InsertFoodRequest): Resource<BaseResponse<String>> {
+    suspend operator fun invoke(insertFoodRequest: InsertFoodRequest): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val (foodName, _, image, price, _, categoryId) = insertFoodRequest
@@ -43,7 +43,7 @@ class InsertFoodUseCase(
         }
     }
 
-    private fun hasCategory(categoryId: Int): Boolean {
+    private suspend fun hasCategory(categoryId: Int): Boolean {
         val isFindCategoryId = categoryRepository.findCategoryId(categoryId)
         return isFindCategoryId == 0L
     }

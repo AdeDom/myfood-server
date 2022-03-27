@@ -6,21 +6,22 @@ import com.adedom.myfood.route.models.entities.FoodAllEntity
 import com.adedom.myfood.route.models.entities.FoodEntity
 import com.adedom.myfood.route.models.request.InsertFoodRequest
 import com.adedom.myfood.utility.constant.AppConstant
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.joda.time.DateTime
 
 class FoodRemoteDataSourceImpl(
     private val db: Database,
 ) : FoodRemoteDataSource {
 
-    override fun insertFood(insertFoodRequest: InsertFoodRequest, status: String): Int? {
+    override suspend fun insertFood(insertFoodRequest: InsertFoodRequest, status: String): Int? {
         val (foodName, alias, image, price, description, categoryId) = insertFoodRequest
 
-        val statement = transaction(db) {
+        val statement = newSuspendedTransaction(Dispatchers.IO, db) {
             FoodTable.insert {
                 it[FoodTable.foodName] = foodName!!
                 it[FoodTable.alias] = alias
@@ -36,8 +37,8 @@ class FoodRemoteDataSourceImpl(
         return statement.resultedValues?.size
     }
 
-    override fun getFoodDetail(foodId: Int): FoodEntity? {
-        return transaction(db) {
+    override suspend fun getFoodDetail(foodId: Int): FoodEntity? {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             FoodTable
                 .slice(
                     FoodTable.foodId,
@@ -72,8 +73,8 @@ class FoodRemoteDataSourceImpl(
         }
     }
 
-    override fun getFoodByCategoryId(categoryId: Int): List<FoodEntity> {
-        return transaction(db) {
+    override suspend fun getFoodByCategoryId(categoryId: Int): List<FoodEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             FoodTable
                 .slice(
                     FoodTable.foodId,
@@ -107,8 +108,8 @@ class FoodRemoteDataSourceImpl(
         }
     }
 
-    override fun getFoodAndCategoryAll(): List<FoodAllEntity> {
-        return transaction(db) {
+    override suspend fun getFoodAndCategoryAll(): List<FoodAllEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             (FoodTable innerJoin CategoryTable)
                 .slice(
                     FoodTable.foodId,
@@ -142,8 +143,8 @@ class FoodRemoteDataSourceImpl(
         }
     }
 
-    override fun getFoodAll(): List<FoodEntity> {
-        return transaction(db) {
+    override suspend fun getFoodAll(): List<FoodEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             FoodTable
                 .slice(
                     FoodTable.foodId,

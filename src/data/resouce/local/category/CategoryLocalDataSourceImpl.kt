@@ -2,18 +2,19 @@ package com.adedom.myfood.data.resouce.local.category
 
 import com.adedom.myfood.data.database.CategoryTable
 import com.adedom.myfood.route.models.entities.CategoryEntity
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 class CategoryLocalDataSourceImpl(
     private val db: Database,
 ) : CategoryLocalDataSource {
 
-    override fun getCategoryAll(): List<CategoryEntity> {
-        return transaction(db) {
+    override suspend fun getCategoryAll(): List<CategoryEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             CategoryTable
                 .slice(
                     CategoryTable.categoryId,
@@ -35,8 +36,8 @@ class CategoryLocalDataSourceImpl(
         }
     }
 
-    override fun insertCategoryAll(categoryList: List<CategoryEntity>): Int {
-        val statement = transaction(db) {
+    override suspend fun insertCategoryAll(categoryList: List<CategoryEntity>): Int {
+        val statement = newSuspendedTransaction(Dispatchers.IO, db) {
             CategoryTable.batchInsert(categoryList) { categoryEntity ->
                 this[CategoryTable.categoryId] = categoryEntity.categoryId
                 this[CategoryTable.categoryName] = categoryEntity.categoryName
@@ -49,8 +50,8 @@ class CategoryLocalDataSourceImpl(
         return statement.size
     }
 
-    override fun deleteCategoryAll(): Int {
-        return transaction(db) {
+    override suspend fun deleteCategoryAll(): Int {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             CategoryTable.deleteAll()
         }
     }

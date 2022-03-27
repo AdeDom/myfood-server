@@ -9,7 +9,7 @@ class GetCategoryAllUseCase(
     private val categoryRepository: CategoryRepository,
 ) {
 
-    operator fun invoke(): Resource<BaseResponse<List<CategoryResponse>>> {
+    suspend operator fun invoke(): Resource<BaseResponse<List<CategoryResponse>>> {
         return when {
             else -> {
                 categoryRepository.getCategoryAll()

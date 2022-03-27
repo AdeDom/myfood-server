@@ -10,7 +10,7 @@ class GetFoodDetailUseCase(
     private val foodRepository: FoodRepository,
 ) {
 
-    operator fun invoke(foodId: String?): Resource<BaseResponse<FoodDetailResponse>> {
+    suspend operator fun invoke(foodId: String?): Resource<BaseResponse<FoodDetailResponse>> {
         val response = BaseResponse<FoodDetailResponse>()
 
         return when {

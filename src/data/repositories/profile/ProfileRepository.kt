@@ -7,9 +7,12 @@ import com.adedom.myfood.route.models.response.UserProfileResponse
 
 interface ProfileRepository {
 
-    fun userProfile(userId: String): Resource<BaseResponse<UserProfileResponse>>
+    suspend fun userProfile(userId: String): Resource<BaseResponse<UserProfileResponse>>
 
-    fun changeProfile(userId: String, changeProfileRequest: ChangeProfileRequest): Resource<BaseResponse<String>>
+    suspend fun changeProfile(
+        userId: String,
+        changeProfileRequest: ChangeProfileRequest
+    ): Resource<BaseResponse<String>>
 
-    fun deleteAccount(userId: String): Resource<BaseResponse<String>>
+    suspend fun deleteAccount(userId: String): Resource<BaseResponse<String>>
 }

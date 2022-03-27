@@ -4,9 +4,10 @@ import com.adedom.myfood.data.database.UserTable
 import com.adedom.myfood.route.models.entities.UserEntity
 import com.adedom.myfood.route.models.request.ChangeProfileRequest
 import com.adedom.myfood.utility.constant.AppConstant
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 
@@ -14,8 +15,8 @@ class ProfileRemoteDataSourceImpl(
     private val db: Database,
 ) : ProfileRemoteDataSource {
 
-    override fun getUserByUserId(userId: String): UserEntity? {
-        return transaction(db) {
+    override suspend fun getUserByUserId(userId: String): UserEntity? {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             UserTable
                 .slice(
                     UserTable.userId,
@@ -50,10 +51,10 @@ class ProfileRemoteDataSourceImpl(
         }
     }
 
-    override fun updateUserProfile(userId: String, changeProfileRequest: ChangeProfileRequest): Int {
+    override suspend fun updateUserProfile(userId: String, changeProfileRequest: ChangeProfileRequest): Int {
         val (name, email, mobileNo, address) = changeProfileRequest
 
-        return transaction(db) {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             UserTable.update({ UserTable.userId eq userId }) {
                 it[UserTable.name] = name!!
                 it[UserTable.email] = email
@@ -64,8 +65,8 @@ class ProfileRemoteDataSourceImpl(
         }
     }
 
-    override fun updateUserStatus(userId: String, status: String): Int {
-        return transaction(db) {
+    override suspend fun updateUserStatus(userId: String, status: String): Int {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             UserTable.update({ UserTable.userId eq userId }) {
                 it[UserTable.status] = status
                 it[updated] = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)

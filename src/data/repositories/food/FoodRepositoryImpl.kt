@@ -19,7 +19,7 @@ class FoodRepositoryImpl(
     private val foodRemoteDataSource: FoodRemoteDataSource,
 ) : FoodRepository {
 
-    override fun getMyFood(): BaseResponse<List<MyFoodEntity>> {
+    override suspend fun getMyFood(): BaseResponse<List<MyFoodEntity>> {
         val response = BaseResponse<List<MyFoodEntity>>()
 
         val myFoods = myFoodRemoteDataSource.getMyFood()
@@ -29,7 +29,7 @@ class FoodRepositoryImpl(
         return response
     }
 
-    override fun insertFood(insertFoodRequest: InsertFoodRequest): Resource<BaseResponse<String>> {
+    override suspend fun insertFood(insertFoodRequest: InsertFoodRequest): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val isInsertFood = foodRemoteDataSource.insertFood(insertFoodRequest, AppConstant.ACTIVE) == 1
@@ -43,7 +43,7 @@ class FoodRepositoryImpl(
         }
     }
 
-    override fun getFoodDetail(foodId: Int): Resource<BaseResponse<FoodDetailResponse>> {
+    override suspend fun getFoodDetail(foodId: Int): Resource<BaseResponse<FoodDetailResponse>> {
         val response = BaseResponse<FoodDetailResponse>()
 
         val foodEntity = foodRemoteDataSource.getFoodDetail(foodId)
@@ -69,7 +69,7 @@ class FoodRepositoryImpl(
         }
     }
 
-    override fun getFoodByCategoryId(categoryId: Int): Resource<BaseResponse<List<FoodDetailResponse>>> {
+    override suspend fun getFoodByCategoryId(categoryId: Int): Resource<BaseResponse<List<FoodDetailResponse>>> {
         val response = BaseResponse<List<FoodDetailResponse>>()
 
         var foodList = foodLocalDataSource.getFoodAll()
@@ -105,7 +105,7 @@ class FoodRepositoryImpl(
         return Resource.Success(response)
     }
 
-    override fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAllResponse>>> {
+    override suspend fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAllResponse>>> {
         val response = BaseResponse<List<FoodAllResponse>>()
 
         val foodAllList = foodRemoteDataSource.getFoodAndCategoryAll()

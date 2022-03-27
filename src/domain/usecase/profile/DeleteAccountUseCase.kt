@@ -9,7 +9,7 @@ class DeleteAccountUseCase(
     private val profileRepository: ProfileRepository,
 ) {
 
-    operator fun invoke(userId: String): Resource<BaseResponse<String>> {
+    suspend operator fun invoke(userId: String): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         return when {

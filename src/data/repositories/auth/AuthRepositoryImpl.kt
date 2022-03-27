@@ -20,7 +20,7 @@ class AuthRepositoryImpl(
     private val authRemoteDataSource: AuthRemoteDataSource,
 ) : AuthRepository {
 
-    override fun login(username: String, password: String): Resource<BaseResponse<TokenResponse>> {
+    override suspend fun login(username: String, password: String): Resource<BaseResponse<TokenResponse>> {
         val response = BaseResponse<TokenResponse>()
 
         val userId = authRemoteDataSource.findUserIdByUsernameAndPassword(
@@ -42,11 +42,11 @@ class AuthRepositoryImpl(
         }
     }
 
-    override fun findUserByUsername(username: String): Long {
+    override suspend fun findUserByUsername(username: String): Long {
         return authRemoteDataSource.findUserByUsername(username)
     }
 
-    override fun register(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>> {
+    override suspend fun register(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>> {
         val response = BaseResponse<TokenResponse>()
 
         val insertUserCount = authRemoteDataSource.insertUser(
@@ -77,11 +77,11 @@ class AuthRepositoryImpl(
         return sha
     }
 
-    override fun findUserByUserIdAndPassword(userId: String, password: String): Long {
+    override suspend fun findUserByUserIdAndPassword(userId: String, password: String): Long {
         return authRemoteDataSource.findUserByUserIdAndPassword(userId, encryptSHA(password))
     }
 
-    override fun changePassword(userId: String, newPassword: String): Resource<BaseResponse<String>> {
+    override suspend fun changePassword(userId: String, newPassword: String): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val isUpdateUserPassword = authRemoteDataSource.updateUserPassword(userId, encryptSHA(newPassword)) == 1

@@ -9,7 +9,7 @@ class UserProfileUseCase(
     private val profileRepository: ProfileRepository,
 ) {
 
-    operator fun invoke(userId: String): Resource<BaseResponse<UserProfileResponse>> {
+    suspend operator fun invoke(userId: String): Resource<BaseResponse<UserProfileResponse>> {
         return when {
             else -> {
                 profileRepository.userProfile(userId)

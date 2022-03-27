@@ -10,7 +10,10 @@ class ChangePasswordUseCase(
     private val authRepository: AuthRepository,
 ) {
 
-    operator fun invoke(userId: String, changePasswordRequest: ChangePasswordRequest): Resource<BaseResponse<String>> {
+    suspend operator fun invoke(
+        userId: String,
+        changePasswordRequest: ChangePasswordRequest
+    ): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val (oldPassword, newPassword) = changePasswordRequest
@@ -33,7 +36,7 @@ class ChangePasswordUseCase(
         }
     }
 
-    private fun isPasswordInvalid(userId: String, oldPassword: String): Boolean {
+    private suspend fun isPasswordInvalid(userId: String, oldPassword: String): Boolean {
         return authRepository.findUserByUserIdAndPassword(userId, oldPassword) == 0L
     }
 }

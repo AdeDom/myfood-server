@@ -8,7 +8,7 @@ class MyFoodUseCase(
     private val foodRepository: FoodRepository,
 ) {
 
-    operator fun invoke(): BaseResponse<List<MyFoodEntity>> {
+    suspend operator fun invoke(): BaseResponse<List<MyFoodEntity>> {
         return foodRepository.getMyFood()
     }
 }

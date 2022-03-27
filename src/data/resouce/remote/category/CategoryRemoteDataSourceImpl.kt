@@ -4,19 +4,20 @@ import com.adedom.myfood.data.database.CategoryTable
 import com.adedom.myfood.route.models.entities.CategoryEntity
 import com.adedom.myfood.route.models.request.InsertCategoryRequest
 import com.adedom.myfood.utility.constant.AppConstant
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.joda.time.DateTime
 
 class CategoryRemoteDataSourceImpl(
     private val db: Database,
 ) : CategoryRemoteDataSource {
 
-    override fun findCategoryId(categoryId: Int): Long {
-        return transaction(db) {
+    override suspend fun findCategoryId(categoryId: Int): Long {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             CategoryTable
                 .select {
                     CategoryTable.categoryId eq categoryId
@@ -25,10 +26,10 @@ class CategoryRemoteDataSourceImpl(
         }
     }
 
-    override fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Int? {
+    override suspend fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Int? {
         val (categoryName, image) = insertCategoryRequest
 
-        val statement = transaction(db) {
+        val statement = newSuspendedTransaction(Dispatchers.IO, db) {
             CategoryTable.insert {
                 it[CategoryTable.categoryName] = categoryName!!
                 it[CategoryTable.image] = image!!
@@ -39,8 +40,8 @@ class CategoryRemoteDataSourceImpl(
         return statement.resultedValues?.size
     }
 
-    override fun getCategoryAll(): List<CategoryEntity> {
-        return transaction(db) {
+    override suspend fun getCategoryAll(): List<CategoryEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             CategoryTable
                 .slice(
                     CategoryTable.categoryId,

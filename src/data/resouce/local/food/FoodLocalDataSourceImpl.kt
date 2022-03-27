@@ -2,15 +2,16 @@ package com.adedom.myfood.data.resouce.local.food
 
 import com.adedom.myfood.data.database.FoodTableH2
 import com.adedom.myfood.route.models.entities.FoodEntity
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 class FoodLocalDataSourceImpl(
     private val db: Database,
 ) : FoodLocalDataSource {
 
-    override fun getFoodByCategoryId(categoryId: Int): List<FoodEntity> {
-        return transaction(db) {
+    override suspend fun getFoodByCategoryId(categoryId: Int): List<FoodEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             FoodTableH2
                 .slice(
                     FoodTableH2.foodId,
@@ -44,8 +45,8 @@ class FoodLocalDataSourceImpl(
         }
     }
 
-    override fun getFoodAll(): List<FoodEntity> {
-        return transaction(db) {
+    override suspend fun getFoodAll(): List<FoodEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             FoodTableH2
                 .slice(
                     FoodTableH2.foodId,
@@ -77,8 +78,8 @@ class FoodLocalDataSourceImpl(
         }
     }
 
-    override fun insertFoodAll(foodList: List<FoodEntity>): Int {
-        val statement = transaction(db) {
+    override suspend fun insertFoodAll(foodList: List<FoodEntity>): Int {
+        val statement = newSuspendedTransaction(Dispatchers.IO, db) {
             FoodTableH2.batchInsert(foodList) { foodEntity ->
                 this[FoodTableH2.foodId] = foodEntity.foodId
                 this[FoodTableH2.foodName] = foodEntity.foodName
@@ -96,8 +97,8 @@ class FoodLocalDataSourceImpl(
         return statement.size
     }
 
-    override fun deleteFoodAll(): Int {
-        return transaction(db) {
+    override suspend fun deleteFoodAll(): Int {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             FoodTableH2.deleteAll()
         }
     }

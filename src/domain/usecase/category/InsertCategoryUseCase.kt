@@ -10,7 +10,7 @@ class InsertCategoryUseCase(
     private val categoryRepository: CategoryRepository,
 ) {
 
-    operator fun invoke(insertCategoryRequest: InsertCategoryRequest): Resource<BaseResponse<String>> {
+    suspend operator fun invoke(insertCategoryRequest: InsertCategoryRequest): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val (categoryName, image) = insertCategoryRequest

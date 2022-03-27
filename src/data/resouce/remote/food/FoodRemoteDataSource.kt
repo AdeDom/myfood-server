@@ -6,13 +6,13 @@ import com.adedom.myfood.route.models.request.InsertFoodRequest
 
 interface FoodRemoteDataSource {
 
-    fun insertFood(insertFoodRequest: InsertFoodRequest, status: String): Int?
+  suspend fun insertFood(insertFoodRequest: InsertFoodRequest, status: String): Int?
 
-    fun getFoodDetail(foodId: Int): FoodEntity?
+    suspend fun getFoodDetail(foodId: Int): FoodEntity?
 
-    fun getFoodByCategoryId(categoryId: Int): List<FoodEntity>
+    suspend fun getFoodByCategoryId(categoryId: Int): List<FoodEntity>
 
-    fun getFoodAndCategoryAll(): List<FoodAllEntity>
+    suspend fun getFoodAndCategoryAll(): List<FoodAllEntity>
 
-    fun getFoodAll(): List<FoodEntity>
+    suspend fun getFoodAll(): List<FoodEntity>
 }

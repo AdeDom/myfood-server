@@ -13,7 +13,7 @@ class ProfileRepositoryImpl(
     private val profileRemoteDataSource: ProfileRemoteDataSource,
 ) : ProfileRepository {
 
-    override fun userProfile(userId: String): Resource<BaseResponse<UserProfileResponse>> {
+    override suspend fun userProfile(userId: String): Resource<BaseResponse<UserProfileResponse>> {
         val response = BaseResponse<UserProfileResponse>()
 
         val userEntity = profileRemoteDataSource.getUserByUserId(userId)
@@ -38,7 +38,7 @@ class ProfileRepositoryImpl(
         }
     }
 
-    override fun changeProfile(
+    override suspend fun changeProfile(
         userId: String,
         changeProfileRequest: ChangeProfileRequest,
     ): Resource<BaseResponse<String>> {
@@ -55,7 +55,7 @@ class ProfileRepositoryImpl(
         }
     }
 
-    override fun deleteAccount(userId: String): Resource<BaseResponse<String>> {
+    override suspend fun deleteAccount(userId: String): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val isUpdateStatus = profileRemoteDataSource.updateUserStatus(userId, AppConstant.IN_ACTIVE) == 1

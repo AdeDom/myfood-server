@@ -9,7 +9,7 @@ class GetFoodAndCategoryAllUseCase(
     private val foodRepository: FoodRepository,
 ) {
 
-    operator fun invoke(): Resource<BaseResponse<List<FoodAllResponse>>> {
+    suspend operator fun invoke(): Resource<BaseResponse<List<FoodAllResponse>>> {
         return when {
             else -> {
                 foodRepository.getFoodAndCategoryAll()

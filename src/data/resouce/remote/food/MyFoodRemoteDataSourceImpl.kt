@@ -2,16 +2,17 @@ package com.adedom.myfood.data.resouce.remote.food
 
 import com.adedom.myfood.data.database.MyFoodTable
 import com.adedom.myfood.route.models.entities.MyFoodEntity
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 class MyFoodRemoteDataSourceImpl(
     private val db: Database,
 ) : MyFoodRemoteDataSource {
 
-    override fun getMyFood(): List<MyFoodEntity> {
-        return transaction(db) {
+    override suspend fun getMyFood(): List<MyFoodEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             MyFoodTable
                 .slice(
                     MyFoodTable.id,
