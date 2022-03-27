@@ -10,6 +10,42 @@ class FoodLocalDataSourceImpl(
     private val db: Database,
 ) : FoodLocalDataSource {
 
+    override suspend fun getFoodDetail(foodId: Int): FoodEntity? {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            FoodTableH2
+                .slice(
+                    FoodTableH2.foodId,
+                    FoodTableH2.foodName,
+                    FoodTableH2.alias,
+                    FoodTableH2.image,
+                    FoodTableH2.price,
+                    FoodTableH2.description,
+                    FoodTableH2.categoryId,
+                    FoodTableH2.status,
+                    FoodTableH2.created,
+                    FoodTableH2.updated,
+                )
+                .select {
+                    FoodTableH2.foodId eq foodId
+                }
+                .map { row ->
+                    FoodEntity(
+                        foodId = row[FoodTableH2.foodId],
+                        foodName = row[FoodTableH2.foodName],
+                        alias = row[FoodTableH2.alias],
+                        image = row[FoodTableH2.image],
+                        price = row[FoodTableH2.price],
+                        description = row[FoodTableH2.description],
+                        categoryId = row[FoodTableH2.categoryId],
+                        status = row[FoodTableH2.status],
+                        created = row[FoodTableH2.created],
+                        updated = row[FoodTableH2.updated],
+                    )
+                }
+                .singleOrNull()
+        }
+    }
+
     override suspend fun getFoodByCategoryId(categoryId: Int): List<FoodEntity> {
         return newSuspendedTransaction(Dispatchers.IO, db) {
             FoodTableH2

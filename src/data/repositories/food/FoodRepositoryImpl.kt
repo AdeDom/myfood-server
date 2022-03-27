@@ -45,7 +45,20 @@ class FoodRepositoryImpl(
     override suspend fun getFoodDetail(foodId: Int): Resource<BaseResponse<FoodDetailResponse>> {
         val response = BaseResponse<FoodDetailResponse>()
 
-        val foodEntity = foodRemoteDataSource.getFoodDetail(foodId)
+        val foodList = foodLocalDataSource.getFoodAll()
+        val foodEntity = if (foodList.isEmpty()) {
+            val foodAll = foodRemoteDataSource.getFoodAll()
+
+            foodLocalDataSource.deleteFoodAll()
+            val listLocalCount = foodLocalDataSource.insertFoodAll(foodAll)
+            if (listLocalCount != foodAll.size) {
+                foodLocalDataSource.deleteFoodAll()
+            }
+            foodLocalDataSource.getFoodDetail(foodId)
+        } else {
+            foodLocalDataSource.getFoodDetail(foodId)
+        }
+
         return if (foodEntity != null) {
             response.status = ResponseKeyConstant.SUCCESS
             val foodDetailResponse = FoodDetailResponse(
