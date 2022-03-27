@@ -20,6 +20,7 @@ class FavoriteLocalDataSourceImpl(
                     FavoriteTableSqlite.favoriteId,
                     FavoriteTableSqlite.userId,
                     FavoriteTableSqlite.foodId,
+                    FavoriteTableSqlite.backupState,
                     FavoriteTableSqlite.created,
                     FavoriteTableSqlite.updated,
                 )
@@ -29,6 +30,7 @@ class FavoriteLocalDataSourceImpl(
                         favoriteId = row[FavoriteTableSqlite.favoriteId],
                         userId = row[FavoriteTableSqlite.userId],
                         foodId = row[FavoriteTableSqlite.foodId],
+                        backupState = row[FavoriteTableSqlite.backupState],
                         created = row[FavoriteTableSqlite.created],
                         updated = row[FavoriteTableSqlite.updated],
                     )
@@ -36,11 +38,19 @@ class FavoriteLocalDataSourceImpl(
         }
     }
 
-    override suspend fun myFavorite(userId: String, foodId: Int, created: String): Int? {
+    override suspend fun myFavorite(
+        favoriteId: String,
+        userId: String,
+        foodId: Int,
+        backupState: Int,
+        created: String
+    ): Int? {
         val statement = newSuspendedTransaction(Dispatchers.IO, db) {
             FavoriteTableSqlite.replace {
+                it[FavoriteTableSqlite.favoriteId] = favoriteId
                 it[FavoriteTableSqlite.userId] = userId
                 it[FavoriteTableSqlite.foodId] = foodId
+                it[FavoriteTableSqlite.backupState] = backupState
                 it[FavoriteTableSqlite.created] = created
             }
         }

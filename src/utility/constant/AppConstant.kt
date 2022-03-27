@@ -11,4 +11,7 @@ object AppConstant {
 
     const val ACTIVE = "active"
     const val IN_ACTIVE = "in_active"
+
+    const val LOCAL_BACKUP = 0
+    const val REMOTE_BACKUP = 1
 }
