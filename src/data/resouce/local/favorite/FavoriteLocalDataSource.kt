@@ -19,4 +19,8 @@ interface FavoriteLocalDataSource {
     suspend fun deleteFavoriteAll(): Int
 
     suspend fun findFavoriteEntityByUserIdAndFoodId(userId: String, foodId: Int): FavoriteEntity?
+
+    suspend fun getFavoriteListByBackupIsLocal(): List<FavoriteEntity>
+
+    suspend fun updateFavoriteByBackupIsRemote(): Int
 }

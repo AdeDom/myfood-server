@@ -4,6 +4,8 @@ import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSourceImpl
 import com.adedom.myfood.data.resouce.remote.category.CategoryRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.category.CategoryRemoteDataSourceImpl
+import com.adedom.myfood.data.resouce.remote.favorite.FavoriteRemoteDataSource
+import com.adedom.myfood.data.resouce.remote.favorite.FavoriteRemoteDataSourceImpl
 import com.adedom.myfood.data.resouce.remote.food.FoodRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.food.FoodRemoteDataSourceImpl
 import com.adedom.myfood.data.resouce.remote.food.MyFoodRemoteDataSource
@@ -25,4 +27,5 @@ val remoteDataSourceModule = DI.Module(name = "remote_data_source") {
     bindSingleton<ProfileRemoteDataSource> { ProfileRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
     bindSingleton<CategoryRemoteDataSource> { CategoryRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
     bindSingleton<FoodRemoteDataSource> { FoodRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
+    bindSingleton<FavoriteRemoteDataSource> { FavoriteRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
 }

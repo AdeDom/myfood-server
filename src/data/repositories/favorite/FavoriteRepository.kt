@@ -11,4 +11,6 @@ interface FavoriteRepository {
     suspend fun myFavorite(userId: String, foodId: Int): Resource<BaseResponse<String>>
 
     suspend fun deleteFavoriteAll(): Resource<BaseResponse<String>>
+
+    suspend fun syncDataFavorite(): Resource<BaseResponse<String>>
 }

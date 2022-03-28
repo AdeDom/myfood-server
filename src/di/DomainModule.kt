@@ -34,4 +34,5 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { GetFavoriteAllUseCase(instance()) }
     bindSingleton { DeleteFavoriteAllUseCase(instance()) }
     bindSingleton { MyFavoriteUseCase(instance()) }
+    bindSingleton { SyncDataFavoriteUseCase(instance()) }
 }

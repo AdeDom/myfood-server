@@ -2,6 +2,7 @@ package com.adedom.myfood.data.repositories.favorite
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.favorite.FavoriteLocalDataSource
+import com.adedom.myfood.data.resouce.remote.favorite.FavoriteRemoteDataSource
 import com.adedom.myfood.route.models.base.BaseError
 import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.response.FavoriteResponse
@@ -12,6 +13,7 @@ import java.util.*
 
 class FavoriteRepositoryImpl(
     private val favoriteLocalDataSource: FavoriteLocalDataSource,
+    private val favoriteRemoteDataSource: FavoriteRemoteDataSource,
 ) : FavoriteRepository {
 
     override suspend fun getFavoriteAll(): Resource<BaseResponse<List<FavoriteResponse>>> {
@@ -75,6 +77,27 @@ class FavoriteRepositoryImpl(
             Resource.Success(response)
         } else {
             response.error = BaseError(message = "Delete favorite all is failed.")
+            Resource.Error(response)
+        }
+    }
+
+    override suspend fun syncDataFavorite(): Resource<BaseResponse<String>> {
+        val response = BaseResponse<String>()
+
+        val favoriteLocalList = favoriteLocalDataSource.getFavoriteListByBackupIsLocal()
+        val replaceFavoriteRemoteCount = favoriteRemoteDataSource.replaceFavorite(favoriteLocalList)
+        return if (favoriteLocalList.size == replaceFavoriteRemoteCount) {
+            val updateFavoriteBackupCount = favoriteLocalDataSource.updateFavoriteByBackupIsRemote()
+            if (favoriteLocalList.size == updateFavoriteBackupCount) {
+                response.result = "Sync data success."
+                response.status = ResponseKeyConstant.SUCCESS
+                Resource.Success(response)
+            } else {
+                response.error = BaseError(message = "Sync data failed.")
+                Resource.Error(response)
+            }
+        } else {
+            response.error = BaseError(message = "Sync data failed.")
             Resource.Error(response)
         }
     }

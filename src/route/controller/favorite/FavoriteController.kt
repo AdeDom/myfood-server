@@ -4,6 +4,7 @@ import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.favorite.DeleteFavoriteAllUseCase
 import com.adedom.myfood.domain.usecase.favorite.GetFavoriteAllUseCase
 import com.adedom.myfood.domain.usecase.favorite.MyFavoriteUseCase
+import com.adedom.myfood.domain.usecase.food.SyncDataFavoriteUseCase
 import com.adedom.myfood.utility.extension.postAuth
 import com.adedom.myfood.utility.userId
 import io.ktor.application.*
@@ -49,6 +50,20 @@ fun Route.favoriteRoute() {
         val deleteFavoriteAllUseCase by closestDI().instance<DeleteFavoriteAllUseCase>()
 
         val resource = deleteFavoriteAllUseCase()
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
+    }
+
+    post("/api/favorite/syncDataFavorite") {
+        val syncDataFavoriteUseCase by closestDI().instance<SyncDataFavoriteUseCase>()
+
+        val resource = syncDataFavoriteUseCase()
         when (resource) {
             is Resource.Success -> {
                 call.respond(HttpStatusCode.OK, resource.data)

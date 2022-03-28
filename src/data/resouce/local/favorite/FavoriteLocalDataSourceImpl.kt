@@ -2,6 +2,7 @@ package com.adedom.myfood.data.resouce.local.favorite
 
 import com.adedom.myfood.data.database.local.FavoriteTableSqlite
 import com.adedom.myfood.route.models.entities.FavoriteEntity
+import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -94,6 +95,43 @@ class FavoriteLocalDataSourceImpl(
                     )
                 }
                 .singleOrNull()
+        }
+    }
+
+    override suspend fun getFavoriteListByBackupIsLocal(): List<FavoriteEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            FavoriteTableSqlite
+                .slice(
+                    FavoriteTableSqlite.favoriteId,
+                    FavoriteTableSqlite.userId,
+                    FavoriteTableSqlite.foodId,
+                    FavoriteTableSqlite.isFavorite,
+                    FavoriteTableSqlite.isBackup,
+                    FavoriteTableSqlite.created,
+                    FavoriteTableSqlite.updated,
+                )
+                .select {
+                    FavoriteTableSqlite.isBackup eq AppConstant.LOCAL_BACKUP
+                }
+                .map { row ->
+                    FavoriteEntity(
+                        favoriteId = row[FavoriteTableSqlite.favoriteId],
+                        userId = row[FavoriteTableSqlite.userId],
+                        foodId = row[FavoriteTableSqlite.foodId],
+                        isFavorite = row[FavoriteTableSqlite.isFavorite],
+                        isBackup = row[FavoriteTableSqlite.isBackup],
+                        created = row[FavoriteTableSqlite.created],
+                        updated = row[FavoriteTableSqlite.updated],
+                    )
+                }
+        }
+    }
+
+    override suspend fun updateFavoriteByBackupIsRemote(): Int {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            FavoriteTableSqlite.update({ FavoriteTableSqlite.isBackup eq AppConstant.LOCAL_BACKUP }) {
+                it[isBackup] = AppConstant.REMOTE_BACKUP
+            }
         }
     }
 }

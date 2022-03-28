@@ -20,5 +20,5 @@ val repositoryModule = DI.Module(name = "repository") {
     bindSingleton<AuthRepository> { AuthRepositoryImpl(instance(), instance()) }
     bindSingleton<ProfileRepository> { ProfileRepositoryImpl(instance(), instance(), instance()) }
     bindSingleton<CategoryRepository> { CategoryRepositoryImpl(instance(), instance()) }
-    bindSingleton<FavoriteRepository> { FavoriteRepositoryImpl(instance()) }
+    bindSingleton<FavoriteRepository> { FavoriteRepositoryImpl(instance(), instance()) }
 }
