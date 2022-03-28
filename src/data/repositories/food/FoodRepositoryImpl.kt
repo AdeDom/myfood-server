@@ -72,8 +72,8 @@ class FoodRepositoryImpl(
                 description = foodEntity.description,
                 categoryId = foodEntity.categoryId,
                 status = foodEntity.status,
-                created = foodEntity.created.toString(AppConstant.DATE_TIME_FORMAT),
-                updated = foodEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT),
+                created = foodEntity.created.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
+                updated = foodEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
             )
             response.result = foodDetailResponse
             Resource.Success(response)
@@ -110,8 +110,8 @@ class FoodRepositoryImpl(
                 description = foodEntity.description,
                 categoryId = foodEntity.categoryId,
                 status = foodEntity.status,
-                created = foodEntity.created.toString(AppConstant.DATE_TIME_FORMAT),
-                updated = foodEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT),
+                created = foodEntity.created.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
+                updated = foodEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
             )
         }
         response.status = ResponseKeyConstant.SUCCESS
@@ -143,13 +143,13 @@ class FoodRepositoryImpl(
                 price = foodAllEntity.price,
                 description = foodAllEntity.description,
                 status = foodAllEntity.status,
-                foodCreated = foodAllEntity.foodCreated.toString(AppConstant.DATE_TIME_FORMAT),
-                foodUpdated = foodAllEntity.foodUpdated?.toString(AppConstant.DATE_TIME_FORMAT),
+                foodCreated = foodAllEntity.foodCreated.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
+                foodUpdated = foodAllEntity.foodUpdated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
                 categoryId = foodAllEntity.categoryId,
                 categoryName = foodAllEntity.categoryName,
                 categoryImage = foodAllEntity.categoryImage,
-                categoryCreated = foodAllEntity.categoryCreated.toString(AppConstant.DATE_TIME_FORMAT),
-                categoryUpdated = foodAllEntity.categoryUpdated?.toString(AppConstant.DATE_TIME_FORMAT),
+                categoryCreated = foodAllEntity.categoryCreated.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
+                categoryUpdated = foodAllEntity.categoryUpdated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
             )
         }
         response.status = ResponseKeyConstant.SUCCESS

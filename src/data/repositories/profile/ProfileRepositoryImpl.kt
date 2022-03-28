@@ -40,8 +40,8 @@ class ProfileRepositoryImpl(
                 mobileNo = userEntity.mobileNo,
                 address = userEntity.address,
                 status = userEntity.status,
-                created = userEntity.created.toString(AppConstant.DATE_TIME_FORMAT),
-                updated = userEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT),
+                created = userEntity.created.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
+                updated = userEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
             )
             response.status = ResponseKeyConstant.SUCCESS
             response.result = userProfileResponse

@@ -25,8 +25,8 @@ class FavoriteRepositoryImpl(
                 favoriteId = favoriteEntity.favoriteId,
                 userId = favoriteEntity.userId,
                 foodId = favoriteEntity.foodId,
-                isFavorite = favoriteEntity.isFavorite == 1,
-                isBackup = favoriteEntity.isBackup == 1,
+                isFavorite = favoriteEntity.isFavorite == AppConstant.FAVORITE,
+                isBackup = favoriteEntity.isBackup == AppConstant.REMOTE_BACKUP,
                 created = favoriteEntity.created,
                 updated = favoriteEntity.updated,
             )
@@ -42,8 +42,12 @@ class FavoriteRepositoryImpl(
         val favoriteEntity = favoriteLocalDataSource.findFavoriteEntityByUserIdAndFoodId(userId, foodId)
         val favoriteIdForCreated = UUID.randomUUID().toString().replace("-", "")
         val currentDateTime = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
-        val currentDateTimeString = currentDateTime.toString("yyyy/M/d H:m")
-        val isFavorite = if ((favoriteEntity?.isFavorite ?: 0) == 1) 0 else 1
+        val currentDateTimeString = currentDateTime.toString(AppConstant.DATE_TIME_FORMAT_REQUEST)
+        val isFavorite = if ((favoriteEntity?.isFavorite ?: AppConstant.UN_FAVORITE) == AppConstant.FAVORITE) {
+            AppConstant.UN_FAVORITE
+        } else {
+            AppConstant.FAVORITE
+        }
         val isBackup = AppConstant.LOCAL_BACKUP
         val created = favoriteEntity?.created ?: currentDateTimeString
         val updated = if (favoriteEntity != null) currentDateTimeString else null

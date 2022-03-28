@@ -7,11 +7,15 @@ object AppConstant {
     const val H2_DB = "h2"
 
     const val DATE_TIME_THAI = 36_000_00 * 7
-    const val DATE_TIME_FORMAT = "d/M/yyyy H:m"
+    const val DATE_TIME_FORMAT_RESPONSE = "d/M/yyyy H:m"
+    const val DATE_TIME_FORMAT_REQUEST = "yyyy/m/d H:m"
 
     const val ACTIVE = "active"
     const val IN_ACTIVE = "in_active"
 
     const val LOCAL_BACKUP = 0
     const val REMOTE_BACKUP = 1
+
+    const val UN_FAVORITE = 0
+    const val FAVORITE = 1
 }

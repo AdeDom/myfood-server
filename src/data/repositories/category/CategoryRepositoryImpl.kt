@@ -52,8 +52,8 @@ class CategoryRepositoryImpl(
                 categoryId = categoryEntity.categoryId,
                 categoryName = categoryEntity.categoryName,
                 image = categoryEntity.image,
-                created = categoryEntity.created.toString(AppConstant.DATE_TIME_FORMAT),
-                updated = categoryEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT),
+                created = categoryEntity.created.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
+                updated = categoryEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
             )
         }
         response.status = ResponseKeyConstant.SUCCESS
