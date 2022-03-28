@@ -89,19 +89,26 @@ class FavoriteRepositoryImpl(
         val response = BaseResponse<String>()
 
         val favoriteLocalList = favoriteLocalDataSource.getFavoriteListByBackupIsLocal()
-        val replaceFavoriteRemoteCount = favoriteRemoteDataSource.replaceFavorite(favoriteLocalList)
+        val replaceFavoriteRemoteCount = favoriteRemoteDataSource.replaceFavoriteAll(favoriteLocalList)
         return if (favoriteLocalList.size == replaceFavoriteRemoteCount) {
             val updateFavoriteBackupCount = favoriteLocalDataSource.updateFavoriteByBackupIsRemote()
             if (favoriteLocalList.size == updateFavoriteBackupCount) {
-                response.result = "Sync data success."
-                response.status = ResponseKeyConstant.SUCCESS
-                Resource.Success(response)
+                val favoriteRemoteList = favoriteRemoteDataSource.getFavoriteAll()
+                val replaceFavoriteLocalCount = favoriteLocalDataSource.replaceFavoriteAll(favoriteRemoteList)
+                if (favoriteRemoteList.size == replaceFavoriteLocalCount) {
+                    response.result = "Sync data success."
+                    response.status = ResponseKeyConstant.SUCCESS
+                    Resource.Success(response)
+                } else {
+                    response.error = BaseError(message = "Sync data failed (3).")
+                    Resource.Error(response)
+                }
             } else {
-                response.error = BaseError(message = "Sync data failed.")
+                response.error = BaseError(message = "Sync data failed (2).")
                 Resource.Error(response)
             }
         } else {
-            response.error = BaseError(message = "Sync data failed.")
+            response.error = BaseError(message = "Sync data failed (1).")
             Resource.Error(response)
         }
     }

@@ -6,6 +6,7 @@ import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchReplace
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -14,7 +15,7 @@ class FavoriteRemoteDataSourceImpl(
     private val db: Database
 ) : FavoriteRemoteDataSource {
 
-    override suspend fun replaceFavorite(favoriteList: List<FavoriteEntity>): Int {
+    override suspend fun replaceFavoriteAll(favoriteList: List<FavoriteEntity>): Int {
         val dateTimeFormat = DateTimeFormat.forPattern(AppConstant.DATE_TIME_FORMAT_REQUEST)
         val statement = newSuspendedTransaction(Dispatchers.IO, db) {
             FavoriteTable.batchReplace(favoriteList) { favoriteEntity ->
@@ -30,5 +31,31 @@ class FavoriteRemoteDataSourceImpl(
         }
 
         return statement.size
+    }
+
+    override suspend fun getFavoriteAll(): List<FavoriteEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            FavoriteTable
+                .slice(
+                    FavoriteTable.favoriteId,
+                    FavoriteTable.userId,
+                    FavoriteTable.foodId,
+                    FavoriteTable.isFavorite,
+                    FavoriteTable.created,
+                    FavoriteTable.updated,
+                )
+                .selectAll()
+                .map { row ->
+                    FavoriteEntity(
+                        favoriteId = row[FavoriteTable.favoriteId],
+                        userId = row[FavoriteTable.userId],
+                        foodId = row[FavoriteTable.foodId],
+                        isFavorite = if (row[FavoriteTable.isFavorite]) 1 else 0,
+                        isBackup = AppConstant.REMOTE_BACKUP,
+                        created = row[FavoriteTable.created].toString(AppConstant.DATE_TIME_FORMAT_REQUEST),
+                        updated = row[FavoriteTable.updated]?.toString(AppConstant.DATE_TIME_FORMAT_REQUEST),
+                    )
+                }
+        }
     }
 }

@@ -134,4 +134,20 @@ class FavoriteLocalDataSourceImpl(
             }
         }
     }
+
+    override suspend fun replaceFavoriteAll(favoriteList: List<FavoriteEntity>): Int {
+        val statement = newSuspendedTransaction(Dispatchers.IO, db) {
+            FavoriteTableSqlite.batchReplace(favoriteList) { favoriteEntity ->
+                this[FavoriteTableSqlite.favoriteId] = favoriteEntity.favoriteId
+                this[FavoriteTableSqlite.userId] = favoriteEntity.userId
+                this[FavoriteTableSqlite.foodId] = favoriteEntity.foodId
+                this[FavoriteTableSqlite.isFavorite] = favoriteEntity.isFavorite
+                this[FavoriteTableSqlite.isBackup] = favoriteEntity.isBackup
+                this[FavoriteTableSqlite.created] = favoriteEntity.created
+                this[FavoriteTableSqlite.updated] = favoriteEntity.updated
+            }
+        }
+
+        return statement.size
+    }
 }

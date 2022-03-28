@@ -4,5 +4,7 @@ import com.adedom.myfood.route.models.entities.FavoriteEntity
 
 interface FavoriteRemoteDataSource {
 
-    suspend fun replaceFavorite(favoriteList: List<FavoriteEntity>): Int
+    suspend fun replaceFavoriteAll(favoriteList: List<FavoriteEntity>): Int
+
+    suspend fun getFavoriteAll(): List<FavoriteEntity>
 }

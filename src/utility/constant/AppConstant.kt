@@ -8,7 +8,7 @@ object AppConstant {
 
     const val DATE_TIME_THAI = 36_000_00 * 7
     const val DATE_TIME_FORMAT_RESPONSE = "d/M/yyyy H:m"
-    const val DATE_TIME_FORMAT_REQUEST = "yyyy/m/d H:m"
+    const val DATE_TIME_FORMAT_REQUEST = "yyyy/M/d H:m"
 
     const val ACTIVE = "active"
     const val IN_ACTIVE = "in_active"
