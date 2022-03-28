@@ -5,7 +5,8 @@ data class FavoriteResponse(
     val favoriteId: String,
     val userId: String,
     val foodId: Int,
-    val backupState: Int,
+    val isFavorite: Boolean,
+    val isBackup: Boolean,
     val created: String,
     val updated: String?,
 )

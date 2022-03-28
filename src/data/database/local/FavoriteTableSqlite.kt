@@ -7,7 +7,8 @@ object FavoriteTableSqlite : Table(name = "favorite") {
     val favoriteId = text(name = "favorite_id")
     val userId = text(name = "user_id")
     val foodId = integer(name = "food_id")
-    val backupState = integer(name = "backup_state")
+    val isFavorite = integer(name = "is_favorite")
+    val isBackup = integer(name = "is_backup")
     val created = text(name = "created")
     val updated = text(name = "updated").nullable()
 

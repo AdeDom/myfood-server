@@ -4,7 +4,6 @@ import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.favorite.FavoriteLocalDataSource
 import com.adedom.myfood.route.models.base.BaseError
 import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.request.MyFavoriteRequest
 import com.adedom.myfood.route.models.response.FavoriteResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
@@ -24,7 +23,8 @@ class FavoriteRepositoryImpl(
                 favoriteId = favoriteEntity.favoriteId,
                 userId = favoriteEntity.userId,
                 foodId = favoriteEntity.foodId,
-                backupState = favoriteEntity.backupState,
+                isFavorite = favoriteEntity.isFavorite == 1,
+                isBackup = favoriteEntity.isBackup == 1,
                 created = favoriteEntity.created,
                 updated = favoriteEntity.updated,
             )
@@ -34,21 +34,25 @@ class FavoriteRepositoryImpl(
         return Resource.Success(response)
     }
 
-    override suspend fun myFavorite(
-        userId: String,
-        myFavoriteRequest: MyFavoriteRequest,
-    ): Resource<BaseResponse<String>> {
-        val (favoriteId, foodId) = myFavoriteRequest
+    override suspend fun myFavorite(userId: String, foodId: Int): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
+        val favoriteEntity = favoriteLocalDataSource.findFavoriteEntityByUserIdAndFoodId(userId, foodId)
         val favoriteIdForCreated = UUID.randomUUID().toString().replace("-", "")
         val currentDateTime = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
-        val myFavoriteCount = favoriteLocalDataSource.myFavorite(
-            favoriteId ?: favoriteIdForCreated,
+        val currentDateTimeString = currentDateTime.toString("yyyy/M/d H:m")
+        val isFavorite = if ((favoriteEntity?.isFavorite ?: 0) == 1) 0 else 1
+        val isBackup = AppConstant.LOCAL_BACKUP
+        val created = favoriteEntity?.created ?: currentDateTimeString
+        val updated = if (favoriteEntity != null) currentDateTimeString else null
+        val myFavoriteCount = favoriteLocalDataSource.replaceFavorite(
+            favoriteEntity?.favoriteId ?: favoriteIdForCreated,
             userId,
-            foodId!!,
-            AppConstant.LOCAL_BACKUP,
-            currentDateTime.toString("yyyy/M/d H:m"),
+            foodId,
+            isFavorite,
+            isBackup,
+            created,
+            updated,
         ) ?: 0
         return if (myFavoriteCount == 1) {
             response.result = "Favorite is success."

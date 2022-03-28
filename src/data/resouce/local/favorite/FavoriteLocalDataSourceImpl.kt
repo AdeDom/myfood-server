@@ -3,10 +3,7 @@ package com.adedom.myfood.data.resouce.local.favorite
 import com.adedom.myfood.data.database.local.FavoriteTableSqlite
 import com.adedom.myfood.route.models.entities.FavoriteEntity
 import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.deleteAll
-import org.jetbrains.exposed.sql.replace
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 class FavoriteLocalDataSourceImpl(
@@ -20,7 +17,8 @@ class FavoriteLocalDataSourceImpl(
                     FavoriteTableSqlite.favoriteId,
                     FavoriteTableSqlite.userId,
                     FavoriteTableSqlite.foodId,
-                    FavoriteTableSqlite.backupState,
+                    FavoriteTableSqlite.isFavorite,
+                    FavoriteTableSqlite.isBackup,
                     FavoriteTableSqlite.created,
                     FavoriteTableSqlite.updated,
                 )
@@ -30,7 +28,8 @@ class FavoriteLocalDataSourceImpl(
                         favoriteId = row[FavoriteTableSqlite.favoriteId],
                         userId = row[FavoriteTableSqlite.userId],
                         foodId = row[FavoriteTableSqlite.foodId],
-                        backupState = row[FavoriteTableSqlite.backupState],
+                        isFavorite = row[FavoriteTableSqlite.isFavorite],
+                        isBackup = row[FavoriteTableSqlite.isBackup],
                         created = row[FavoriteTableSqlite.created],
                         updated = row[FavoriteTableSqlite.updated],
                     )
@@ -38,20 +37,24 @@ class FavoriteLocalDataSourceImpl(
         }
     }
 
-    override suspend fun myFavorite(
+    override suspend fun replaceFavorite(
         favoriteId: String,
         userId: String,
         foodId: Int,
-        backupState: Int,
-        created: String
+        isFavorite: Int,
+        isBackup: Int,
+        created: String,
+        updated: String?,
     ): Int? {
         val statement = newSuspendedTransaction(Dispatchers.IO, db) {
             FavoriteTableSqlite.replace {
                 it[FavoriteTableSqlite.favoriteId] = favoriteId
                 it[FavoriteTableSqlite.userId] = userId
                 it[FavoriteTableSqlite.foodId] = foodId
-                it[FavoriteTableSqlite.backupState] = backupState
+                it[FavoriteTableSqlite.isFavorite] = isFavorite
+                it[FavoriteTableSqlite.isBackup] = isBackup
                 it[FavoriteTableSqlite.created] = created
+                it[FavoriteTableSqlite.updated] = updated
             }
         }
 
@@ -61,6 +64,36 @@ class FavoriteLocalDataSourceImpl(
     override suspend fun deleteFavoriteAll(): Int {
         return newSuspendedTransaction(Dispatchers.IO, db) {
             FavoriteTableSqlite.deleteAll()
+        }
+    }
+
+    override suspend fun findFavoriteEntityByUserIdAndFoodId(userId: String, foodId: Int): FavoriteEntity? {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            FavoriteTableSqlite
+                .slice(
+                    FavoriteTableSqlite.favoriteId,
+                    FavoriteTableSqlite.userId,
+                    FavoriteTableSqlite.foodId,
+                    FavoriteTableSqlite.isFavorite,
+                    FavoriteTableSqlite.isBackup,
+                    FavoriteTableSqlite.created,
+                    FavoriteTableSqlite.updated,
+                )
+                .select {
+                    (FavoriteTableSqlite.userId eq userId) and (FavoriteTableSqlite.foodId eq foodId)
+                }
+                .map { row ->
+                    FavoriteEntity(
+                        favoriteId = row[FavoriteTableSqlite.favoriteId],
+                        userId = row[FavoriteTableSqlite.userId],
+                        foodId = row[FavoriteTableSqlite.foodId],
+                        isFavorite = row[FavoriteTableSqlite.isFavorite],
+                        isBackup = row[FavoriteTableSqlite.isBackup],
+                        created = row[FavoriteTableSqlite.created],
+                        updated = row[FavoriteTableSqlite.updated],
+                    )
+                }
+                .singleOrNull()
         }
     }
 }
