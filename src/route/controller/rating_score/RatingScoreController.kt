@@ -4,6 +4,7 @@ import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.rating_score.DeleteRatingScoreAllUseCase
 import com.adedom.myfood.domain.usecase.rating_score.GetRatingScoreAllUseCase
 import com.adedom.myfood.domain.usecase.rating_score.MyRatingScoreUseCase
+import com.adedom.myfood.domain.usecase.rating_score.SyncDataRatingScoreUseCase
 import com.adedom.myfood.utility.extension.postAuth
 import com.adedom.myfood.utility.userId
 import io.ktor.application.*
@@ -50,6 +51,20 @@ fun Route.ratingScoreRoute() {
         val deleteRatingScoreAllUseCase by closestDI().instance<DeleteRatingScoreAllUseCase>()
 
         val resource = deleteRatingScoreAllUseCase()
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
+    }
+
+    post("/api/rating/syncDataRatingScore") {
+        val syncDataRatingScoreUseCase by closestDI().instance<SyncDataRatingScoreUseCase>()
+
+        val resource = syncDataRatingScoreUseCase()
         when (resource) {
             is Resource.Success -> {
                 call.respond(HttpStatusCode.OK, resource.data)

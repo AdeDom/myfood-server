@@ -2,6 +2,7 @@ package com.adedom.myfood.data.resouce.local.rating_score
 
 import com.adedom.myfood.data.database.local.RatingScoreTableSqlite
 import com.adedom.myfood.route.models.entities.RatingScoreEntity
+import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -95,5 +96,58 @@ class RatingScoreLocalDataSourceImpl(
                 }
                 .singleOrNull()
         }
+    }
+
+    override suspend fun getRatingScoreListByBackupIsLocal(): List<RatingScoreEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            RatingScoreTableSqlite
+                .slice(
+                    RatingScoreTableSqlite.ratingScoreId,
+                    RatingScoreTableSqlite.userId,
+                    RatingScoreTableSqlite.foodId,
+                    RatingScoreTableSqlite.ratingScore,
+                    RatingScoreTableSqlite.isBackup,
+                    RatingScoreTableSqlite.created,
+                    RatingScoreTableSqlite.updated,
+                )
+                .select {
+                    RatingScoreTableSqlite.isBackup eq AppConstant.LOCAL_BACKUP
+                }
+                .map { row ->
+                    RatingScoreEntity(
+                        ratingScoreId = row[RatingScoreTableSqlite.ratingScoreId],
+                        userId = row[RatingScoreTableSqlite.userId],
+                        foodId = row[RatingScoreTableSqlite.foodId],
+                        ratingScore = row[RatingScoreTableSqlite.ratingScore],
+                        isBackup = row[RatingScoreTableSqlite.isBackup],
+                        created = row[RatingScoreTableSqlite.created],
+                        updated = row[RatingScoreTableSqlite.updated],
+                    )
+                }
+        }
+    }
+
+    override suspend fun updateRatingScoreByBackupIsRemote(): Int {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            RatingScoreTableSqlite.update({ RatingScoreTableSqlite.isBackup eq AppConstant.LOCAL_BACKUP }) {
+                it[isBackup] = AppConstant.REMOTE_BACKUP
+            }
+        }
+    }
+
+    override suspend fun replaceRatingScoreAll(ratingScoreList: List<RatingScoreEntity>): Int {
+        val statement = newSuspendedTransaction(Dispatchers.IO, db) {
+            RatingScoreTableSqlite.batchReplace(ratingScoreList) { ratingScoreEntity ->
+                this[RatingScoreTableSqlite.ratingScoreId] = ratingScoreEntity.ratingScoreId
+                this[RatingScoreTableSqlite.userId] = ratingScoreEntity.userId
+                this[RatingScoreTableSqlite.foodId] = ratingScoreEntity.foodId
+                this[RatingScoreTableSqlite.ratingScore] = ratingScoreEntity.ratingScore
+                this[RatingScoreTableSqlite.isBackup] = ratingScoreEntity.isBackup
+                this[RatingScoreTableSqlite.created] = ratingScoreEntity.created
+                this[RatingScoreTableSqlite.updated] = ratingScoreEntity.updated
+            }
+        }
+
+        return statement.size
     }
 }

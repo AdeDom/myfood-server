@@ -2,6 +2,7 @@ package com.adedom.myfood.data.repositories.rating_score
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.rating_score.RatingScoreLocalDataSource
+import com.adedom.myfood.data.resouce.remote.rating_score.RatingScoreRemoteDataSource
 import com.adedom.myfood.route.models.base.BaseError
 import com.adedom.myfood.route.models.base.BaseResponse
 import com.adedom.myfood.route.models.response.RatingScoreResponse
@@ -12,6 +13,7 @@ import java.util.*
 
 class RatingScoreRepositoryImpl(
     private val ratingScoreLocalDataSource: RatingScoreLocalDataSource,
+    private val ratingScoreRemoteDataSource: RatingScoreRemoteDataSource,
 ) : RatingScoreRepository {
 
     override suspend fun getRatingScoreAll(): Resource<BaseResponse<List<RatingScoreResponse>>> {
@@ -74,6 +76,35 @@ class RatingScoreRepositoryImpl(
             Resource.Success(response)
         } else {
             response.error = BaseError(message = "Delete rating score all is failed.")
+            Resource.Error(response)
+        }
+    }
+
+    override suspend fun syncDataRatingScore(): Resource<BaseResponse<String>> {
+        val response = BaseResponse<String>()
+
+        val ratingScoreLocalList = ratingScoreLocalDataSource.getRatingScoreListByBackupIsLocal()
+        val replaceRatingScoreRemoteCount = ratingScoreRemoteDataSource.replaceRatingScoreAll(ratingScoreLocalList)
+        return if (ratingScoreLocalList.size == replaceRatingScoreRemoteCount) {
+            val updateRatingScoreBackupCount = ratingScoreLocalDataSource.updateRatingScoreByBackupIsRemote()
+            if (ratingScoreLocalList.size == updateRatingScoreBackupCount) {
+                val ratingScoreRemoteList = ratingScoreRemoteDataSource.getRatingScoreAll()
+                val replaceRatingScoreLocalCount =
+                    ratingScoreLocalDataSource.replaceRatingScoreAll(ratingScoreRemoteList)
+                if (ratingScoreRemoteList.size == replaceRatingScoreLocalCount) {
+                    response.result = "Sync data success."
+                    response.status = ResponseKeyConstant.SUCCESS
+                    Resource.Success(response)
+                } else {
+                    response.error = BaseError(message = "Sync data failed (3).")
+                    Resource.Error(response)
+                }
+            } else {
+                response.error = BaseError(message = "Sync data failed (2).")
+                Resource.Error(response)
+            }
+        } else {
+            response.error = BaseError(message = "Sync data failed (1).")
             Resource.Error(response)
         }
     }

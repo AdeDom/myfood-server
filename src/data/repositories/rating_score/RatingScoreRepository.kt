@@ -11,4 +11,6 @@ interface RatingScoreRepository {
     suspend fun myRatingScore(userId: String, foodId: Int, ratingScore: Int): Resource<BaseResponse<String>>
 
     suspend fun deleteRatingScoreAll(): Resource<BaseResponse<String>>
+
+    suspend fun syncDataRatingScore(): Resource<BaseResponse<String>>
 }

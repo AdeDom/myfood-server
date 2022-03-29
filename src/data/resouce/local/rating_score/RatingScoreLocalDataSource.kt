@@ -19,4 +19,10 @@ interface RatingScoreLocalDataSource {
     suspend fun deleteRatingScoreAll(): Int
 
     suspend fun findRatingScoreEntityByUserIdAndFoodId(userId: String, foodId: Int): RatingScoreEntity?
+
+    suspend fun getRatingScoreListByBackupIsLocal(): List<RatingScoreEntity>
+
+    suspend fun updateRatingScoreByBackupIsRemote(): Int
+
+    suspend fun replaceRatingScoreAll(ratingScoreList: List<RatingScoreEntity>): Int
 }
