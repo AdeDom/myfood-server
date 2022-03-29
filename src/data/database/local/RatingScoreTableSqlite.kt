@@ -7,7 +7,7 @@ object RatingScoreTableSqlite : Table(name = "rating_score") {
     val ratingScoreId = text(name = "rating_score_id")
     val userId = text(name = "user_id")
     val foodId = integer(name = "food_id")
-    val ratingScore = integer(name = "rating_score")
+    val ratingScore = float(name = "rating_score")
     val isBackup = integer(name = "is_backup")
     val created = text(name = "created")
     val updated = text(name = "updated").nullable()

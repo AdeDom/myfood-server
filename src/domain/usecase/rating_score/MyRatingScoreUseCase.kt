@@ -33,16 +33,16 @@ class MyRatingScoreUseCase(
                 response.error = BaseError(message = "Rating score is null or blank.")
                 Resource.Error(response)
             }
-            ratingScore.toIntOrNull() == null -> {
+            ratingScore.toFloatOrNull() == null -> {
                 response.error = BaseError(message = "Rating score is text.")
                 Resource.Error(response)
             }
-            ratingScore.toInt() !in 0..5 -> {
+            ratingScore.toFloat() !in 0F..5F -> {
                 response.error = BaseError(message = "Rating score invalid.")
                 Resource.Error(response)
             }
             else -> {
-                ratingScoreRepository.myRatingScore(userId, foodId.toInt(), ratingScore.toInt())
+                ratingScoreRepository.myRatingScore(userId, foodId.toInt(), ratingScore.toFloat())
             }
         }
     }

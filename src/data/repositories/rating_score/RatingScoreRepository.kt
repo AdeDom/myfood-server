@@ -8,7 +8,7 @@ interface RatingScoreRepository {
 
     suspend fun getRatingScoreAll(): Resource<BaseResponse<List<RatingScoreResponse>>>
 
-    suspend fun myRatingScore(userId: String, foodId: Int, ratingScore: Int): Resource<BaseResponse<String>>
+    suspend fun myRatingScore(userId: String, foodId: Int, ratingScore: Float): Resource<BaseResponse<String>>
 
     suspend fun deleteRatingScoreAll(): Resource<BaseResponse<String>>
 

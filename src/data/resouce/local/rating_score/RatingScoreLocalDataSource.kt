@@ -10,7 +10,7 @@ interface RatingScoreLocalDataSource {
         ratingScoreId: String,
         userId: String,
         foodId: Int,
-        ratingScore: Int,
+        ratingScore: Float,
         isBackup: Int,
         created: String,
         updated: String?,

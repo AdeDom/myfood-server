@@ -36,7 +36,11 @@ class RatingScoreRepositoryImpl(
         return Resource.Success(response)
     }
 
-    override suspend fun myRatingScore(userId: String, foodId: Int, ratingScore: Int): Resource<BaseResponse<String>> {
+    override suspend fun myRatingScore(
+        userId: String,
+        foodId: Int,
+        ratingScore: Float,
+    ): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val ratingScoreEntity = ratingScoreLocalDataSource.findRatingScoreEntityByUserIdAndFoodId(userId, foodId)
@@ -89,8 +93,7 @@ class RatingScoreRepositoryImpl(
             val updateRatingScoreBackupCount = ratingScoreLocalDataSource.updateRatingScoreByBackupIsRemote()
             if (ratingScoreLocalList.size == updateRatingScoreBackupCount) {
                 val ratingScoreRemoteList = ratingScoreRemoteDataSource.getRatingScoreAll()
-                val replaceRatingScoreLocalCount =
-                    ratingScoreLocalDataSource.replaceRatingScoreAll(ratingScoreRemoteList)
+                val replaceRatingScoreLocalCount = ratingScoreLocalDataSource.replaceRatingScoreAll(ratingScoreRemoteList)
                 if (ratingScoreRemoteList.size == replaceRatingScoreLocalCount) {
                     response.result = "Sync data success."
                     response.status = ResponseKeyConstant.SUCCESS
