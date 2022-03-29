@@ -11,6 +11,9 @@ import com.adedom.myfood.domain.usecase.food.*
 import com.adedom.myfood.domain.usecase.profile.ChangeProfileUseCase
 import com.adedom.myfood.domain.usecase.profile.DeleteAccountUseCase
 import com.adedom.myfood.domain.usecase.profile.UserProfileUseCase
+import com.adedom.myfood.domain.usecase.rating_score.DeleteRatingScoreAllUseCase
+import com.adedom.myfood.domain.usecase.rating_score.GetRatingScoreAllUseCase
+import com.adedom.myfood.domain.usecase.rating_score.MyRatingScoreUseCase
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
@@ -36,4 +39,7 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { DeleteFavoriteAllUseCase(instance()) }
     bindSingleton { MyFavoriteUseCase(instance()) }
     bindSingleton { SyncDataFavoriteUseCase(instance()) }
+    bindSingleton { GetRatingScoreAllUseCase(instance()) }
+    bindSingleton { DeleteRatingScoreAllUseCase(instance()) }
+    bindSingleton { MyRatingScoreUseCase(instance()) }
 }
