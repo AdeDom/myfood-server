@@ -1,4 +1,4 @@
-package com.adedom.myfood.domain.usecase.food
+package com.adedom.myfood.domain.usecase.favorite
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.favorite.FavoriteRepository

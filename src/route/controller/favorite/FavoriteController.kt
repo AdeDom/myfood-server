@@ -4,7 +4,7 @@ import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.favorite.DeleteFavoriteAllUseCase
 import com.adedom.myfood.domain.usecase.favorite.GetFavoriteAllUseCase
 import com.adedom.myfood.domain.usecase.favorite.MyFavoriteUseCase
-import com.adedom.myfood.domain.usecase.food.SyncDataFavoriteUseCase
+import com.adedom.myfood.domain.usecase.favorite.SyncDataFavoriteUseCase
 import com.adedom.myfood.utility.extension.postAuth
 import com.adedom.myfood.utility.userId
 import io.ktor.application.*

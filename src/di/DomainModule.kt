@@ -6,6 +6,7 @@ import com.adedom.myfood.domain.usecase.category.InsertCategoryUseCase
 import com.adedom.myfood.domain.usecase.favorite.DeleteFavoriteAllUseCase
 import com.adedom.myfood.domain.usecase.favorite.GetFavoriteAllUseCase
 import com.adedom.myfood.domain.usecase.favorite.MyFavoriteUseCase
+import com.adedom.myfood.domain.usecase.favorite.SyncDataFavoriteUseCase
 import com.adedom.myfood.domain.usecase.food.*
 import com.adedom.myfood.domain.usecase.profile.ChangeProfileUseCase
 import com.adedom.myfood.domain.usecase.profile.DeleteAccountUseCase
