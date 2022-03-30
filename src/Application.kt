@@ -1,9 +1,12 @@
 package com.adedom.myfood
 
-import com.adedom.myfood.data.database.h2.FoodAndCategoryTableH2
-import com.adedom.myfood.data.database.h2.FoodTableH2
-import com.adedom.myfood.data.database.mysql.CategoryTable
-import com.adedom.myfood.data.database.mysql.UserTable
+import com.adedom.myfood.data.database.h2.H2Database
+import com.adedom.myfood.data.database.h2.H2DatabaseImpl
+import com.adedom.myfood.data.database.mysql.MySqlDatabase
+import com.adedom.myfood.data.database.mysql.MySqlDatabaseConfig
+import com.adedom.myfood.data.database.mysql.MySqlDatabaseImpl
+import com.adedom.myfood.data.database.sqlite.SqliteDatabase
+import com.adedom.myfood.data.database.sqlite.SqliteDatabaseImpl
 import com.adedom.myfood.di.domainModule
 import com.adedom.myfood.di.localDataSourceModule
 import com.adedom.myfood.di.remoteDataSourceModule
@@ -15,25 +18,17 @@ import com.adedom.myfood.route.controller.favorite.favoriteRoute
 import com.adedom.myfood.route.controller.food.foodRoute
 import com.adedom.myfood.route.controller.profile.profileRoute
 import com.adedom.myfood.route.controller.rating_score.ratingScoreRoute
-import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.jwt.JwtConfig
 import com.adedom.myfood.utility.jwt.JwtHelper
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.TransactionManager
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
 import org.kodein.di.ktor.di
-import java.sql.Connection
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -43,7 +38,7 @@ fun Application.module() {
     install(DefaultHeaders)
     install(CallLogging)
 
-    // gson convertor json
+    // Json convertor
     install(ContentNegotiation) {
         json(Json {
             encodeDefaults = true
@@ -56,6 +51,11 @@ fun Application.module() {
         })
     }
 
+    val databaseNameEnv = environment.config.property("my_food_db.database_name").getString()
+    val usernameEnv = environment.config.property("my_food_db.username").getString()
+    val passwordEnv = environment.config.property("my_food_db.password").getString()
+    val jdbcUrlEnv = environment.config.property("my_food_db.jdbc_url").getString()
+
     val secret = environment.config.property("jwt.secret").getString()
     val issuer = environment.config.property("jwt.issuer").getString()
     val audience = environment.config.property("jwt.audience").getString()
@@ -63,37 +63,20 @@ fun Application.module() {
 
     // kodein dependencies injection
     di {
-        // database mysql
-        val usernameEnv = environment.config.property("my_food_db.username").getString()
-        val passwordEnv = environment.config.property("my_food_db.password").getString()
-        val jdbcUrlEnv = environment.config.property("my_food_db.jdbc_url").getString()
-        val config = HikariConfig().apply {
-            jdbcUrl = jdbcUrlEnv
-            driverClassName = "com.mysql.cj.jdbc.Driver"
-            username = usernameEnv
-            password = passwordEnv
-            maximumPoolSize = 10
-        }
-        val dataSource = HikariDataSource(config)
-        val mySql = Database.connect(dataSource)
-        bindSingleton(tag = AppConstant.MY_SQL_DB) { mySql }
-
-        val sqlite = Database.connect("jdbc:sqlite:./data/my_food.db", "org.sqlite.JDBC")
-        TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
-        bindSingleton(tag = AppConstant.SQLITE_DB) { sqlite }
-
-        // database h2
-        val dbH2 = Database.connect("jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", "org.h2.Driver")
-        transaction(dbH2) {
-            SchemaUtils.create(
-                UserTable,
-                CategoryTable,
-                FoodTableH2,
-                FoodAndCategoryTableH2,
+        // database
+        bindSingleton {
+            MySqlDatabaseConfig(
+                databaseName = databaseNameEnv,
+                username = usernameEnv,
+                password = passwordEnv,
+                jdbcUrl = jdbcUrlEnv,
             )
         }
-        bindSingleton(tag = AppConstant.H2_DB) { dbH2 }
+        bindSingleton<MySqlDatabase> { MySqlDatabaseImpl(instance()) }
+        bindSingleton<SqliteDatabase> { SqliteDatabaseImpl() }
+        bindSingleton<H2Database> { H2DatabaseImpl() }
 
+        // structure
         importAll(
             localDataSourceModule,
             remoteDataSourceModule,
@@ -101,6 +84,7 @@ fun Application.module() {
             domainModule,
         )
 
+        // jwt
         bindSingleton {
             JwtConfig(
                 secret = secret,

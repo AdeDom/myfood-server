@@ -1,5 +1,6 @@
 package com.adedom.myfood.di
 
+import com.adedom.myfood.data.database.mysql.MySqlDatabase
 import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSourceImpl
 import com.adedom.myfood.data.resouce.remote.category.CategoryRemoteDataSource
@@ -16,19 +17,18 @@ import com.adedom.myfood.data.resouce.remote.rating_score.RatingScoreRemoteDataS
 import com.adedom.myfood.data.resouce.remote.rating_score.RatingScoreRemoteDataSourceImpl
 import com.adedom.myfood.data.resouce.remote.user.UserRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.user.UserRemoteDataSourceImpl
-import com.adedom.myfood.utility.constant.AppConstant
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
 
 val remoteDataSourceModule = DI.Module(name = "remote_data_source") {
 
-    bindSingleton<UserRemoteDataSource> { UserRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
-    bindSingleton<MyFoodRemoteDataSource> { MyFoodRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
-    bindSingleton<AuthRemoteDataSource> { AuthRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
-    bindSingleton<ProfileRemoteDataSource> { ProfileRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
-    bindSingleton<CategoryRemoteDataSource> { CategoryRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
-    bindSingleton<FoodRemoteDataSource> { FoodRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
-    bindSingleton<FavoriteRemoteDataSource> { FavoriteRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
-    bindSingleton<RatingScoreRemoteDataSource> { RatingScoreRemoteDataSourceImpl(instance(tag = AppConstant.MY_SQL_DB)) }
+    bindSingleton<UserRemoteDataSource> { UserRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
+    bindSingleton<MyFoodRemoteDataSource> { MyFoodRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
+    bindSingleton<AuthRemoteDataSource> { AuthRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
+    bindSingleton<ProfileRemoteDataSource> { ProfileRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
+    bindSingleton<CategoryRemoteDataSource> { CategoryRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
+    bindSingleton<FoodRemoteDataSource> { FoodRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
+    bindSingleton<FavoriteRemoteDataSource> { FavoriteRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
+    bindSingleton<RatingScoreRemoteDataSource> { RatingScoreRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
 }

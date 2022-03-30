@@ -1,5 +1,7 @@
 package com.adedom.myfood.di
 
+import com.adedom.myfood.data.database.h2.H2Database
+import com.adedom.myfood.data.database.sqlite.SqliteDatabase
 import com.adedom.myfood.data.resouce.local.category.CategoryLocalDataSource
 import com.adedom.myfood.data.resouce.local.category.CategoryLocalDataSourceImpl
 import com.adedom.myfood.data.resouce.local.favorite.FavoriteLocalDataSource
@@ -12,18 +14,17 @@ import com.adedom.myfood.data.resouce.local.rating_score.RatingScoreLocalDataSou
 import com.adedom.myfood.data.resouce.local.rating_score.RatingScoreLocalDataSourceImpl
 import com.adedom.myfood.data.resouce.local.user.UserLocalDataSource
 import com.adedom.myfood.data.resouce.local.user.UserLocalDataSourceImpl
-import com.adedom.myfood.utility.constant.AppConstant
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
 
 val localDataSourceModule = DI.Module(name = "local_data_source") {
 
-    bindSingleton<FavoriteLocalDataSource> { FavoriteLocalDataSourceImpl(instance(tag = AppConstant.SQLITE_DB)) }
-    bindSingleton<RatingScoreLocalDataSource> { RatingScoreLocalDataSourceImpl(instance(tag = AppConstant.SQLITE_DB)) }
+    bindSingleton<FavoriteLocalDataSource> { FavoriteLocalDataSourceImpl(instance<SqliteDatabase>().getDatabase()) }
+    bindSingleton<RatingScoreLocalDataSource> { RatingScoreLocalDataSourceImpl(instance<SqliteDatabase>().getDatabase()) }
 
-    bindSingleton<UserLocalDataSource> { UserLocalDataSourceImpl(instance(tag = AppConstant.H2_DB)) }
-    bindSingleton<CategoryLocalDataSource> { CategoryLocalDataSourceImpl(instance(tag = AppConstant.H2_DB)) }
-    bindSingleton<FoodLocalDataSource> { FoodLocalDataSourceImpl(instance(tag = AppConstant.H2_DB)) }
-    bindSingleton<FoodAndCategoryLocalDataSource> { FoodAndCategoryLocalDataSourceImpl(instance(tag = AppConstant.H2_DB)) }
+    bindSingleton<UserLocalDataSource> { UserLocalDataSourceImpl(instance<H2Database>().getDatabase()) }
+    bindSingleton<CategoryLocalDataSource> { CategoryLocalDataSourceImpl(instance<H2Database>().getDatabase()) }
+    bindSingleton<FoodLocalDataSource> { FoodLocalDataSourceImpl(instance<H2Database>().getDatabase()) }
+    bindSingleton<FoodAndCategoryLocalDataSource> { FoodAndCategoryLocalDataSourceImpl(instance<H2Database>().getDatabase()) }
 }
