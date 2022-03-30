@@ -1,4 +1,4 @@
-package com.adedom.myfood.utility
+package com.adedom.myfood.utility.extension
 
 import com.adedom.myfood.utility.constant.RequestKeyConstant
 import com.adedom.myfood.utility.jwt.JwtHelper

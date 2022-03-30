@@ -8,7 +8,7 @@ import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.auth.*
 import com.adedom.myfood.utility.extension.postAuth
 import com.adedom.myfood.utility.extension.putAuth
-import com.adedom.myfood.utility.userId
+import com.adedom.myfood.utility.extension.userId
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*

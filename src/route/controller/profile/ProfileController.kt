@@ -8,7 +8,7 @@ import com.adedom.myfood.domain.usecase.profile.UserProfileUseCase
 import com.adedom.myfood.utility.extension.deleteAuth
 import com.adedom.myfood.utility.extension.getAuth
 import com.adedom.myfood.utility.extension.putAuth
-import com.adedom.myfood.utility.userId
+import com.adedom.myfood.utility.extension.userId
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*

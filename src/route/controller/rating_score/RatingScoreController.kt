@@ -6,7 +6,7 @@ import com.adedom.myfood.domain.usecase.rating_score.GetRatingScoreAllUseCase
 import com.adedom.myfood.domain.usecase.rating_score.MyRatingScoreUseCase
 import com.adedom.myfood.domain.usecase.rating_score.SyncDataRatingScoreUseCase
 import com.adedom.myfood.utility.extension.postAuth
-import com.adedom.myfood.utility.userId
+import com.adedom.myfood.utility.extension.userId
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.response.*

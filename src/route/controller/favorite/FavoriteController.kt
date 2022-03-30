@@ -6,7 +6,7 @@ import com.adedom.myfood.domain.usecase.favorite.GetFavoriteAllUseCase
 import com.adedom.myfood.domain.usecase.favorite.MyFavoriteUseCase
 import com.adedom.myfood.domain.usecase.favorite.SyncDataFavoriteUseCase
 import com.adedom.myfood.utility.extension.postAuth
-import com.adedom.myfood.utility.userId
+import com.adedom.myfood.utility.extension.userId
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.response.*

@@ -3,7 +3,7 @@ package com.adedom.myfood.route.controller.default
 import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import com.adedom.myfood.utility.extension.getAuth
-import com.adedom.myfood.utility.userId
+import com.adedom.myfood.utility.extension.userId
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.response.*
