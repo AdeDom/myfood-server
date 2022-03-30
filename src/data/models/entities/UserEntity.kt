@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.models.entities
+package com.adedom.myfood.data.models.entities
 
 import org.joda.time.DateTime
 

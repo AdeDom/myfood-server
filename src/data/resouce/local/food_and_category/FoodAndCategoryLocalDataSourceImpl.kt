@@ -1,7 +1,7 @@
 package com.adedom.myfood.data.resouce.local.food_and_category
 
 import com.adedom.myfood.data.database.h2.FoodAndCategoryTableH2
-import com.adedom.myfood.route.models.entities.FoodAndCategoryEntity
+import com.adedom.myfood.data.models.entities.FoodAndCategoryEntity
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert

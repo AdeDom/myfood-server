@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.models.base
+package com.adedom.myfood.data.models.base
 
 sealed class ErrorResponse(
     val code: String,

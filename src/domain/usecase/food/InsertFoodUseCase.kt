@@ -1,11 +1,11 @@
 package com.adedom.myfood.domain.usecase.food
 
+import com.adedom.myfood.data.models.base.BaseError
+import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.request.InsertFoodRequest
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.category.CategoryRepository
 import com.adedom.myfood.data.repositories.food.FoodRepository
-import com.adedom.myfood.route.models.base.BaseError
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.request.InsertFoodRequest
 
 class InsertFoodUseCase(
     private val categoryRepository: CategoryRepository,

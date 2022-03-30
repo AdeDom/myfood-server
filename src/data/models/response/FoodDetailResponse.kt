@@ -1,8 +1,7 @@
-package com.adedom.myfood.route.models.entities
+package com.adedom.myfood.data.models.response
 
-import org.joda.time.DateTime
-
-data class FoodEntity(
+@kotlinx.serialization.Serializable
+data class FoodDetailResponse(
     val foodId: Int,
     val foodName: String,
     val alias: String?,
@@ -11,6 +10,6 @@ data class FoodEntity(
     val description: String?,
     val categoryId: Int,
     val status: String,
-    val created: DateTime,
-    val updated: DateTime?,
+    val created: String,
+    val updated: String?,
 )

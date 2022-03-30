@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.models.base
+package com.adedom.myfood.data.models.base
 
 @kotlinx.serialization.Serializable
 data class BaseError(

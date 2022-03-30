@@ -1,9 +1,9 @@
 package com.adedom.myfood.domain.usecase.category
 
+import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.response.CategoryResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.category.CategoryRepository
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.response.CategoryResponse
 
 class GetCategoryAllUseCase(
     private val categoryRepository: CategoryRepository,

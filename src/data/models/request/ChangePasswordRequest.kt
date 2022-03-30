@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.models.request
+package com.adedom.myfood.data.models.request
 
 @kotlinx.serialization.Serializable
 data class ChangePasswordRequest(

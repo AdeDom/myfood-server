@@ -1,8 +1,8 @@
 package com.adedom.myfood.utility.extension
 
-import com.adedom.myfood.route.models.base.BaseError
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.base.ErrorResponse
+import com.adedom.myfood.data.models.base.BaseError
+import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.base.ErrorResponse
 import com.adedom.myfood.utility.constant.RequestKeyConstant
 import com.auth0.jwt.JWT
 import com.auth0.jwt.impl.PublicClaims

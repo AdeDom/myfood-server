@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.local.category
 
-import com.adedom.myfood.route.models.entities.CategoryEntity
+import com.adedom.myfood.data.models.entities.CategoryEntity
 
 interface CategoryLocalDataSource {
 

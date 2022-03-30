@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.remote.rating_score
 
-import com.adedom.myfood.route.models.entities.RatingScoreEntity
+import com.adedom.myfood.data.models.entities.RatingScoreEntity
 
 interface RatingScoreRemoteDataSource {
 

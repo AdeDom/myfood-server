@@ -1,9 +1,9 @@
 package com.adedom.myfood.domain.usecase.favorite
 
+import com.adedom.myfood.data.models.base.BaseError
+import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.favorite.FavoriteRepository
-import com.adedom.myfood.route.models.base.BaseError
-import com.adedom.myfood.route.models.base.BaseResponse
 
 class MyFavoriteUseCase(
     private val favoriteRepository: FavoriteRepository,

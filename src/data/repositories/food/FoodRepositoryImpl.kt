@@ -1,16 +1,16 @@
 package com.adedom.myfood.data.repositories.food
 
+import com.adedom.myfood.data.models.base.BaseError
+import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.entities.MyFoodEntity
+import com.adedom.myfood.data.models.request.InsertFoodRequest
+import com.adedom.myfood.data.models.response.FoodAndCategoryResponse
+import com.adedom.myfood.data.models.response.FoodDetailResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.food.FoodLocalDataSource
 import com.adedom.myfood.data.resouce.local.food_and_category.FoodAndCategoryLocalDataSource
 import com.adedom.myfood.data.resouce.remote.food.FoodRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.food.MyFoodRemoteDataSource
-import com.adedom.myfood.route.models.base.BaseError
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.entities.MyFoodEntity
-import com.adedom.myfood.route.models.request.InsertFoodRequest
-import com.adedom.myfood.route.models.response.FoodAndCategoryResponse
-import com.adedom.myfood.route.models.response.FoodDetailResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 

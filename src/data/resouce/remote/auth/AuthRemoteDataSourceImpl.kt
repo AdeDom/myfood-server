@@ -1,7 +1,7 @@
 package com.adedom.myfood.data.resouce.remote.auth
 
 import com.adedom.myfood.data.database.mysql.UserTable
-import com.adedom.myfood.route.models.request.RegisterRequest
+import com.adedom.myfood.data.models.request.RegisterRequest
 import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*

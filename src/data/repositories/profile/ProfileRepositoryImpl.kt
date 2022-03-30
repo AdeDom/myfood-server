@@ -1,13 +1,13 @@
 package com.adedom.myfood.data.repositories.profile
 
+import com.adedom.myfood.data.models.base.BaseError
+import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.request.ChangeProfileRequest
+import com.adedom.myfood.data.models.response.UserProfileResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.user.UserLocalDataSource
 import com.adedom.myfood.data.resouce.remote.profile.ProfileRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.user.UserRemoteDataSource
-import com.adedom.myfood.route.models.base.BaseError
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.request.ChangeProfileRequest
-import com.adedom.myfood.route.models.response.UserProfileResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 

@@ -1,8 +1,8 @@
 package com.adedom.myfood.data.resouce.remote.food
 
-import com.adedom.myfood.route.models.entities.FoodAndCategoryEntity
-import com.adedom.myfood.route.models.entities.FoodEntity
-import com.adedom.myfood.route.models.request.InsertFoodRequest
+import com.adedom.myfood.data.models.entities.FoodAndCategoryEntity
+import com.adedom.myfood.data.models.entities.FoodEntity
+import com.adedom.myfood.data.models.request.InsertFoodRequest
 
 interface FoodRemoteDataSource {
 

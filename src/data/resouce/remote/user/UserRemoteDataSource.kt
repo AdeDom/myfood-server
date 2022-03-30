@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.remote.user
 
-import com.adedom.myfood.route.models.entities.UserEntity
+import com.adedom.myfood.data.models.entities.UserEntity
 
 interface UserRemoteDataSource {
 

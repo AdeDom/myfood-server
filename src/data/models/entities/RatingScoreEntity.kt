@@ -1,12 +1,11 @@
-package com.adedom.myfood.route.models.response
+package com.adedom.myfood.data.models.entities
 
-@kotlinx.serialization.Serializable
-data class RatingScoreResponse(
+data class RatingScoreEntity(
     val ratingScoreId: String,
     val userId: String,
     val foodId: Int,
     val ratingScore: Float,
-    val isBackup: Boolean,
+    val isBackup: Int,
     val created: String,
     val updated: String?,
 )

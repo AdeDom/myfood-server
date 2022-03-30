@@ -1,9 +1,9 @@
 package com.adedom.myfood.domain.usecase.rating_score
 
+import com.adedom.myfood.data.models.base.BaseError
+import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.rating_score.RatingScoreRepository
-import com.adedom.myfood.route.models.base.BaseError
-import com.adedom.myfood.route.models.base.BaseResponse
 
 class MyRatingScoreUseCase(
     private val ratingScoreRepository: RatingScoreRepository,

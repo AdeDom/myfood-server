@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.remote.auth
 
-import com.adedom.myfood.route.models.request.RegisterRequest
+import com.adedom.myfood.data.models.request.RegisterRequest
 
 interface AuthRemoteDataSource {
 

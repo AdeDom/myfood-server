@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.local.favorite
 
-import com.adedom.myfood.route.models.entities.FavoriteEntity
+import com.adedom.myfood.data.models.entities.FavoriteEntity
 
 interface FavoriteLocalDataSource {
 

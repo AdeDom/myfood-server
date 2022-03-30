@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.models.response
+package com.adedom.myfood.data.models.response
 
 @kotlinx.serialization.Serializable
 data class UserProfileResponse(

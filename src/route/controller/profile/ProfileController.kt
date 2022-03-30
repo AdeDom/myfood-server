@@ -1,10 +1,10 @@
 package com.adedom.myfood.route.controller.profile
 
+import com.adedom.myfood.data.models.request.ChangeProfileRequest
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.profile.ChangeProfileUseCase
 import com.adedom.myfood.domain.usecase.profile.DeleteAccountUseCase
 import com.adedom.myfood.domain.usecase.profile.UserProfileUseCase
-import com.adedom.myfood.route.models.request.ChangeProfileRequest
 import com.adedom.myfood.utility.extension.deleteAuth
 import com.adedom.myfood.utility.extension.getAuth
 import com.adedom.myfood.utility.extension.putAuth

@@ -1,7 +1,7 @@
 package com.adedom.myfood.data.resouce.remote.profile
 
-import com.adedom.myfood.route.models.entities.UserEntity
-import com.adedom.myfood.route.models.request.ChangeProfileRequest
+import com.adedom.myfood.data.models.entities.UserEntity
+import com.adedom.myfood.data.models.request.ChangeProfileRequest
 
 interface ProfileRemoteDataSource {
 

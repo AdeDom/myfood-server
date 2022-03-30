@@ -1,11 +1,11 @@
 package com.adedom.myfood.data.repositories.rating_score
 
+import com.adedom.myfood.data.models.base.BaseError
+import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.response.RatingScoreResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.rating_score.RatingScoreLocalDataSource
 import com.adedom.myfood.data.resouce.remote.rating_score.RatingScoreRemoteDataSource
-import com.adedom.myfood.route.models.base.BaseError
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.response.RatingScoreResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import org.joda.time.DateTime

@@ -1,7 +1,7 @@
 package com.adedom.myfood.data.resouce.remote.food
 
 import com.adedom.myfood.data.database.mysql.MyFoodTable
-import com.adedom.myfood.route.models.entities.MyFoodEntity
+import com.adedom.myfood.data.models.entities.MyFoodEntity
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.selectAll

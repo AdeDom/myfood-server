@@ -1,8 +1,8 @@
 package com.adedom.myfood.data.resouce.remote.category
 
 import com.adedom.myfood.data.database.mysql.CategoryTable
-import com.adedom.myfood.route.models.entities.CategoryEntity
-import com.adedom.myfood.route.models.request.InsertCategoryRequest
+import com.adedom.myfood.data.models.entities.CategoryEntity
+import com.adedom.myfood.data.models.request.InsertCategoryRequest
 import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database

@@ -1,11 +1,11 @@
 package com.adedom.myfood.data.repositories.auth
 
+import com.adedom.myfood.data.models.base.BaseError
+import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.request.RegisterRequest
+import com.adedom.myfood.data.models.response.TokenResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSource
-import com.adedom.myfood.route.models.base.BaseError
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.request.RegisterRequest
-import com.adedom.myfood.route.models.response.TokenResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import com.adedom.myfood.utility.jwt.JwtHelper

@@ -2,9 +2,9 @@ package com.adedom.myfood.data.resouce.remote.food
 
 import com.adedom.myfood.data.database.mysql.CategoryTable
 import com.adedom.myfood.data.database.mysql.FoodTable
-import com.adedom.myfood.route.models.entities.FoodAndCategoryEntity
-import com.adedom.myfood.route.models.entities.FoodEntity
-import com.adedom.myfood.route.models.request.InsertFoodRequest
+import com.adedom.myfood.data.models.entities.FoodAndCategoryEntity
+import com.adedom.myfood.data.models.entities.FoodEntity
+import com.adedom.myfood.data.models.request.InsertFoodRequest
 import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database

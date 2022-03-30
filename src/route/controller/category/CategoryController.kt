@@ -1,9 +1,9 @@
 package com.adedom.myfood.route.controller.category
 
+import com.adedom.myfood.data.models.request.InsertCategoryRequest
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.category.GetCategoryAllUseCase
 import com.adedom.myfood.domain.usecase.category.InsertCategoryUseCase
-import com.adedom.myfood.route.models.request.InsertCategoryRequest
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*

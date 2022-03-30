@@ -1,11 +1,11 @@
 package com.adedom.myfood.data.repositories.favorite
 
+import com.adedom.myfood.data.models.base.BaseError
+import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.response.FavoriteResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.favorite.FavoriteLocalDataSource
 import com.adedom.myfood.data.resouce.remote.favorite.FavoriteRemoteDataSource
-import com.adedom.myfood.route.models.base.BaseError
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.response.FavoriteResponse
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import org.joda.time.DateTime

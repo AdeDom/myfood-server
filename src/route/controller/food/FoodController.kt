@@ -1,8 +1,8 @@
 package com.adedom.myfood.route.controller.food
 
+import com.adedom.myfood.data.models.request.InsertFoodRequest
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.food.*
-import com.adedom.myfood.route.models.request.InsertFoodRequest
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*

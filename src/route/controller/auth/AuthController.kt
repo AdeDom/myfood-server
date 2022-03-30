@@ -1,11 +1,11 @@
 package com.adedom.myfood.route.controller.auth
 
+import com.adedom.myfood.data.models.request.ChangePasswordRequest
+import com.adedom.myfood.data.models.request.LoginRequest
+import com.adedom.myfood.data.models.request.RegisterRequest
+import com.adedom.myfood.data.models.request.TokenRequest
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.auth.*
-import com.adedom.myfood.route.models.request.ChangePasswordRequest
-import com.adedom.myfood.route.models.request.LoginRequest
-import com.adedom.myfood.route.models.request.RegisterRequest
-import com.adedom.myfood.route.models.request.TokenRequest
 import com.adedom.myfood.utility.extension.postAuth
 import com.adedom.myfood.utility.extension.putAuth
 import com.adedom.myfood.utility.userId

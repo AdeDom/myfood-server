@@ -1,6 +1,6 @@
 package com.adedom.myfood.route.controller.default
 
-import com.adedom.myfood.route.models.base.BaseResponse
+import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import com.adedom.myfood.utility.extension.getAuth
 import com.adedom.myfood.utility.userId

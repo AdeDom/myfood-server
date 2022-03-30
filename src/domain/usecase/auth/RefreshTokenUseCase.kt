@@ -1,12 +1,12 @@
 package com.adedom.myfood.domain.usecase.auth
 
+import com.adedom.myfood.data.models.base.BaseError
+import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.base.ErrorResponse
+import com.adedom.myfood.data.models.request.TokenRequest
+import com.adedom.myfood.data.models.response.TokenResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.auth.AuthRepository
-import com.adedom.myfood.route.models.base.BaseError
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.base.ErrorResponse
-import com.adedom.myfood.route.models.request.TokenRequest
-import com.adedom.myfood.route.models.response.TokenResponse
 import com.adedom.myfood.utility.jwt.JwtHelper
 
 class RefreshTokenUseCase(

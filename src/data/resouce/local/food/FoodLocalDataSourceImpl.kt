@@ -1,7 +1,7 @@
 package com.adedom.myfood.data.resouce.local.food
 
 import com.adedom.myfood.data.database.h2.FoodTableH2
-import com.adedom.myfood.route.models.entities.FoodEntity
+import com.adedom.myfood.data.models.entities.FoodEntity
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction

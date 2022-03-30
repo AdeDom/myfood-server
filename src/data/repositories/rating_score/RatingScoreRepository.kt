@@ -1,8 +1,8 @@
 package com.adedom.myfood.data.repositories.rating_score
 
+import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.response.RatingScoreResponse
 import com.adedom.myfood.data.repositories.Resource
-import com.adedom.myfood.route.models.base.BaseResponse
-import com.adedom.myfood.route.models.response.RatingScoreResponse
 
 interface RatingScoreRepository {
 
