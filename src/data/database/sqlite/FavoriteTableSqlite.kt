@@ -1,4 +1,4 @@
-package com.adedom.myfood.data.database.local
+package com.adedom.myfood.data.database.sqlite
 
 import org.jetbrains.exposed.sql.Table
 

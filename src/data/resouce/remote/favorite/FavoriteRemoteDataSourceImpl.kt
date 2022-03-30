@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.remote.favorite
 
-import com.adedom.myfood.data.database.remote.FavoriteTable
+import com.adedom.myfood.data.database.mysql.FavoriteTable
 import com.adedom.myfood.route.models.entities.FavoriteEntity
 import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers

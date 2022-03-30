@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.remote.rating_score
 
-import com.adedom.myfood.data.database.remote.RatingScoreTable
+import com.adedom.myfood.data.database.mysql.RatingScoreTable
 import com.adedom.myfood.route.models.entities.RatingScoreEntity
 import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers

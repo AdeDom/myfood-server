@@ -1,4 +1,4 @@
-package com.adedom.myfood.data.database.local
+package com.adedom.myfood.data.database.h2
 
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.jodatime.datetime

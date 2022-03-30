@@ -1,4 +1,4 @@
-package com.adedom.myfood.data.database.remote
+package com.adedom.myfood.data.database.mysql
 
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.jodatime.datetime

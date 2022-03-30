@@ -1,6 +1,6 @@
 package com.adedom.myfood.data.resouce.local.rating_score
 
-import com.adedom.myfood.data.database.local.RatingScoreTableSqlite
+import com.adedom.myfood.data.database.sqlite.RatingScoreTableSqlite
 import com.adedom.myfood.route.models.entities.RatingScoreEntity
 import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
