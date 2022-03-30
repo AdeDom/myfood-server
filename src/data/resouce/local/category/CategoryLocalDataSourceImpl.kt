@@ -20,6 +20,7 @@ class CategoryLocalDataSourceImpl(
                     CategoryTable.categoryId,
                     CategoryTable.categoryName,
                     CategoryTable.image,
+                    CategoryTable.categoryTypeName,
                     CategoryTable.created,
                     CategoryTable.updated,
                 )
@@ -29,6 +30,7 @@ class CategoryLocalDataSourceImpl(
                         categoryId = row[CategoryTable.categoryId],
                         categoryName = row[CategoryTable.categoryName],
                         image = row[CategoryTable.image],
+                        categoryTypeName = row[CategoryTable.categoryTypeName],
                         created = row[CategoryTable.created],
                         updated = row[CategoryTable.updated],
                     )
@@ -42,6 +44,7 @@ class CategoryLocalDataSourceImpl(
                 this[CategoryTable.categoryId] = categoryEntity.categoryId
                 this[CategoryTable.categoryName] = categoryEntity.categoryName
                 this[CategoryTable.image] = categoryEntity.image
+                this[CategoryTable.categoryTypeName] = categoryEntity.categoryTypeName
                 this[CategoryTable.created] = categoryEntity.created
                 this[CategoryTable.updated] = categoryEntity.updated
             }

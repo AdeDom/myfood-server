@@ -29,7 +29,7 @@ fun Route.categoryRoute() {
         }
     }
 
-    get("/api/category/all") {
+    get("/api/category/getCategoryAll") {
         val getCategoryAllUseCase by closestDI().instance<GetCategoryAllUseCase>()
 
         val resource = getCategoryAllUseCase()

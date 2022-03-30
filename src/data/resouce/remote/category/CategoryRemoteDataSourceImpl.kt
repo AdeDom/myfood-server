@@ -47,6 +47,7 @@ class CategoryRemoteDataSourceImpl(
                     CategoryTable.categoryId,
                     CategoryTable.categoryName,
                     CategoryTable.image,
+                    CategoryTable.categoryTypeName,
                     CategoryTable.created,
                     CategoryTable.updated,
                 )
@@ -56,6 +57,7 @@ class CategoryRemoteDataSourceImpl(
                         categoryId = row[CategoryTable.categoryId],
                         categoryName = row[CategoryTable.categoryName],
                         image = row[CategoryTable.image],
+                        categoryTypeName = row[CategoryTable.categoryTypeName],
                         created = row[CategoryTable.created],
                         updated = row[CategoryTable.updated],
                     )
