@@ -6,5 +6,5 @@ interface AuthLocalDataSource {
 
     suspend fun replaceAuth(authId: String, accessToken: String, refreshToken: String, isBackup: Int): Int?
 
-    suspend fun getAuth(): List<AuthEntity>
+    suspend fun getAuthList(): List<AuthEntity>
 }

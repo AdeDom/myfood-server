@@ -31,7 +31,7 @@ class AuthLocalDataSourceImpl(
         return statement.resultedValues?.size
     }
 
-    override suspend fun getAuth(): List<AuthEntity> {
+    override suspend fun getAuthList(): List<AuthEntity> {
         return newSuspendedTransaction(Dispatchers.IO, db) {
             AuthTableSqlite
                 .slice(
