@@ -1,10 +1,12 @@
 package com.adedom.myfood.data.resouce.local.auth
 
 import com.adedom.myfood.data.database.sqlite.AuthTableSqlite
+import com.adedom.myfood.data.models.entities.AuthEntity
 import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.replace
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.joda.time.DateTime
 
@@ -12,9 +14,9 @@ class AuthLocalDataSourceImpl(
     private val db: Database,
 ) : AuthLocalDataSource {
 
-    override suspend fun insertAuth(authId: String, accessToken: String, refreshToken: String, isBackup: Int): Int? {
+    override suspend fun replaceAuth(authId: String, accessToken: String, refreshToken: String, isBackup: Int): Int? {
         val statement = newSuspendedTransaction(Dispatchers.IO, db) {
-            AuthTableSqlite.insert {
+            AuthTableSqlite.replace {
                 it[AuthTableSqlite.authId] = authId
                 it[AuthTableSqlite.accessToken] = accessToken
                 it[AuthTableSqlite.refreshToken] = refreshToken
@@ -27,5 +29,30 @@ class AuthLocalDataSourceImpl(
         }
 
         return statement.resultedValues?.size
+    }
+
+    override suspend fun getAuth(): List<AuthEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            AuthTableSqlite
+                .slice(
+                    AuthTableSqlite.authId,
+                    AuthTableSqlite.accessToken,
+                    AuthTableSqlite.refreshToken,
+                    AuthTableSqlite.isBackup,
+                    AuthTableSqlite.created,
+                    AuthTableSqlite.updated,
+                )
+                .selectAll()
+                .map { row ->
+                    AuthEntity(
+                        authId = row[AuthTableSqlite.authId],
+                        accessToken = row[AuthTableSqlite.accessToken],
+                        refreshToken = row[AuthTableSqlite.refreshToken],
+                        isBackup = row[AuthTableSqlite.isBackup],
+                        created = row[AuthTableSqlite.created],
+                        updated = row[AuthTableSqlite.updated],
+                    )
+                }
+        }
     }
 }

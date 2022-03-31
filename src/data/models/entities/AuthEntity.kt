@@ -1,0 +1,10 @@
+package com.adedom.myfood.data.models.entities
+
+data class AuthEntity(
+    val authId: String,
+    val accessToken: String,
+    val refreshToken: String,
+    val isBackup: Int,
+    val created: String,
+    val updated: String?,
+)
