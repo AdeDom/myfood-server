@@ -18,4 +18,8 @@ object AppConstant {
 
     const val UN_FAVORITE = 0
     const val FAVORITE = 1
+
+    const val AUTH_LOGIN = "login"
+    const val AUTH_LOGOUT = "logout"
+    const val AUTH_REFRESH = "refresh"
 }
