@@ -5,6 +5,7 @@ import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.data.models.request.RegisterRequest
 import com.adedom.myfood.data.models.response.TokenResponse
 import com.adedom.myfood.data.repositories.Resource
+import com.adedom.myfood.data.resouce.local.auth.AuthLocalDataSource
 import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSource
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
@@ -17,6 +18,7 @@ import java.util.*
 
 class AuthRepositoryImpl(
     private val jwtHelper: JwtHelper,
+    private val authLocalDataSource: AuthLocalDataSource,
     private val authRemoteDataSource: AuthRemoteDataSource,
 ) : AuthRepository {
 
@@ -29,13 +31,23 @@ class AuthRepositoryImpl(
             AppConstant.ACTIVE,
         )
         return if (userId != null) {
-            response.status = ResponseKeyConstant.SUCCESS
-            val tokenResponse = TokenResponse(
-                accessToken = jwtHelper.encodeAccessToken(userId),
-                refreshToken = jwtHelper.encodeRefreshToken(userId)
-            )
-            response.result = tokenResponse
-            Resource.Success(response)
+            val authId = UUID.randomUUID().toString().replace("-", "")
+            val accessToken = jwtHelper.encodeAccessToken(userId)
+            val refreshToken = jwtHelper.encodeRefreshToken(userId)
+            val isBackup = AppConstant.LOCAL_BACKUP
+            val insertAuthCount = authLocalDataSource.insertAuth(authId, accessToken, refreshToken, isBackup)
+            if (insertAuthCount == 1) {
+                val tokenResponse = TokenResponse(
+                    accessToken = accessToken,
+                    refreshToken = refreshToken,
+                )
+                response.status = ResponseKeyConstant.SUCCESS
+                response.result = tokenResponse
+                Resource.Success(response)
+            } else {
+                response.error = BaseError(message = "Login invalid.")
+                Resource.Error(response)
+            }
         } else {
             response.error = BaseError(message = "Username or password incorrect.")
             Resource.Error(response)
