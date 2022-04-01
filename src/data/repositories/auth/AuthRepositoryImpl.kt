@@ -167,7 +167,7 @@ class AuthRepositoryImpl(
             val authId = UUID.randomUUID().toString().replace("-", "")
             val accessToken = jwtHelper.encodeAccessToken(userId)
             val refreshToken = jwtHelper.encodeRefreshToken(userId)
-            val status = AppConstant.AUTH_LOGIN
+            val status = AppConstant.AUTH_REFRESH
             val isBackup = AppConstant.LOCAL_BACKUP
             val insertAuthCount = authLocalDataSource.insertAuth(authId, accessToken, refreshToken, status, isBackup)
             if (insertAuthCount == 1) {
