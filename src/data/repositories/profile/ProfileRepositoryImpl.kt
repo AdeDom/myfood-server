@@ -2,17 +2,22 @@ package com.adedom.myfood.data.repositories.profile
 
 import com.adedom.myfood.data.models.base.BaseError
 import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.entities.AuthMasterEntity
 import com.adedom.myfood.data.models.request.ChangeProfileRequest
 import com.adedom.myfood.data.models.response.UserProfileResponse
 import com.adedom.myfood.data.repositories.Resource
+import com.adedom.myfood.data.resouce.local.auth.AuthLocalDataSource
 import com.adedom.myfood.data.resouce.local.user.UserLocalDataSource
 import com.adedom.myfood.data.resouce.remote.profile.ProfileRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.user.UserRemoteDataSource
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
+import com.adedom.myfood.utility.jwt.JwtHelper
 
 class ProfileRepositoryImpl(
+    private val jwtHelper: JwtHelper,
     private val userLocalDataSource: UserLocalDataSource,
+    private val authLocalDataSource: AuthLocalDataSource,
     private val userRemoteDataSource: UserRemoteDataSource,
     private val profileRemoteDataSource: ProfileRemoteDataSource,
 ) : ProfileRepository {
@@ -74,9 +79,32 @@ class ProfileRepositoryImpl(
 
         val isUpdateStatus = profileRemoteDataSource.updateUserStatus(userId, AppConstant.IN_ACTIVE) == 1
         return if (isUpdateStatus) {
-            response.status = ResponseKeyConstant.SUCCESS
-            response.result = "Delete account successfully."
-            Resource.Success(response)
+            val getAuthListOriginal = authLocalDataSource.getAuthListByStatusLoginOrRefresh()
+            val getAuthList = getAuthListOriginal.map { authEntity ->
+                AuthMasterEntity(
+                    authId = authEntity.authId,
+                    userId = jwtHelper.decodeJwtGetUserId(authEntity.accessToken),
+                    status = authEntity.status,
+                    isBackup = authEntity.isBackup,
+                    created = authEntity.created,
+                    updated = authEntity.updated,
+                )
+            }
+            val getAuthIdList = getAuthList
+                .filter { it.userId == userId }
+                .map { it.authId }
+            var updateAuthLogoutCount = 0
+            getAuthIdList.forEach { authId ->
+                updateAuthLogoutCount += authLocalDataSource.updateAuthStatusLogoutByAuthId(authId)
+            }
+            if (updateAuthLogoutCount == getAuthIdList.size) {
+                response.status = ResponseKeyConstant.SUCCESS
+                response.result = "Delete account successfully."
+                Resource.Success(response)
+            } else {
+                response.error = BaseError(message = "Delete account failed.")
+                Resource.Error(response)
+            }
         } else {
             response.error = BaseError(message = "Delete account failed.")
             Resource.Error(response)
