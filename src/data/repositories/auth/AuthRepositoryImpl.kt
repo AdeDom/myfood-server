@@ -188,6 +188,13 @@ class AuthRepositoryImpl(
         }
     }
 
+    override suspend fun updateStatusLogoutByAccessTokenAndRefreshToken(
+        accessToken: String,
+        refreshToken: String,
+    ): Int {
+        return authLocalDataSource.updateStatusLogoutByAccessTokenAndRefreshToken(accessToken, refreshToken)
+    }
+
     override suspend fun findTokenByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long {
         return authLocalDataSource.findTokenByAccessTokenAndRefreshToken(accessToken, refreshToken)
     }

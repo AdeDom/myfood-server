@@ -27,13 +27,6 @@ class RefreshTokenUseCase(
                 response.error = BaseError(message = "Refresh token is null or blank.")
                 Resource.Error(response)
             }
-            validateRefreshToken(refreshToken) -> {
-                response.error = BaseError(
-                    code = ErrorResponse.RefreshTokenError.code,
-                    message = ErrorResponse.RefreshTokenError.message,
-                )
-                Resource.Error(response)
-            }
             isValidateAccessTokenAndRefreshToken(accessToken, refreshToken) -> {
                 response.error = BaseError(message = "Access token or refresh token incorrect.")
                 Resource.Error(response)
@@ -42,13 +35,21 @@ class RefreshTokenUseCase(
                 response.error = BaseError(message = "Token is already used.")
                 Resource.Error(response)
             }
+            isValidateRefreshToken(refreshToken) -> {
+                authRepository.updateStatusLogoutByAccessTokenAndRefreshToken(accessToken, refreshToken)
+                response.error = BaseError(
+                    code = ErrorResponse.RefreshTokenError.code,
+                    message = ErrorResponse.RefreshTokenError.message,
+                )
+                Resource.Error(response)
+            }
             else -> {
                 authRepository.refreshToken(refreshToken)
             }
         }
     }
 
-    private fun validateRefreshToken(refreshToken: String): Boolean {
+    private fun isValidateRefreshToken(refreshToken: String): Boolean {
         val expiresAtClaim = jwtHelper.decodeJwtGetExpiresAt(refreshToken)
         val currentTime = System.currentTimeMillis() / 1_000L
         val isTokenExpire = expiresAtClaim.minus(currentTime) > 0

@@ -16,6 +16,8 @@ interface AuthLocalDataSource {
 
     suspend fun updateAuthStatusLogoutByAuthId(authId: String): Int
 
+    suspend fun updateStatusLogoutByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Int
+
     suspend fun findTokenByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long
 
     suspend fun findTokenLogoutByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long

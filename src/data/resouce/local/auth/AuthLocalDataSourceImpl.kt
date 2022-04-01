@@ -76,6 +76,20 @@ class AuthLocalDataSourceImpl(
         }
     }
 
+    override suspend fun updateStatusLogoutByAccessTokenAndRefreshToken(
+        accessToken: String,
+        refreshToken: String,
+    ): Int {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            AuthTableSqlite.update({ (AuthTableSqlite.accessToken eq accessToken) and (AuthTableSqlite.refreshToken eq refreshToken) }) {
+                it[status] = AppConstant.AUTH_LOGOUT
+                val currentDateTime = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
+                val currentDateTimeString = currentDateTime.toString(AppConstant.DATE_TIME_FORMAT_REQUEST)
+                it[updated] = currentDateTimeString
+            }
+        }
+    }
+
     override suspend fun findTokenByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long {
         return newSuspendedTransaction(Dispatchers.IO, db) {
             AuthTableSqlite

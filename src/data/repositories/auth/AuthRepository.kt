@@ -21,6 +21,8 @@ interface AuthRepository {
 
     suspend fun refreshToken(refreshTokenMaster: String): Resource<BaseResponse<TokenResponse>>
 
+    suspend fun updateStatusLogoutByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Int
+
     suspend fun findTokenByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long
 
     suspend fun findTokenLogoutByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long
