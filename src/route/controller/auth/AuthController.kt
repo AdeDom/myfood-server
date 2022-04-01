@@ -67,7 +67,8 @@ fun Route.authRoute() {
     postAuth("/api/auth/logout") {
         val logoutUseCase by closestDI().instance<LogoutUseCase>()
 
-        val resource = logoutUseCase()
+        val userId = call.userId
+        val resource = logoutUseCase(userId)
         when (resource) {
             is Resource.Success -> {
                 call.respond(HttpStatusCode.OK, resource.data)

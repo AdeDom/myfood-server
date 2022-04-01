@@ -17,7 +17,7 @@ interface AuthRepository {
 
     suspend fun changePassword(userId: String, newPassword: String): Resource<BaseResponse<String>>
 
-    suspend fun logout(): Resource<BaseResponse<String>>
+    suspend fun logout(userId: String): Resource<BaseResponse<String>>
 
     suspend fun refreshToken(refreshTokenMaster: String): Resource<BaseResponse<TokenResponse>>
 

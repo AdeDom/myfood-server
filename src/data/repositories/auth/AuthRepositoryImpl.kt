@@ -132,12 +132,35 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun logout(): Resource<BaseResponse<String>> {
+    override suspend fun logout(userId: String): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
-        response.status = ResponseKeyConstant.SUCCESS
-        response.result = "Logout success."
-        return Resource.Success(response)
+        val getAuthListOriginal = authLocalDataSource.getAuthListByStatusLoginOrRefresh()
+        val getAuthList = getAuthListOriginal.map { authEntity ->
+            AuthMasterEntity(
+                authId = authEntity.authId,
+                userId = jwtHelper.decodeJwtGetUserId(authEntity.accessToken),
+                status = authEntity.status,
+                isBackup = authEntity.isBackup,
+                created = authEntity.created,
+                updated = authEntity.updated,
+            )
+        }
+        val getAuthIdList = getAuthList
+            .filter { it.userId == userId }
+            .map { it.authId }
+        var updateAuthLogoutCount = 0
+        getAuthIdList.forEach { authId ->
+            updateAuthLogoutCount += authLocalDataSource.updateAuthStatusLogoutByAuthId(authId)
+        }
+        return if (updateAuthLogoutCount == getAuthIdList.size) {
+            response.status = ResponseKeyConstant.SUCCESS
+            response.result = "Logout success."
+            return Resource.Success(response)
+        } else {
+            response.error = BaseError(message = "Logout failed.")
+            Resource.Error(response)
+        }
     }
 
     override suspend fun refreshToken(refreshTokenMaster: String): Resource<BaseResponse<TokenResponse>> {
