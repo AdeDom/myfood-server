@@ -38,6 +38,10 @@ class RefreshTokenUseCase(
                 response.error = BaseError(message = "Access token or refresh token incorrect.")
                 Resource.Error(response)
             }
+            isValidateIsLogout(accessToken, refreshToken) -> {
+                response.error = BaseError(message = "Token is already used.")
+                Resource.Error(response)
+            }
             else -> {
                 authRepository.refreshToken(refreshToken)
             }
@@ -54,5 +58,10 @@ class RefreshTokenUseCase(
     private suspend fun isValidateAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Boolean {
         val tokenCount = authRepository.findTokenByAccessTokenAndRefreshToken(accessToken, refreshToken)
         return tokenCount == 0L
+    }
+
+    private suspend fun isValidateIsLogout(accessToken: String, refreshToken: String): Boolean {
+        val tokenLogoutCount = authRepository.findTokenLogoutByAccessTokenAndRefreshToken(accessToken, refreshToken)
+        return tokenLogoutCount == 1L
     }
 }

@@ -191,4 +191,8 @@ class AuthRepositoryImpl(
     override suspend fun findTokenByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long {
         return authLocalDataSource.findTokenByAccessTokenAndRefreshToken(accessToken, refreshToken)
     }
+
+    override suspend fun findTokenLogoutByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long {
+        return authLocalDataSource.findTokenLogoutByAccessTokenAndRefreshToken(accessToken, refreshToken)
+    }
 }
