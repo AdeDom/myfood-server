@@ -75,4 +75,14 @@ class AuthLocalDataSourceImpl(
             }
         }
     }
+
+    override suspend fun findTokenByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            AuthTableSqlite
+                .select {
+                    (AuthTableSqlite.accessToken eq accessToken) and (AuthTableSqlite.refreshToken eq refreshToken)
+                }
+                .count()
+        }
+    }
 }

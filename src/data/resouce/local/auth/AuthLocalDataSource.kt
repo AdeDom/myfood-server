@@ -15,4 +15,6 @@ interface AuthLocalDataSource {
     suspend fun getAuthListByStatusLoginOrRefresh(): List<AuthEntity>
 
     suspend fun updateAuthStatusLogoutByAuthId(authId: String): Int
+
+    suspend fun findTokenByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long
 }

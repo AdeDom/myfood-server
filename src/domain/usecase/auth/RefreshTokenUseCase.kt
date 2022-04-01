@@ -34,6 +34,10 @@ class RefreshTokenUseCase(
                 )
                 Resource.Error(response)
             }
+            isValidateAccessTokenAndRefreshToken(accessToken, refreshToken) -> {
+                response.error = BaseError(message = "Access token or refresh token incorrect.")
+                Resource.Error(response)
+            }
             else -> {
                 authRepository.refreshToken(refreshToken)
             }
@@ -45,5 +49,10 @@ class RefreshTokenUseCase(
         val currentTime = System.currentTimeMillis() / 1_000L
         val isTokenExpire = expiresAtClaim.minus(currentTime) > 0
         return !isTokenExpire
+    }
+
+    private suspend fun isValidateAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Boolean {
+        val tokenCount = authRepository.findTokenByAccessTokenAndRefreshToken(accessToken, refreshToken)
+        return tokenCount == 0L
     }
 }
