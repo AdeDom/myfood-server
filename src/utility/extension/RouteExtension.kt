@@ -3,6 +3,7 @@ package com.adedom.myfood.utility.extension
 import com.adedom.myfood.data.models.base.BaseError
 import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.data.models.base.ErrorResponse
+import com.adedom.myfood.data.resouce.local.auth.AuthLocalDataSource
 import com.adedom.myfood.utility.constant.RequestKeyConstant
 import com.auth0.jwt.JWT
 import com.auth0.jwt.impl.PublicClaims
@@ -12,6 +13,8 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.util.pipeline.*
+import org.kodein.di.instance
+import org.kodein.di.ktor.closestDI
 
 fun Route.getAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     get(path) {
@@ -51,7 +54,19 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.authentication(body: 
         val currentTime = System.currentTimeMillis() / 1_000L
         val isTokenExpire = expiresAtClaim.minus(currentTime) > 0
         if (isTokenExpire) {
-            body(Unit)
+            val authLocalDataSource by closestDI().instance<AuthLocalDataSource>()
+            val statusLoginOrRefreshCount = authLocalDataSource.findStatusLoginOrRefreshByAccessToken(accessToken)
+            if (statusLoginOrRefreshCount == 1L) {
+                body(Unit)
+            } else {
+                val response = BaseResponse<Unit>()
+                val baseError = BaseError(
+                    code = ErrorResponse.AccessTokenNotAvailableError.code,
+                    message = ErrorResponse.AccessTokenNotAvailableError.message
+                )
+                response.error = baseError
+                call.respond(HttpStatusCode.BadRequest, response)
+            }
         } else {
             val response = BaseResponse<Unit>()
             val baseError = BaseError(
