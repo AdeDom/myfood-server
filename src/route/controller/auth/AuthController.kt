@@ -79,7 +79,7 @@ fun Route.authRoute() {
         }
     }
 
-    putAuth("/api/auth/changepassword") {
+    putAuth("/api/auth/changePassword") {
         val changePasswordUseCase by closestDI().instance<ChangePasswordUseCase>()
 
         val userId = call.userId

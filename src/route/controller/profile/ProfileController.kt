@@ -34,7 +34,7 @@ fun Route.profileRoute() {
         }
     }
 
-    putAuth("/api/profile/changeprofile") {
+    putAuth("/api/profile/changeProfile") {
         val changeProfileUseCase by closestDI().instance<ChangeProfileUseCase>()
 
         val userId = call.userId
@@ -50,7 +50,7 @@ fun Route.profileRoute() {
         }
     }
 
-    deleteAuth("/api/profile/deleteaccount") {
+    deleteAuth("/api/profile/deleteAccount") {
         val deleteAccountUseCase by closestDI().instance<DeleteAccountUseCase>()
 
         val userId = call.userId
