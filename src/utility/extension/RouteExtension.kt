@@ -16,30 +16,35 @@ import io.ktor.util.pipeline.*
 import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
 
+@ContextDsl
 fun Route.getAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     get(path) {
         authentication(body)
     }
 }
 
+@ContextDsl
 fun Route.postAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     post(path) {
         authentication(body)
     }
 }
 
+@ContextDsl
 fun Route.putAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     put(path) {
         authentication(body)
     }
 }
 
+@ContextDsl
 fun Route.patchAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     patch(path) {
         authentication(body)
     }
 }
 
+@ContextDsl
 fun Route.deleteAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     delete(path) {
         authentication(body)
