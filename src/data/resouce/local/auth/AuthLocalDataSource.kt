@@ -12,5 +12,7 @@ interface AuthLocalDataSource {
         isBackup: Int,
     ): Int?
 
-    suspend fun getAuthList(): List<AuthEntity>
+    suspend fun getAuthListByStatusLoginOrRefresh(): List<AuthEntity>
+
+    suspend fun updateAuthStatusLogoutByAuthId(authId: String): Int
 }

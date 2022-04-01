@@ -2,6 +2,7 @@ package com.adedom.myfood.data.repositories.auth
 
 import com.adedom.myfood.data.models.base.BaseError
 import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.entities.AuthMasterEntity
 import com.adedom.myfood.data.models.request.RegisterRequest
 import com.adedom.myfood.data.models.response.TokenResponse
 import com.adedom.myfood.data.repositories.Resource
@@ -31,20 +32,45 @@ class AuthRepositoryImpl(
             AppConstant.ACTIVE,
         )
         return if (userId != null) {
-            val authId = UUID.randomUUID().toString().replace("-", "")
-            val accessToken = jwtHelper.encodeAccessToken(userId)
-            val refreshToken = jwtHelper.encodeRefreshToken(userId)
-            val status = AppConstant.AUTH_LOGIN
-            val isBackup = AppConstant.LOCAL_BACKUP
-            val insertAuthCount = authLocalDataSource.insertAuth(authId, accessToken, refreshToken, status, isBackup)
-            if (insertAuthCount == 1) {
-                val tokenResponse = TokenResponse(
-                    accessToken = accessToken,
-                    refreshToken = refreshToken,
+            val getAuthListOriginal = authLocalDataSource.getAuthListByStatusLoginOrRefresh()
+            val getAuthList = getAuthListOriginal.map { authEntity ->
+                AuthMasterEntity(
+                    authId = authEntity.authId,
+                    userId = jwtHelper.decodeJwtGetUserId(authEntity.accessToken),
+                    status = authEntity.status,
+                    isBackup = authEntity.isBackup,
+                    created = authEntity.created,
+                    updated = authEntity.updated,
                 )
-                response.status = ResponseKeyConstant.SUCCESS
-                response.result = tokenResponse
-                Resource.Success(response)
+            }
+            val getAuthIdList = getAuthList
+                .filter { it.userId == userId }
+                .map {
+                    it.authId
+                }
+            var updateAuthLogoutCount = 0
+            getAuthIdList.forEach { authId ->
+                updateAuthLogoutCount += authLocalDataSource.updateAuthStatusLogoutByAuthId(authId)
+            }
+            if (updateAuthLogoutCount == getAuthIdList.size) {
+                val authId = UUID.randomUUID().toString().replace("-", "")
+                val accessToken = jwtHelper.encodeAccessToken(userId)
+                val refreshToken = jwtHelper.encodeRefreshToken(userId)
+                val status = AppConstant.AUTH_LOGIN
+                val isBackup = AppConstant.LOCAL_BACKUP
+                val insertAuthCount = authLocalDataSource.insertAuth(authId, accessToken, refreshToken, status, isBackup)
+                if (insertAuthCount == 1) {
+                    val tokenResponse = TokenResponse(
+                        accessToken = accessToken,
+                        refreshToken = refreshToken,
+                    )
+                    response.status = ResponseKeyConstant.SUCCESS
+                    response.result = tokenResponse
+                    Resource.Success(response)
+                } else {
+                    response.error = BaseError(message = "Login invalid.")
+                    Resource.Error(response)
+                }
             } else {
                 response.error = BaseError(message = "Login invalid.")
                 Resource.Error(response)

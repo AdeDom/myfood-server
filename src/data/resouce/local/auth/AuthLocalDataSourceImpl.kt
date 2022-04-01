@@ -4,9 +4,7 @@ import com.adedom.myfood.data.database.sqlite.AuthTableSqlite
 import com.adedom.myfood.data.models.entities.AuthEntity
 import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.joda.time.DateTime
 
@@ -38,7 +36,7 @@ class AuthLocalDataSourceImpl(
         return statement.resultedValues?.size
     }
 
-    override suspend fun getAuthList(): List<AuthEntity> {
+    override suspend fun getAuthListByStatusLoginOrRefresh(): List<AuthEntity> {
         return newSuspendedTransaction(Dispatchers.IO, db) {
             AuthTableSqlite
                 .slice(
@@ -50,7 +48,9 @@ class AuthLocalDataSourceImpl(
                     AuthTableSqlite.created,
                     AuthTableSqlite.updated,
                 )
-                .selectAll()
+                .select {
+                    (AuthTableSqlite.status eq AppConstant.AUTH_LOGIN) or (AuthTableSqlite.status eq AppConstant.AUTH_REFRESH)
+                }
                 .map { row ->
                     AuthEntity(
                         authId = row[AuthTableSqlite.authId],
@@ -62,6 +62,17 @@ class AuthLocalDataSourceImpl(
                         updated = row[AuthTableSqlite.updated],
                     )
                 }
+        }
+    }
+
+    override suspend fun updateAuthStatusLogoutByAuthId(authId: String): Int {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            AuthTableSqlite.update({ AuthTableSqlite.authId eq authId }) {
+                it[status] = AppConstant.AUTH_LOGOUT
+                val currentDateTime = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)
+                val currentDateTimeString = currentDateTime.toString(AppConstant.DATE_TIME_FORMAT_REQUEST)
+                it[updated] = currentDateTimeString
+            }
         }
     }
 }
