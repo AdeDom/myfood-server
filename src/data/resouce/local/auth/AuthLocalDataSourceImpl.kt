@@ -119,4 +119,57 @@ class AuthLocalDataSourceImpl(
                 .count()
         }
     }
+
+    override suspend fun getAuthListByBackupIsLocal(): List<AuthEntity> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            AuthTableSqlite
+                .slice(
+                    AuthTableSqlite.authId,
+                    AuthTableSqlite.accessToken,
+                    AuthTableSqlite.refreshToken,
+                    AuthTableSqlite.status,
+                    AuthTableSqlite.isBackup,
+                    AuthTableSqlite.created,
+                    AuthTableSqlite.updated,
+                )
+                .select {
+                    AuthTableSqlite.isBackup eq AppConstant.LOCAL_BACKUP
+                }
+                .map { row ->
+                    AuthEntity(
+                        authId = row[AuthTableSqlite.authId],
+                        accessToken = row[AuthTableSqlite.accessToken],
+                        refreshToken = row[AuthTableSqlite.refreshToken],
+                        status = row[AuthTableSqlite.status],
+                        isBackup = row[AuthTableSqlite.isBackup],
+                        created = row[AuthTableSqlite.created],
+                        updated = row[AuthTableSqlite.updated],
+                    )
+                }
+        }
+    }
+
+    override suspend fun updateAuthByBackupIsRemote(): Int {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            AuthTableSqlite.update({ AuthTableSqlite.isBackup eq AppConstant.LOCAL_BACKUP }) {
+                it[isBackup] = AppConstant.REMOTE_BACKUP
+            }
+        }
+    }
+
+    override suspend fun replaceAuthAll(authList: List<AuthEntity>): Int {
+        val statement = newSuspendedTransaction(Dispatchers.IO, db) {
+            AuthTableSqlite.batchReplace(authList) { authEntity ->
+                this[AuthTableSqlite.authId] = authEntity.authId
+                this[AuthTableSqlite.accessToken] = authEntity.accessToken
+                this[AuthTableSqlite.refreshToken] = authEntity.refreshToken
+                this[AuthTableSqlite.status] = authEntity.status
+                this[AuthTableSqlite.isBackup] = authEntity.isBackup
+                this[AuthTableSqlite.created] = authEntity.created
+                this[AuthTableSqlite.updated] = authEntity.updated
+            }
+        }
+
+        return statement.size
+    }
 }

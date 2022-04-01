@@ -94,4 +94,18 @@ fun Route.authRoute() {
             }
         }
     }
+
+    post("/api/auth/syncDataAuth") {
+        val syncDataAuthUseCase by closestDI().instance<SyncDataAuthUseCase>()
+
+        val resource = syncDataAuthUseCase()
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
+    }
 }

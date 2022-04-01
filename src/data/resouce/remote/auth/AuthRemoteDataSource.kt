@@ -1,5 +1,6 @@
 package com.adedom.myfood.data.resouce.remote.auth
 
+import com.adedom.myfood.data.models.entities.AuthEntity
 import com.adedom.myfood.data.models.request.RegisterRequest
 
 interface AuthRemoteDataSource {
@@ -13,4 +14,8 @@ interface AuthRemoteDataSource {
     suspend fun findUserByUserIdAndPassword(userId: String, password: String): Long
 
     suspend fun updateUserPassword(userId: String, password: String): Int
+
+    suspend fun replaceAuthAll(authList: List<AuthEntity>): Int
+
+    suspend fun getAuthAll(): List<AuthEntity>
 }

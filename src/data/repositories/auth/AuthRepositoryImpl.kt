@@ -225,4 +225,32 @@ class AuthRepositoryImpl(
     override suspend fun findTokenLogoutByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long {
         return authLocalDataSource.findTokenLogoutByAccessTokenAndRefreshToken(accessToken, refreshToken)
     }
+
+    override suspend fun syncDataAuth(): Resource<BaseResponse<String>> {
+        val response = BaseResponse<String>()
+
+        val authLocalList = authLocalDataSource.getAuthListByBackupIsLocal()
+        val replaceAuthRemoteCount = authRemoteDataSource.replaceAuthAll(authLocalList)
+        return if (authLocalList.size == replaceAuthRemoteCount) {
+            val updateAuthBackupCount = authLocalDataSource.updateAuthByBackupIsRemote()
+            if (authLocalList.size == updateAuthBackupCount) {
+                val authRemoteList = authRemoteDataSource.getAuthAll()
+                val replaceAuthLocalCount = authLocalDataSource.replaceAuthAll(authRemoteList)
+                if (authRemoteList.size == replaceAuthLocalCount) {
+                    response.result = "Sync data success."
+                    response.status = ResponseKeyConstant.SUCCESS
+                    Resource.Success(response)
+                } else {
+                    response.error = BaseError(message = "Sync data failed (3).")
+                    Resource.Error(response)
+                }
+            } else {
+                response.error = BaseError(message = "Sync data failed (2).")
+                Resource.Error(response)
+            }
+        } else {
+            response.error = BaseError(message = "Sync data failed (1).")
+            Resource.Error(response)
+        }
+    }
 }
