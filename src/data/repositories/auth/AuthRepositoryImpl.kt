@@ -45,9 +45,7 @@ class AuthRepositoryImpl(
             }
             val getAuthIdList = getAuthList
                 .filter { it.userId == userId }
-                .map {
-                    it.authId
-                }
+                .map { it.authId }
             var updateAuthLogoutCount = 0
             getAuthIdList.forEach { authId ->
                 updateAuthLogoutCount += authLocalDataSource.updateAuthStatusLogoutByAuthId(authId)
@@ -142,16 +140,51 @@ class AuthRepositoryImpl(
         return Resource.Success(response)
     }
 
-    override suspend fun refreshToken(refreshToken: String): Resource<BaseResponse<TokenResponse>> {
+    override suspend fun refreshToken(refreshTokenMaster: String): Resource<BaseResponse<TokenResponse>> {
         val response = BaseResponse<TokenResponse>()
 
-        val userId = jwtHelper.decodeJwtGetUserId(refreshToken)
-        val tokenResponse = TokenResponse(
-            accessToken = jwtHelper.encodeAccessToken(userId),
-            refreshToken = jwtHelper.encodeRefreshToken(userId),
-        )
-        response.status = ResponseKeyConstant.SUCCESS
-        response.result = tokenResponse
+        val userId = jwtHelper.decodeJwtGetUserId(refreshTokenMaster)
+
+        val getAuthListOriginal = authLocalDataSource.getAuthListByStatusLoginOrRefresh()
+        val getAuthList = getAuthListOriginal.map { authEntity ->
+            AuthMasterEntity(
+                authId = authEntity.authId,
+                userId = jwtHelper.decodeJwtGetUserId(authEntity.accessToken),
+                status = authEntity.status,
+                isBackup = authEntity.isBackup,
+                created = authEntity.created,
+                updated = authEntity.updated,
+            )
+        }
+        val getAuthIdList = getAuthList
+            .filter { it.userId == userId }
+            .map { it.authId }
+        var updateAuthLogoutCount = 0
+        getAuthIdList.forEach { authId ->
+            updateAuthLogoutCount += authLocalDataSource.updateAuthStatusLogoutByAuthId(authId)
+        }
+        if (updateAuthLogoutCount == getAuthIdList.size) {
+            val authId = UUID.randomUUID().toString().replace("-", "")
+            val accessToken = jwtHelper.encodeAccessToken(userId)
+            val refreshToken = jwtHelper.encodeRefreshToken(userId)
+            val status = AppConstant.AUTH_LOGIN
+            val isBackup = AppConstant.LOCAL_BACKUP
+            val insertAuthCount = authLocalDataSource.insertAuth(authId, accessToken, refreshToken, status, isBackup)
+            if (insertAuthCount == 1) {
+                val tokenResponse = TokenResponse(
+                    accessToken = accessToken,
+                    refreshToken = refreshToken,
+                )
+                response.status = ResponseKeyConstant.SUCCESS
+                response.result = tokenResponse
+            } else {
+                response.error = BaseError(message = "Refresh invalid.")
+                Resource.Error(response)
+            }
+        } else {
+            response.error = BaseError(message = "Refresh invalid.")
+            Resource.Error(response)
+        }
         return Resource.Success(response)
     }
 }

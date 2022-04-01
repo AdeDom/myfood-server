@@ -19,5 +19,5 @@ interface AuthRepository {
 
     suspend fun logout(): Resource<BaseResponse<String>>
 
-    suspend fun refreshToken(refreshToken: String): Resource<BaseResponse<TokenResponse>>
+    suspend fun refreshToken(refreshTokenMaster: String): Resource<BaseResponse<TokenResponse>>
 }

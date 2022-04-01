@@ -49,7 +49,7 @@ fun Route.authRoute() {
         }
     }
 
-    post("/api/auth/refreshtoken") {
+    post("/api/auth/refreshToken") {
         val refreshTokenUseCase by closestDI().instance<RefreshTokenUseCase>()
 
         val request = call.receive<TokenRequest>()
