@@ -163,7 +163,7 @@ class AuthRepositoryImpl(
         getAuthIdList.forEach { authId ->
             updateAuthLogoutCount += authLocalDataSource.updateAuthStatusLogoutByAuthId(authId)
         }
-        if (updateAuthLogoutCount == getAuthIdList.size) {
+        return if (updateAuthLogoutCount == getAuthIdList.size) {
             val authId = UUID.randomUUID().toString().replace("-", "")
             val accessToken = jwtHelper.encodeAccessToken(userId)
             val refreshToken = jwtHelper.encodeRefreshToken(userId)
@@ -177,14 +177,14 @@ class AuthRepositoryImpl(
                 )
                 response.status = ResponseKeyConstant.SUCCESS
                 response.result = tokenResponse
+                Resource.Success(response)
             } else {
-                response.error = BaseError(message = "Refresh invalid.")
+                response.error = BaseError(message = "Refresh token invalid.")
                 Resource.Error(response)
             }
         } else {
-            response.error = BaseError(message = "Refresh invalid.")
+            response.error = BaseError(message = "Refresh token invalid.")
             Resource.Error(response)
         }
-        return Resource.Success(response)
     }
 }
