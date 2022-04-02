@@ -25,4 +25,6 @@ interface RatingScoreLocalDataSource {
     suspend fun updateRatingScoreByBackupIsRemote(): Int
 
     suspend fun replaceRatingScoreAll(ratingScoreList: List<RatingScoreEntity>): Int
+
+    suspend fun getRatingScoreListByFoodId(foodId: Int): List<Float>
 }

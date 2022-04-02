@@ -150,4 +150,19 @@ class RatingScoreLocalDataSourceImpl(
 
         return statement.size
     }
+
+    override suspend fun getRatingScoreListByFoodId(foodId: Int): List<Float> {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            RatingScoreTableSqlite
+                .slice(
+                    RatingScoreTableSqlite.ratingScore,
+                )
+                .select {
+                    RatingScoreTableSqlite.foodId eq foodId
+                }
+                .map { row ->
+                    row[RatingScoreTableSqlite.ratingScore]
+                }
+        }
+    }
 }

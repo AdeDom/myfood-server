@@ -150,4 +150,14 @@ class FavoriteLocalDataSourceImpl(
 
         return statement.size
     }
+
+    override suspend fun getFavoriteCountByFoodIdAndFavorite(foodId: Int): Long {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            FavoriteTableSqlite
+                .select {
+                    (FavoriteTableSqlite.foodId eq foodId) and (FavoriteTableSqlite.isFavorite eq AppConstant.FAVORITE)
+                }
+                .count()
+        }
+    }
 }

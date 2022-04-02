@@ -25,4 +25,6 @@ interface FavoriteLocalDataSource {
     suspend fun updateFavoriteByBackupIsRemote(): Int
 
     suspend fun replaceFavoriteAll(favoriteList: List<FavoriteEntity>): Int
+
+    suspend fun getFavoriteCountByFoodIdAndFavorite(foodId: Int): Long
 }
