@@ -15,6 +15,7 @@ import com.adedom.myfood.data.resouce.remote.food.FoodRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.food.MyFoodRemoteDataSource
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 class FoodRepositoryImpl(
@@ -67,10 +68,14 @@ class FoodRepositoryImpl(
         }
 
         val (favorite, ratingScoreAll) = coroutineScope {
-            favoriteLocalDataSource.getFavoriteCountByFoodIdAndFavorite(foodId) to
-                    ratingScoreLocalDataSource.getRatingScoreListByFoodId(foodId)
+            async { favoriteLocalDataSource.getFavoriteCountByFoodIdAndFavorite(foodId) } to
+                    async { ratingScoreLocalDataSource.getRatingScoreListByFoodId(foodId) }
         }
-        val ratingScore = ratingScoreAll.sum() / ratingScoreAll.size
+        val ratingScore = if (ratingScoreAll.await().isNotEmpty()) {
+            ratingScoreAll.await().sum() / ratingScoreAll.await().size
+        } else {
+            null
+        }
 
         return if (foodEntity != null) {
             response.status = ResponseKeyConstant.SUCCESS
@@ -81,7 +86,7 @@ class FoodRepositoryImpl(
                 image = foodEntity.image,
                 price = foodEntity.price,
                 description = foodEntity.description,
-                favorite = favorite,
+                favorite = favorite.await(),
                 ratingScore = ratingScore,
                 categoryId = foodEntity.categoryId,
                 status = foodEntity.status,
@@ -114,6 +119,16 @@ class FoodRepositoryImpl(
         }
 
         val foodListResponse = foodList.map { foodEntity ->
+            val (favorite, ratingScoreAll) = coroutineScope {
+                async { favoriteLocalDataSource.getFavoriteCountByFoodIdAndFavorite(foodEntity.foodId) } to
+                        async { ratingScoreLocalDataSource.getRatingScoreListByFoodId(foodEntity.foodId) }
+            }
+            val ratingScore = if (ratingScoreAll.await().isNotEmpty()) {
+                ratingScoreAll.await().sum() / ratingScoreAll.await().size
+            } else {
+                null
+            }
+
             FoodDetailResponse(
                 foodId = foodEntity.foodId,
                 foodName = foodEntity.foodName,
@@ -121,8 +136,8 @@ class FoodRepositoryImpl(
                 image = foodEntity.image,
                 price = foodEntity.price,
                 description = foodEntity.description,
-                favorite = 0, // Hard code
-                ratingScore = 0F, // Hard code
+                favorite = favorite.await(),
+                ratingScore = ratingScore,
                 categoryId = foodEntity.categoryId,
                 status = foodEntity.status,
                 created = foodEntity.created.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),

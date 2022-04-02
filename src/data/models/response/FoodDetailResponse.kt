@@ -9,7 +9,7 @@ data class FoodDetailResponse(
     val price: Double,
     val description: String?,
     val favorite: Long,
-    val ratingScore: Float,
+    val ratingScore: Float?,
     val categoryId: Int,
     val status: String,
     val created: String,
