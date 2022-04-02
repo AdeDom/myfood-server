@@ -9,6 +9,8 @@ data class FoodAndCategoryResponse(
     val foodImage: String,
     val price: Double,
     val description: String?,
+    val favorite: Long,
+    val ratingScore: Float?,
     val status: String,
     val foodCreated: String,
     val foodUpdated: String?,

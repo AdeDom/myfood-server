@@ -161,9 +161,20 @@ class FoodRepositoryImpl(
             if (listLocalCount != foodAllList.size) {
                 foodAndCategoryLocalDataSource.deleteFoodAndCategoryAll()
             }
+            foodAllList = foodAndCategoryLocalDataSource.getFoodAndCategoryAll()
         }
 
         val foodAllListResponse = foodAllList.map { foodAllEntity ->
+            val (favorite, ratingScoreAll) = coroutineScope {
+                async { favoriteLocalDataSource.getFavoriteCountByFoodIdAndFavorite(foodAllEntity.foodId) } to
+                        async { ratingScoreLocalDataSource.getRatingScoreListByFoodId(foodAllEntity.foodId) }
+            }
+            val ratingScore = if (ratingScoreAll.await().isNotEmpty()) {
+                ratingScoreAll.await().sum() / ratingScoreAll.await().size
+            } else {
+                null
+            }
+
             FoodAndCategoryResponse(
                 foodAndCategoryId = foodAllEntity.foodAndCategoryId,
                 foodId = foodAllEntity.foodId,
@@ -172,6 +183,8 @@ class FoodRepositoryImpl(
                 foodImage = foodAllEntity.foodImage,
                 price = foodAllEntity.price,
                 description = foodAllEntity.description,
+                favorite = favorite.await(),
+                ratingScore = ratingScore,
                 status = foodAllEntity.status,
                 foodCreated = foodAllEntity.foodCreated.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
                 foodUpdated = foodAllEntity.foodUpdated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
