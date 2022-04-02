@@ -149,9 +149,7 @@ class FoodRepositoryImpl(
         return Resource.Success(response)
     }
 
-    override suspend fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAndCategoryResponse>>> {
-        val response = BaseResponse<List<FoodAndCategoryResponse>>()
-
+    override suspend fun getFoodAndCategoryAll(): List<FoodAndCategoryResponse> {
         var foodAllList = foodAndCategoryLocalDataSource.getFoodAndCategoryAll()
         if (foodAllList.isEmpty()) {
             foodAllList = foodRemoteDataSource.getFoodAndCategoryAll()
@@ -195,8 +193,6 @@ class FoodRepositoryImpl(
                 categoryUpdated = foodAllEntity.categoryUpdated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
             )
         }
-        response.status = ResponseKeyConstant.SUCCESS
-        response.result = foodAllListResponse
-        return Resource.Success(response)
+        return foodAllListResponse
     }
 }

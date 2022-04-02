@@ -17,5 +17,5 @@ interface FoodRepository {
 
     suspend fun getFoodByCategoryId(categoryId: Int): Resource<BaseResponse<List<FoodDetailResponse>>>
 
-    suspend fun getFoodAndCategoryAll(): Resource<BaseResponse<List<FoodAndCategoryResponse>>>
+    suspend fun getFoodAndCategoryAll(): List<FoodAndCategoryResponse>
 }
