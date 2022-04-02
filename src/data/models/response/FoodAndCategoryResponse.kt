@@ -17,6 +17,7 @@ data class FoodAndCategoryResponse(
     val categoryId: Int,
     val categoryName: String,
     val categoryImage: String,
+    val categoryTypeName: String,
     val categoryCreated: String,
     val categoryUpdated: String?,
 )

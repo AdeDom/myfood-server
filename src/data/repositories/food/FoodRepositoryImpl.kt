@@ -189,6 +189,7 @@ class FoodRepositoryImpl(
                 categoryId = foodAllEntity.categoryId,
                 categoryName = foodAllEntity.categoryName,
                 categoryImage = foodAllEntity.categoryImage,
+                categoryTypeName = foodAllEntity.categoryTypeName,
                 categoryCreated = foodAllEntity.categoryCreated.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
                 categoryUpdated = foodAllEntity.categoryUpdated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
             )

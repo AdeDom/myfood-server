@@ -16,6 +16,7 @@ data class FoodAndCategoryEntity(
     val categoryId: Int,
     val categoryName: String,
     val categoryImage: String,
+    val categoryTypeName: String,
     val categoryCreated: DateTime,
     val categoryUpdated: DateTime?,
 )

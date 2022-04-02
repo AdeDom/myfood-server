@@ -124,6 +124,7 @@ class FoodRemoteDataSourceImpl(
                     CategoryTable.categoryId,
                     CategoryTable.categoryName,
                     CategoryTable.image,
+                    CategoryTable.categoryTypeName,
                     CategoryTable.created,
                     CategoryTable.updated,
                 )
@@ -143,6 +144,7 @@ class FoodRemoteDataSourceImpl(
                         categoryId = row[CategoryTable.categoryId],
                         categoryName = row[CategoryTable.categoryName],
                         categoryImage = row[CategoryTable.image],
+                        categoryTypeName = row[CategoryTable.categoryTypeName],
                         categoryCreated = row[CategoryTable.created],
                         categoryUpdated = row[CategoryTable.updated],
                     )

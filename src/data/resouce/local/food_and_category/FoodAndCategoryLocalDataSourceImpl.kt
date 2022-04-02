@@ -30,6 +30,7 @@ class FoodAndCategoryLocalDataSourceImpl(
                     FoodAndCategoryTableH2.categoryId,
                     FoodAndCategoryTableH2.categoryName,
                     FoodAndCategoryTableH2.categoryImage,
+                    FoodAndCategoryTableH2.categoryTypeName,
                     FoodAndCategoryTableH2.categoryCreated,
                     FoodAndCategoryTableH2.categoryUpdated,
                 )
@@ -49,6 +50,7 @@ class FoodAndCategoryLocalDataSourceImpl(
                         categoryId = row[FoodAndCategoryTableH2.categoryId],
                         categoryName = row[FoodAndCategoryTableH2.categoryName],
                         categoryImage = row[FoodAndCategoryTableH2.categoryImage],
+                        categoryTypeName = row[FoodAndCategoryTableH2.categoryTypeName],
                         categoryCreated = row[FoodAndCategoryTableH2.categoryCreated],
                         categoryUpdated = row[FoodAndCategoryTableH2.categoryUpdated],
                     )
@@ -71,6 +73,7 @@ class FoodAndCategoryLocalDataSourceImpl(
                 this[FoodAndCategoryTableH2.categoryId] = foodAndCategoryAllEntity.categoryId
                 this[FoodAndCategoryTableH2.categoryName] = foodAndCategoryAllEntity.categoryName
                 this[FoodAndCategoryTableH2.categoryImage] = foodAndCategoryAllEntity.categoryImage
+                this[FoodAndCategoryTableH2.categoryTypeName] = foodAndCategoryAllEntity.categoryTypeName
                 this[FoodAndCategoryTableH2.categoryCreated] = foodAndCategoryAllEntity.categoryCreated
                 this[FoodAndCategoryTableH2.categoryUpdated] = foodAndCategoryAllEntity.categoryUpdated
             }

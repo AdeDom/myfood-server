@@ -20,6 +20,7 @@ object FoodAndCategoryTableH2 : Table(name = "food_and_category") {
     val categoryId = integer(name = "category_id")
     val categoryName = varchar(name = "category_name", length = 100)
     val categoryImage = varchar(name = "category_image", length = 500)
+    val categoryTypeName = varchar(name = "category_type_name", length = 500).default("normal")
     val categoryCreated = datetime(name = "category_created")
     val categoryUpdated = datetime(name = "category_updated").nullable()
 
