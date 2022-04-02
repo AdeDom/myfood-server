@@ -85,4 +85,18 @@ fun Route.foodRoute() {
             }
         }
     }
+
+    get("/api/food/getFoodAndCategoryGroupAll") {
+        val getFoodAndCategoryGroupAllUseCase by closestDI().instance<GetFoodAndCategoryGroupAllUseCase>()
+
+        val resource = getFoodAndCategoryGroupAllUseCase()
+        when (resource) {
+            is Resource.Success -> {
+                call.respond(HttpStatusCode.OK, resource.data)
+            }
+            is Resource.Error -> {
+                call.respond(HttpStatusCode.BadRequest, resource.error)
+            }
+        }
+    }
 }
