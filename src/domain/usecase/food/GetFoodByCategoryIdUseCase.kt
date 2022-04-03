@@ -44,6 +44,7 @@ class GetFoodByCategoryIdUseCase(
                                 description = it.description,
                                 favorite = it.favorite ?: 0,
                                 ratingScore = it.ratingScore,
+                                ratingScoreCount = it.ratingScoreCount,
                                 categoryId = it.categoryId,
                                 status = it.status.orEmpty(),
                                 created = it.foodCreated.orEmpty(),

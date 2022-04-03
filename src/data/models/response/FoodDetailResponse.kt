@@ -10,6 +10,7 @@ data class FoodDetailResponse(
     val description: String?,
     val favorite: Long,
     val ratingScore: Float?,
+    val ratingScoreCount: String?,
     val categoryId: Int,
     val status: String,
     val created: String,

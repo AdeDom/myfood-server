@@ -17,6 +17,7 @@ import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import java.text.DecimalFormat
 
 class FoodRepositoryImpl(
     private val foodLocalDataSource: FoodLocalDataSource,
@@ -88,6 +89,7 @@ class FoodRepositoryImpl(
                 description = foodEntity.description,
                 favorite = favorite.await(),
                 ratingScore = ratingScore,
+                ratingScoreCount = toRatingScoreCount(ratingScoreAll.await().size),
                 categoryId = foodEntity.categoryId,
                 status = foodEntity.status,
                 created = foodEntity.created.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
@@ -136,6 +138,7 @@ class FoodRepositoryImpl(
                 description = foodEntity.description,
                 favorite = favorite.await(),
                 ratingScore = ratingScore,
+                ratingScoreCount = toRatingScoreCount(ratingScoreAll.await().size),
                 categoryId = foodEntity.categoryId,
                 status = foodEntity.status,
                 created = foodEntity.created.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
@@ -160,6 +163,7 @@ class FoodRepositoryImpl(
 
         val foodAllListResponse = foodAllList.map { foodAllEntity ->
             var favoriteOriginal: Long? = null
+            var ratingScoreAllOriginal: List<Float>? = null
             var ratingScore: Float? = null
             foodAllEntity.foodId?.let {
                 val (favorite, ratingScoreAll) = coroutineScope {
@@ -167,6 +171,7 @@ class FoodRepositoryImpl(
                             async { ratingScoreLocalDataSource.getRatingScoreListByFoodId(foodAllEntity.foodId) }
                 }
                 favoriteOriginal = favorite.await()
+                ratingScoreAllOriginal = ratingScoreAll.await()
                 ratingScore = if (ratingScoreAll.await().isNotEmpty()) {
                     ratingScoreAll.await().sum() / ratingScoreAll.await().size
                 } else {
@@ -184,6 +189,7 @@ class FoodRepositoryImpl(
                 description = foodAllEntity.description,
                 favorite = favoriteOriginal,
                 ratingScore = ratingScore,
+                ratingScoreCount = toRatingScoreCount(ratingScoreAllOriginal?.size),
                 status = foodAllEntity.status,
                 foodCreated = foodAllEntity.foodCreated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
                 foodUpdated = foodAllEntity.foodUpdated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
@@ -196,5 +202,15 @@ class FoodRepositoryImpl(
             )
         }
         return foodAllListResponse
+    }
+
+    private fun toRatingScoreCount(ratingScore: Int?): String? {
+        val hasRatingScore = ratingScore != null && ratingScore != 0
+        return if (hasRatingScore) {
+            val decimalFormat = DecimalFormat("#,###")
+            decimalFormat.format(ratingScore)
+        } else {
+            null
+        }
     }
 }
