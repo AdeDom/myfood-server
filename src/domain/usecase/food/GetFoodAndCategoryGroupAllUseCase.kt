@@ -46,6 +46,12 @@ class GetFoodAndCategoryGroupAllUseCase(
                                     updated = it.foodUpdated,
                                 )
                             }
+                            .sortedByDescending {
+                                it.ratingScore
+                            }
+                            .sortedByDescending {
+                                it.favorite
+                            }
 
                         FoodAndCategoryGroupResponse(
                             categoryId = foodAndCategory.categoryId,

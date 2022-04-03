@@ -127,7 +127,6 @@ class FoodRemoteDataSourceImpl(
                 )
                 .selectAll()
                 .orderBy(CategoryTable.created, SortOrder.ASC)
-                .orderBy(FoodTable.created, SortOrder.ASC)
                 .map { row ->
                     FoodAndCategoryEntity(
                         foodAndCategoryId = 0,
