@@ -44,6 +44,7 @@ class ProfileRepositoryImpl(
                 email = userEntity.email,
                 mobileNo = userEntity.mobileNo,
                 address = userEntity.address,
+                image = userEntity.image,
                 status = userEntity.status,
                 created = userEntity.created.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
                 updated = userEntity.updated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),

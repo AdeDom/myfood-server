@@ -20,6 +20,7 @@ class UserLocalDataSourceImpl(
                     UserTable.email,
                     UserTable.mobileNo,
                     UserTable.address,
+                    UserTable.image,
                     UserTable.status,
                     UserTable.created,
                     UserTable.updated,
@@ -36,6 +37,7 @@ class UserLocalDataSourceImpl(
                         email = row[UserTable.email],
                         mobileNo = row[UserTable.mobileNo],
                         address = row[UserTable.address],
+                        image = row[UserTable.image],
                         status = row[UserTable.status],
                         created = row[UserTable.created],
                         updated = row[UserTable.updated],
@@ -55,6 +57,7 @@ class UserLocalDataSourceImpl(
                     UserTable.email,
                     UserTable.mobileNo,
                     UserTable.address,
+                    UserTable.image,
                     UserTable.status,
                     UserTable.created,
                     UserTable.updated,
@@ -69,6 +72,7 @@ class UserLocalDataSourceImpl(
                         email = row[UserTable.email],
                         mobileNo = row[UserTable.mobileNo],
                         address = row[UserTable.address],
+                        image = row[UserTable.image],
                         status = row[UserTable.status],
                         created = row[UserTable.created],
                         updated = row[UserTable.updated],
@@ -87,6 +91,7 @@ class UserLocalDataSourceImpl(
                 this[UserTable.email] = userEntity.email
                 this[UserTable.mobileNo] = userEntity.mobileNo
                 this[UserTable.address] = userEntity.address
+                this[UserTable.image] = userEntity.image
                 this[UserTable.status] = userEntity.status
                 this[UserTable.created] = userEntity.created
                 this[UserTable.updated] = userEntity.updated

@@ -12,6 +12,7 @@ object UserTable : Table("user") {
     val email = varchar(name = "email", length = 150).nullable()
     val mobileNo = varchar(name = "mobile_no", length = 20).nullable()
     val address = varchar(name = "address", length = 300).nullable()
+    val image = varchar(name = "image", length = 500).nullable()
     val status = varchar(name = "status", length = 10)
     val created = datetime(name = "created")
     val updated = datetime(name = "updated").nullable()

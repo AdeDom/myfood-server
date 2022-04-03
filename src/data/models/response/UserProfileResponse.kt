@@ -8,6 +8,7 @@ data class UserProfileResponse(
     val email: String?,
     val mobileNo: String?,
     val address: String?,
+    val image: String?,
     val status: String,
     val created: String,
     val updated: String?,
