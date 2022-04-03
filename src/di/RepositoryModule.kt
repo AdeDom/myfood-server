@@ -38,6 +38,7 @@ val repositoryModule = DI.Module(name = "repository") {
             instance(),
             instance(),
             instance(),
+            instance(),
         )
     }
     bindSingleton<CategoryRepository> { CategoryRepositoryImpl(instance(), instance()) }
