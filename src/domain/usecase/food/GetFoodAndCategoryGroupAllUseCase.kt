@@ -1,8 +1,8 @@
 package com.adedom.myfood.domain.usecase.food
 
 import com.adedom.myfood.data.models.base.BaseResponse
+import com.adedom.myfood.data.models.response.CategoryFoodDetailResponse
 import com.adedom.myfood.data.models.response.FoodAndCategoryGroupResponse
-import com.adedom.myfood.data.models.response.FoodDetailResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.food.FoodRepository
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
@@ -28,7 +28,7 @@ class GetFoodAndCategoryGroupAllUseCase(
                                 it.categoryId == foodAndCategory.categoryId
                             }
                             .map {
-                                FoodDetailResponse(
+                                CategoryFoodDetailResponse(
                                     foodId = it.foodId,
                                     foodName = it.foodName,
                                     alias = it.alias,

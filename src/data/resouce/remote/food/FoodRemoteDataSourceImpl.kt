@@ -110,7 +110,7 @@ class FoodRemoteDataSourceImpl(
 
     override suspend fun getFoodAndCategoryAll(): List<FoodAndCategoryEntity> {
         return newSuspendedTransaction(Dispatchers.IO, db) {
-            (FoodTable innerJoin CategoryTable)
+            (CategoryTable leftJoin FoodTable)
                 .slice(
                     FoodTable.foodId,
                     FoodTable.foodName,

@@ -163,14 +163,19 @@ class FoodRepositoryImpl(
         }
 
         val foodAllListResponse = foodAllList.map { foodAllEntity ->
-            val (favorite, ratingScoreAll) = coroutineScope {
-                async { favoriteLocalDataSource.getFavoriteCountByFoodIdAndFavorite(foodAllEntity.foodId) } to
-                        async { ratingScoreLocalDataSource.getRatingScoreListByFoodId(foodAllEntity.foodId) }
-            }
-            val ratingScore = if (ratingScoreAll.await().isNotEmpty()) {
-                ratingScoreAll.await().sum() / ratingScoreAll.await().size
-            } else {
-                null
+            var favoriteOriginal: Long? = null
+            var ratingScore: Float? = null
+            foodAllEntity.foodId?.let {
+                val (favorite, ratingScoreAll) = coroutineScope {
+                    async { favoriteLocalDataSource.getFavoriteCountByFoodIdAndFavorite(foodAllEntity.foodId) } to
+                            async { ratingScoreLocalDataSource.getRatingScoreListByFoodId(foodAllEntity.foodId) }
+                }
+                favoriteOriginal = favorite.await()
+                ratingScore = if (ratingScoreAll.await().isNotEmpty()) {
+                    ratingScoreAll.await().sum() / ratingScoreAll.await().size
+                } else {
+                    null
+                }
             }
 
             FoodAndCategoryResponse(
@@ -181,10 +186,10 @@ class FoodRepositoryImpl(
                 foodImage = foodAllEntity.foodImage,
                 price = foodAllEntity.price,
                 description = foodAllEntity.description,
-                favorite = favorite.await(),
+                favorite = favoriteOriginal,
                 ratingScore = ratingScore,
                 status = foodAllEntity.status,
-                foodCreated = foodAllEntity.foodCreated.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
+                foodCreated = foodAllEntity.foodCreated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
                 foodUpdated = foodAllEntity.foodUpdated?.toString(AppConstant.DATE_TIME_FORMAT_RESPONSE),
                 categoryId = foodAllEntity.categoryId,
                 categoryName = foodAllEntity.categoryName,

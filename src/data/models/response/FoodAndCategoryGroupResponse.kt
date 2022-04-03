@@ -8,5 +8,5 @@ data class FoodAndCategoryGroupResponse(
     val categoryTypeName: String,
     val created: String,
     val updated: String?,
-    val foodDetailList: List<FoodDetailResponse>,
+    val foodDetailList: List<CategoryFoodDetailResponse>,
 )
