@@ -12,4 +12,6 @@ interface CategoryRepository {
     suspend fun insertCategory(insertCategoryRequest: InsertCategoryRequest): Resource<BaseResponse<String>>
 
     suspend fun getCategoryAll(): Resource<BaseResponse<List<CategoryResponse>>>
+
+    suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Long
 }

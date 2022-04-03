@@ -24,6 +24,7 @@ class GetFoodAndCategoryGroupAllUseCase(
                     }
                     .map { foodAndCategory ->
                         val foodDetailList = getFoodAndCategoryAll
+                            .asSequence()
                             .filter {
                                 it.categoryId == foodAndCategory.categoryId
                             }
@@ -52,6 +53,7 @@ class GetFoodAndCategoryGroupAllUseCase(
                             .sortedByDescending {
                                 it.favorite
                             }
+                            .toList()
 
                         FoodAndCategoryGroupResponse(
                             categoryId = foodAndCategory.categoryId,

@@ -4,9 +4,11 @@ import com.adedom.myfood.data.models.base.BaseError
 import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.data.models.response.FoodDetailResponse
 import com.adedom.myfood.data.repositories.Resource
+import com.adedom.myfood.data.repositories.category.CategoryRepository
 import com.adedom.myfood.data.repositories.food.FoodRepository
 
 class GetFoodByCategoryIdUseCase(
+    private val categoryRepository: CategoryRepository,
     private val foodRepository: FoodRepository,
 ) {
 
@@ -23,8 +25,17 @@ class GetFoodByCategoryIdUseCase(
                 Resource.Error(response)
             }
             else -> {
-                foodRepository.getFoodByCategoryId(categoryId.toInt())
+                val isCategoryTypeRecommend = isCategoryTypeRecommend(categoryId.toInt())
+                if (isCategoryTypeRecommend) {
+                    foodRepository.getFoodByCategoryId(categoryId.toInt())
+                } else {
+                    foodRepository.getFoodByCategoryId(categoryId.toInt())
+                }
             }
         }
+    }
+
+    private suspend fun isCategoryTypeRecommend(categoryId: Int): Boolean {
+        return categoryRepository.findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId) == 1L
     }
 }

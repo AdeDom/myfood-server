@@ -22,4 +22,7 @@ object AppConstant {
     const val AUTH_LOGIN = "login"
     const val AUTH_LOGOUT = "logout"
     const val AUTH_REFRESH = "refresh"
+
+    const val CATEGORY_TYPE_RECOMMEND = "recommend"
+    const val CATEGORY_TYPE_NORMAL = "normal"
 }

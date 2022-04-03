@@ -2,11 +2,9 @@ package com.adedom.myfood.data.resouce.local.category
 
 import com.adedom.myfood.data.database.mysql.CategoryTable
 import com.adedom.myfood.data.models.entities.CategoryEntity
+import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.batchInsert
-import org.jetbrains.exposed.sql.deleteAll
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 class CategoryLocalDataSourceImpl(
@@ -56,6 +54,16 @@ class CategoryLocalDataSourceImpl(
     override suspend fun deleteCategoryAll(): Int {
         return newSuspendedTransaction(Dispatchers.IO, db) {
             CategoryTable.deleteAll()
+        }
+    }
+
+    override suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Long {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            CategoryTable
+                .select {
+                    (CategoryTable.categoryId eq categoryId) and (CategoryTable.categoryTypeName eq AppConstant.CATEGORY_TYPE_RECOMMEND)
+                }
+                .count()
         }
     }
 }

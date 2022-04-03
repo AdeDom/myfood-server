@@ -61,4 +61,19 @@ class CategoryRepositoryImpl(
         response.result = getCategoryAllResponse
         return Resource.Success(response)
     }
+
+    override suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Long {
+        var getCategoryAll = categoryLocalDataSource.getCategoryAll()
+        if (getCategoryAll.isEmpty()) {
+            getCategoryAll = categoryRemoteDataSource.getCategoryAll()
+
+            categoryLocalDataSource.deleteCategoryAll()
+            val listLocalCount = categoryLocalDataSource.insertCategoryAll(getCategoryAll)
+            if (listLocalCount != getCategoryAll.size) {
+                categoryLocalDataSource.deleteCategoryAll()
+            }
+        }
+
+        return categoryLocalDataSource.findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId)
+    }
 }
