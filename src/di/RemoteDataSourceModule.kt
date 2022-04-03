@@ -1,6 +1,7 @@
 package com.adedom.myfood.di
 
 import com.adedom.myfood.data.database.mysql.MySqlDatabase
+import com.adedom.myfood.data.resouce.data_source_provider.DataSourceProvider
 import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSourceImpl
 import com.adedom.myfood.data.resouce.remote.category.CategoryRemoteDataSource
@@ -13,6 +14,8 @@ import com.adedom.myfood.data.resouce.remote.food.MyFoodRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.food.MyFoodRemoteDataSourceImpl
 import com.adedom.myfood.data.resouce.remote.profile.ProfileRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.profile.ProfileRemoteDataSourceImpl
+import com.adedom.myfood.data.resouce.remote.random_user.RandomUserRemoteDataSource
+import com.adedom.myfood.data.resouce.remote.random_user.RandomUserRemoteDataSourceImpl
 import com.adedom.myfood.data.resouce.remote.rating_score.RatingScoreRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.rating_score.RatingScoreRemoteDataSourceImpl
 import com.adedom.myfood.data.resouce.remote.user.UserRemoteDataSource
@@ -22,6 +25,9 @@ import org.kodein.di.bindSingleton
 import org.kodein.di.instance
 
 val remoteDataSourceModule = DI.Module(name = "remote_data_source") {
+
+    bindSingleton { DataSourceProvider() }
+    bindSingleton<RandomUserRemoteDataSource> { RandomUserRemoteDataSourceImpl(instance()) }
 
     bindSingleton<UserRemoteDataSource> { UserRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
     bindSingleton<MyFoodRemoteDataSource> { MyFoodRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }

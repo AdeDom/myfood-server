@@ -10,6 +10,8 @@ import com.adedom.myfood.data.repositories.food.FoodRepository
 import com.adedom.myfood.data.repositories.food.FoodRepositoryImpl
 import com.adedom.myfood.data.repositories.profile.ProfileRepository
 import com.adedom.myfood.data.repositories.profile.ProfileRepositoryImpl
+import com.adedom.myfood.data.repositories.random_user.RandomUserRepository
+import com.adedom.myfood.data.repositories.random_user.RandomUserRepositoryImpl
 import com.adedom.myfood.data.repositories.rating_score.RatingScoreRepository
 import com.adedom.myfood.data.repositories.rating_score.RatingScoreRepositoryImpl
 import org.kodein.di.DI
@@ -41,4 +43,5 @@ val repositoryModule = DI.Module(name = "repository") {
     bindSingleton<CategoryRepository> { CategoryRepositoryImpl(instance(), instance()) }
     bindSingleton<FavoriteRepository> { FavoriteRepositoryImpl(instance(), instance()) }
     bindSingleton<RatingScoreRepository> { RatingScoreRepositoryImpl(instance(), instance()) }
+    bindSingleton<RandomUserRepository> { RandomUserRepositoryImpl(instance()) }
 }

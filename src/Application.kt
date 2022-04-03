@@ -17,6 +17,7 @@ import com.adedom.myfood.route.controller.default.defaultRoute
 import com.adedom.myfood.route.controller.favorite.favoriteRoute
 import com.adedom.myfood.route.controller.food.foodRoute
 import com.adedom.myfood.route.controller.profile.profileRoute
+import com.adedom.myfood.route.controller.random_user.randomUserRoute
 import com.adedom.myfood.route.controller.rating_score.ratingScoreRoute
 import com.adedom.myfood.utility.jwt.JwtConfig
 import com.adedom.myfood.utility.jwt.JwtHelper
@@ -105,5 +106,6 @@ fun Application.module() {
         categoryRoute()
         favoriteRoute()
         ratingScoreRoute()
+        randomUserRoute()
     }
 }
