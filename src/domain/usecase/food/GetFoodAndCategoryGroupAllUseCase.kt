@@ -27,6 +27,9 @@ class GetFoodAndCategoryGroupAllUseCase(
                             .filter {
                                 it.categoryId == foodAndCategory.categoryId
                             }
+                            .filter {
+                                it.foodId != null
+                            }
                             .map {
                                 CategoryFoodDetailResponse(
                                     foodId = it.foodId,

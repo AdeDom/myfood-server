@@ -7,10 +7,7 @@ import com.adedom.myfood.data.models.entities.FoodEntity
 import com.adedom.myfood.data.models.request.InsertFoodRequest
 import com.adedom.myfood.utility.constant.AppConstant
 import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.joda.time.DateTime
 
@@ -129,6 +126,8 @@ class FoodRemoteDataSourceImpl(
                     CategoryTable.updated,
                 )
                 .selectAll()
+                .orderBy(CategoryTable.created, SortOrder.ASC)
+                .orderBy(FoodTable.created, SortOrder.ASC)
                 .map { row ->
                     FoodAndCategoryEntity(
                         foodAndCategoryId = 0,
