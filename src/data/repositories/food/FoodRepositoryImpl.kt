@@ -87,7 +87,7 @@ class FoodRepositoryImpl(
                 image = foodEntity.image,
                 price = foodEntity.price,
                 description = foodEntity.description,
-                favorite = favorite.await(),
+                favorite = toFavoriteCount(favorite.await()),
                 ratingScore = ratingScore,
                 ratingScoreCount = toRatingScoreCount(ratingScoreAll.await().size),
                 categoryId = foodEntity.categoryId,
@@ -136,7 +136,7 @@ class FoodRepositoryImpl(
                 image = foodEntity.image,
                 price = foodEntity.price,
                 description = foodEntity.description,
-                favorite = favorite.await(),
+                favorite = toFavoriteCount(favorite.await()),
                 ratingScore = ratingScore,
                 ratingScoreCount = toRatingScoreCount(ratingScoreAll.await().size),
                 categoryId = foodEntity.categoryId,
@@ -187,7 +187,7 @@ class FoodRepositoryImpl(
                 foodImage = foodAllEntity.foodImage,
                 price = foodAllEntity.price,
                 description = foodAllEntity.description,
-                favorite = favoriteOriginal,
+                favorite = toFavoriteCount(favoriteOriginal),
                 ratingScore = ratingScore,
                 ratingScoreCount = toRatingScoreCount(ratingScoreAllOriginal?.size),
                 status = foodAllEntity.status,
@@ -202,6 +202,15 @@ class FoodRepositoryImpl(
             )
         }
         return foodAllListResponse
+    }
+
+    private fun toFavoriteCount(favorite: Long?): Long? {
+        val hasFavorite = favorite != null && favorite != 0L
+        return if (hasFavorite) {
+            favorite
+        } else {
+            null
+        }
     }
 
     private fun toRatingScoreCount(ratingScore: Int?): String? {
