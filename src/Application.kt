@@ -19,12 +19,14 @@ import com.adedom.myfood.route.controller.food.foodRoute
 import com.adedom.myfood.route.controller.profile.profileRoute
 import com.adedom.myfood.route.controller.random_user.randomUserRoute
 import com.adedom.myfood.route.controller.rating_score.ratingScoreRoute
+import com.adedom.myfood.route.web_sockets.chatWebSocketsRoute
 import com.adedom.myfood.utility.jwt.JwtConfig
 import com.adedom.myfood.utility.jwt.JwtHelper
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
+import io.ktor.websocket.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.kodein.di.bindSingleton
@@ -51,6 +53,9 @@ fun Application.module() {
             explicitNulls = false
         })
     }
+
+    // Web sockets
+    install(WebSockets)
 
     val databaseNameEnv = environment.config.property("my_food_db.database_name").getString()
     val usernameEnv = environment.config.property("my_food_db.username").getString()
@@ -107,5 +112,7 @@ fun Application.module() {
         favoriteRoute()
         ratingScoreRoute()
         randomUserRoute()
+
+        chatWebSocketsRoute()
     }
 }
