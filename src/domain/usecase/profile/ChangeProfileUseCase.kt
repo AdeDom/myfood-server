@@ -11,13 +11,17 @@ class ChangeProfileUseCase(
 ) {
 
     suspend operator fun invoke(
-        userId: String,
+        userId: String?,
         changeProfileRequest: ChangeProfileRequest
     ): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val (name, email, mobileNo, address) = changeProfileRequest
         return when {
+            userId.isNullOrBlank() -> {
+                response.error = BaseError(message = "User id is null or blank.")
+                Resource.Error(response)
+            }
             name.isNullOrBlank() -> {
                 response.error = BaseError(message = "Name is null or blank.")
                 Resource.Error(response)

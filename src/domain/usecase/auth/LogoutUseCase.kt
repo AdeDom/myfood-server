@@ -9,12 +9,12 @@ class LogoutUseCase(
     private val authRepository: AuthRepository,
 ) {
 
-    suspend operator fun invoke(userId: String): Resource<BaseResponse<String>> {
+    suspend operator fun invoke(userId: String?): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         return when {
-            userId.isBlank() -> {
-                response.error = BaseError(message = "User id is blank.")
+            userId.isNullOrBlank() -> {
+                response.error = BaseError(message = "User id is null or blank.")
                 Resource.Error(response)
             }
             else -> {

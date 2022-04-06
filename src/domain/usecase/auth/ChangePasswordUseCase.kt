@@ -11,13 +11,17 @@ class ChangePasswordUseCase(
 ) {
 
     suspend operator fun invoke(
-        userId: String,
+        userId: String?,
         changePasswordRequest: ChangePasswordRequest
     ): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
         val (oldPassword, newPassword) = changePasswordRequest
         return when {
+            userId.isNullOrBlank() -> {
+                response.error = BaseError(message = "User id is null or blank.")
+                Resource.Error(response)
+            }
             oldPassword.isNullOrBlank() -> {
                 response.error = BaseError(message = "Old password is null or blank.")
                 Resource.Error(response)

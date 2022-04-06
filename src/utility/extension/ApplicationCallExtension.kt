@@ -6,7 +6,7 @@ import com.auth0.jwt.JWT
 import io.ktor.application.*
 import io.ktor.request.*
 
-val ApplicationCall.userId: String
+val ApplicationCall.userId: String?
     get() = run {
         val authKey = request.header(RequestKeyConstant.AUTHORIZATION_KEY)
         val accessToken = authKey?.replace("Bearer", "")?.trim()
