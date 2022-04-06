@@ -14,13 +14,13 @@ import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
 import java.util.*
 
-fun Route.foodWebSocketsRoute() {
+fun Route.favoriteWebSocketsRoute() {
 
-    val favoriteConnections = Collections.synchronizedSet<DefaultWebSocketSession>(LinkedHashSet())
-    webSocket("/ws/food/myFavorite") {
+    val myFavoriteConnections = Collections.synchronizedSet<DefaultWebSocketSession>(LinkedHashSet())
+    webSocket("/ws/favorite/myFavorite") {
         val myFavoriteUseCase by closestDI().instance<MyFavoriteUseCase>()
 
-        favoriteConnections += this
+        myFavoriteConnections += this
         try {
             for (frame in incoming) {
                 frame as? Frame.Text ?: continue
@@ -32,7 +32,7 @@ fun Route.foodWebSocketsRoute() {
                 when (resource) {
                     is Resource.Success -> {
                         val response = Json.encodeToString(resource.data)
-                        favoriteConnections.forEach { session ->
+                        myFavoriteConnections.forEach { session ->
                             session.send(response)
                         }
                     }
@@ -46,7 +46,7 @@ fun Route.foodWebSocketsRoute() {
             e.printStackTrace()
             println(e.localizedMessage)
         } finally {
-            favoriteConnections -= this
+            myFavoriteConnections -= this
         }
     }
 }
