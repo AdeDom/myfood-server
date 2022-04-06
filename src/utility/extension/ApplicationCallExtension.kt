@@ -10,6 +10,10 @@ val ApplicationCall.userId: String?
     get() = run {
         val authKey = request.header(RequestKeyConstant.AUTHORIZATION_KEY)
         val accessToken = authKey?.replace("Bearer", "")?.trim()
-        val userId = JWT().decodeJwt(accessToken).getClaim(JwtHelper.USER_ID).asString()
-        userId
+        if (!accessToken.isNullOrBlank()) {
+            val userId = JWT().decodeJwt(accessToken).getClaim(JwtHelper.USER_ID).asString()
+            userId
+        } else {
+            null
+        }
     }
