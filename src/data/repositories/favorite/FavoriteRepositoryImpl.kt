@@ -3,6 +3,7 @@ package com.adedom.myfood.data.repositories.favorite
 import com.adedom.myfood.data.models.base.BaseError
 import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.data.models.response.FavoriteResponse
+import com.adedom.myfood.data.models.web_sockets.GetFavoriteWebSocketsResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.favorite.FavoriteLocalDataSource
 import com.adedom.myfood.data.resouce.remote.favorite.FavoriteRemoteDataSource
@@ -36,8 +37,11 @@ class FavoriteRepositoryImpl(
         return Resource.Success(response)
     }
 
-    override suspend fun myFavorite(userId: String, foodId: Int): Resource<BaseResponse<String>> {
-        val response = BaseResponse<String>()
+    override suspend fun myFavorite(
+        userId: String,
+        foodId: Int
+    ): Resource<BaseResponse<GetFavoriteWebSocketsResponse>> {
+        val response = BaseResponse<GetFavoriteWebSocketsResponse>()
 
         val favoriteEntity = favoriteLocalDataSource.findFavoriteEntityByUserIdAndFoodId(userId, foodId)
         val favoriteIdForCreated = UUID.randomUUID().toString().replace("-", "")
@@ -61,7 +65,12 @@ class FavoriteRepositoryImpl(
             updated,
         ) ?: 0
         return if (myFavoriteCount == 1) {
-            response.result = "Favorite is success."
+            val favorite = favoriteLocalDataSource.getFavoriteCountByFoodIdAndFavorite(foodId)
+            val getFavoriteWebSocketsResponse = GetFavoriteWebSocketsResponse(
+                foodId = foodId,
+                favorite = favorite,
+            )
+            response.result = getFavoriteWebSocketsResponse
             response.status = ResponseKeyConstant.SUCCESS
             Resource.Success(response)
         } else {
