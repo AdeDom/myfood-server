@@ -14,6 +14,7 @@ import com.adedom.myfood.di.repositoryModule
 import com.adedom.myfood.route.http.*
 import com.adedom.myfood.route.web_sockets.chatWebSocketsRoute
 import com.adedom.myfood.route.web_sockets.favoriteWebSocketsRoute
+import com.adedom.myfood.route.web_sockets.ratingScoreWebSocketsRoute
 import com.adedom.myfood.utility.jwt.JwtConfig
 import com.adedom.myfood.utility.jwt.JwtHelper
 import io.ktor.application.*
@@ -109,5 +110,6 @@ fun Application.module() {
 
         chatWebSocketsRoute()
         favoriteWebSocketsRoute()
+        ratingScoreWebSocketsRoute()
     }
 }
