@@ -6,21 +6,23 @@ import com.adedom.myfood.data.models.request.MyFavoriteRequest
 import com.adedom.myfood.data.models.web_sockets.FavoriteWebSocketsResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.favorite.FavoriteRepository
+import com.adedom.myfood.domain.usecase.auth.TokenUseCase
 
 class MyFavoriteUseCase(
+    private val tokenUseCase: TokenUseCase,
     private val favoriteRepository: FavoriteRepository,
 ) {
 
     suspend operator fun invoke(
-        userId: String?,
+        authKey: String?,
         myFavoriteRequest: MyFavoriteRequest
     ): Resource<BaseResponse<FavoriteWebSocketsResponse>> {
         val response = BaseResponse<FavoriteWebSocketsResponse>()
 
         val (foodId) = myFavoriteRequest
         return when {
-            userId.isNullOrBlank() -> {
-                response.error = BaseError(message = "User id is null or blank.")
+            tokenUseCase.isValidateToken(authKey) -> {
+                response.error = tokenUseCase.getBaseError(authKey)
                 Resource.Error(response)
             }
             foodId == null -> {
@@ -28,6 +30,7 @@ class MyFavoriteUseCase(
                 Resource.Error(response)
             }
             else -> {
+                val userId = tokenUseCase.getUserId(authKey)
                 favoriteRepository.myFavorite(userId, foodId)
             }
         }

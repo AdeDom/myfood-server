@@ -6,8 +6,7 @@ import com.adedom.myfood.domain.usecase.favorite.DeleteFavoriteAllUseCase
 import com.adedom.myfood.domain.usecase.favorite.GetFavoriteAllUseCase
 import com.adedom.myfood.domain.usecase.favorite.MyFavoriteUseCase
 import com.adedom.myfood.domain.usecase.favorite.SyncDataFavoriteUseCase
-import com.adedom.myfood.utility.extension.postAuth
-import com.adedom.myfood.utility.extension.userId
+import com.adedom.myfood.utility.constant.RequestKeyConstant
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
@@ -32,12 +31,12 @@ fun Route.favoriteRoute() {
         }
     }
 
-    postAuth("/api/favorite/myFavorite") {
+    post("/api/favorite/myFavorite") {
         val myFavoriteUseCase by closestDI().instance<MyFavoriteUseCase>()
 
-        val userId = call.userId
+        val authKey = call.request.header(RequestKeyConstant.AUTHORIZATION_KEY)
         val myFavoriteRequest = call.receive<MyFavoriteRequest>()
-        val resource = myFavoriteUseCase(userId, myFavoriteRequest)
+        val resource = myFavoriteUseCase(authKey, myFavoriteRequest)
         when (resource) {
             is Resource.Success -> {
                 call.respond(HttpStatusCode.OK, resource.data)
