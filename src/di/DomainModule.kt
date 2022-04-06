@@ -16,7 +16,6 @@ import com.adedom.myfood.domain.usecase.rating_score.DeleteRatingScoreAllUseCase
 import com.adedom.myfood.domain.usecase.rating_score.GetRatingScoreAllUseCase
 import com.adedom.myfood.domain.usecase.rating_score.MyRatingScoreUseCase
 import com.adedom.myfood.domain.usecase.rating_score.SyncDataRatingScoreUseCase
-import com.adedom.myfood.domain.usecase.web_sockets.GetFavoriteWebSocketsUseCase
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
@@ -48,5 +47,4 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { SyncDataRatingScoreUseCase(instance()) }
     bindSingleton { SyncDataAuthUseCase(instance()) }
     bindSingleton { GetRandomUserUseCase(instance()) }
-    bindSingleton { GetFavoriteWebSocketsUseCase(instance()) }
 }
