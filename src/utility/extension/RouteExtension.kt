@@ -84,8 +84,8 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.authentication(body: 
     } else {
         val response = BaseResponse<Unit>()
         val baseError = BaseError(
-            code = HttpStatusCode.Unauthorized.value.toString(),
-            message = HttpStatusCode.Unauthorized.description
+            code = ErrorResponse.UnauthorizedError.code,
+            message = ErrorResponse.UnauthorizedError.message
         )
         response.error = baseError
         call.respond(HttpStatusCode.Unauthorized, response)
