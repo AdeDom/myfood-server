@@ -1,6 +1,6 @@
 package com.adedom.myfood.route.web_sockets
 
-import com.adedom.myfood.domain.usecase.web_sockets.FavoriteAndRatingScoreUseCase
+import com.adedom.myfood.domain.usecase.web_sockets.GetFavoriteWebSocketsUseCase
 import io.ktor.http.cio.websocket.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
@@ -12,21 +12,21 @@ import java.util.*
 
 fun Route.foodWebSocketsRoute() {
 
-    val connections = Collections.synchronizedSet<DefaultWebSocketSession>(LinkedHashSet())
-    webSocket("/ws/food/favoriteAndRatingScore") {
-        val favoriteAndRatingScoreUseCase by closestDI().instance<FavoriteAndRatingScoreUseCase>()
+    val favoriteConnections = Collections.synchronizedSet<DefaultWebSocketSession>(LinkedHashSet())
+    webSocket("/ws/food/favorite") {
+        val getFavoriteWebSocketsUseCase by closestDI().instance<GetFavoriteWebSocketsUseCase>()
 
-        val favoriteAndRatingScoreList = favoriteAndRatingScoreUseCase()
-        val favoriteAndRatingScoreListString = Json.encodeToString(favoriteAndRatingScoreList)
-        send(favoriteAndRatingScoreListString)
+        val getFavoriteWebSocketsUseCaseList = getFavoriteWebSocketsUseCase()
+        val getFavoriteWebSocketsUseCaseListString = Json.encodeToString(getFavoriteWebSocketsUseCaseList)
+        send(getFavoriteWebSocketsUseCaseListString)
 
-        connections += this
+        favoriteConnections += this
         try {
             for (frame in incoming) {
                 frame as? Frame.Text ?: continue
                 val text = frame.readText()
 
-                connections.forEach { session ->
+                favoriteConnections.forEach { session ->
                     session.send(text)
                 }
             }
@@ -34,7 +34,7 @@ fun Route.foodWebSocketsRoute() {
             e.printStackTrace()
             println(e.localizedMessage)
         } finally {
-            connections -= this
+            favoriteConnections -= this
         }
     }
 }
