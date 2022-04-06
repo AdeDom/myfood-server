@@ -20,6 +20,7 @@ import com.adedom.myfood.route.controller.profile.profileRoute
 import com.adedom.myfood.route.controller.random_user.randomUserRoute
 import com.adedom.myfood.route.controller.rating_score.ratingScoreRoute
 import com.adedom.myfood.route.web_sockets.chatWebSocketsRoute
+import com.adedom.myfood.route.web_sockets.foodWebSocketsRoute
 import com.adedom.myfood.utility.jwt.JwtConfig
 import com.adedom.myfood.utility.jwt.JwtHelper
 import io.ktor.application.*
@@ -114,5 +115,6 @@ fun Application.module() {
         randomUserRoute()
 
         chatWebSocketsRoute()
+        foodWebSocketsRoute()
     }
 }
