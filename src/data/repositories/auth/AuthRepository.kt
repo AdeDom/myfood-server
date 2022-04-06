@@ -28,4 +28,6 @@ interface AuthRepository {
     suspend fun findTokenLogoutByAccessTokenAndRefreshToken(accessToken: String, refreshToken: String): Long
 
     suspend fun syncDataAuth(): Resource<BaseResponse<String>>
+
+    suspend fun findStatusLoginOrRefreshByAccessToken(accessToken: String): Long
 }

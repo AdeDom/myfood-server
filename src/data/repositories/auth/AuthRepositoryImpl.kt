@@ -253,4 +253,8 @@ class AuthRepositoryImpl(
             Resource.Error(response)
         }
     }
+
+    override suspend fun findStatusLoginOrRefreshByAccessToken(accessToken: String): Long {
+        return authLocalDataSource.findStatusLoginOrRefreshByAccessToken(accessToken)
+    }
 }

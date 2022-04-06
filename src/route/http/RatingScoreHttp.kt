@@ -6,8 +6,7 @@ import com.adedom.myfood.domain.usecase.rating_score.DeleteRatingScoreAllUseCase
 import com.adedom.myfood.domain.usecase.rating_score.GetRatingScoreAllUseCase
 import com.adedom.myfood.domain.usecase.rating_score.MyRatingScoreUseCase
 import com.adedom.myfood.domain.usecase.rating_score.SyncDataRatingScoreUseCase
-import com.adedom.myfood.utility.extension.postAuth
-import com.adedom.myfood.utility.extension.userId
+import com.adedom.myfood.utility.constant.RequestKeyConstant
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
@@ -32,12 +31,12 @@ fun Route.ratingScoreRoute() {
         }
     }
 
-    postAuth("/api/rating/myRatingScore") {
+    post("/api/rating/myRatingScore") {
         val myRatingScoreUseCase by closestDI().instance<MyRatingScoreUseCase>()
 
-        val userId = call.userId
+        val authKey = call.request.header(RequestKeyConstant.AUTHORIZATION_KEY)
         val myRatingScoreRequest = call.receive<MyRatingScoreRequest>()
-        val resource = myRatingScoreUseCase(userId, myRatingScoreRequest)
+        val resource = myRatingScoreUseCase(authKey, myRatingScoreRequest)
         when (resource) {
             is Resource.Success -> {
                 call.respond(HttpStatusCode.OK, resource.data)
