@@ -7,8 +7,6 @@ import com.adedom.myfood.data.models.web_sockets.RatingScoreWebSocketsResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.rating_score.RatingScoreRepository
 import com.adedom.myfood.domain.usecase.auth.TokenUseCase
-import com.adedom.myfood.utility.jwt.JwtHelper
-import com.auth0.jwt.JWT
 
 class MyRatingScoreUseCase(
     private val tokenUseCase: TokenUseCase,
@@ -23,8 +21,8 @@ class MyRatingScoreUseCase(
 
         val (foodId, ratingScore) = myRatingScoreRequest
         return when {
-            tokenUseCase(authKey) -> {
-                response.error = BaseError(message = "Authentication is invalid.")
+            tokenUseCase.isValidateToken(authKey) -> {
+                response.error = tokenUseCase.getBaseError(authKey)
                 Resource.Error(response)
             }
             foodId == null -> {
@@ -40,8 +38,7 @@ class MyRatingScoreUseCase(
                 Resource.Error(response)
             }
             else -> {
-                val accessToken = authKey?.replace("Bearer", "")?.trim()
-                val userId = JWT().decodeJwt(accessToken).getClaim(JwtHelper.USER_ID).asString()
+                val userId = tokenUseCase.getUserId(authKey)
                 ratingScoreRepository.myRatingScore(userId, foodId, ratingScore)
             }
         }

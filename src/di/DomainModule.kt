@@ -43,8 +43,9 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { SyncDataFavoriteUseCase(instance()) }
     bindSingleton { GetRatingScoreAllUseCase(instance()) }
     bindSingleton { DeleteRatingScoreAllUseCase(instance()) }
-    bindSingleton { MyRatingScoreUseCase(instance()) }
+    bindSingleton { MyRatingScoreUseCase(instance(), instance()) }
     bindSingleton { SyncDataRatingScoreUseCase(instance()) }
     bindSingleton { SyncDataAuthUseCase(instance()) }
     bindSingleton { GetRandomUserUseCase(instance()) }
+    bindSingleton { TokenUseCase(instance()) }
 }
