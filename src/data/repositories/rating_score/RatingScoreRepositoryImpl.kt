@@ -3,12 +3,14 @@ package com.adedom.myfood.data.repositories.rating_score
 import com.adedom.myfood.data.models.base.BaseError
 import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.data.models.response.RatingScoreResponse
+import com.adedom.myfood.data.models.web_sockets.RatingScoreWebSocketsResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.rating_score.RatingScoreLocalDataSource
 import com.adedom.myfood.data.resouce.remote.rating_score.RatingScoreRemoteDataSource
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
 import org.joda.time.DateTime
+import java.text.DecimalFormat
 import java.util.*
 
 class RatingScoreRepositoryImpl(
@@ -40,8 +42,8 @@ class RatingScoreRepositoryImpl(
         userId: String,
         foodId: Int,
         ratingScore: Float,
-    ): Resource<BaseResponse<String>> {
-        val response = BaseResponse<String>()
+    ): Resource<BaseResponse<RatingScoreWebSocketsResponse>> {
+        val response = BaseResponse<RatingScoreWebSocketsResponse>()
 
         val ratingScoreEntity = ratingScoreLocalDataSource.findRatingScoreEntityByUserIdAndFoodId(userId, foodId)
         val ratingScoreIdForCreated = UUID.randomUUID().toString().replace("-", "")
@@ -60,12 +62,34 @@ class RatingScoreRepositoryImpl(
             updated,
         ) ?: 0
         return if (myRatingScoreCount == 1) {
-            response.result = "Rating score is success."
+            val ratingScoreAll = ratingScoreLocalDataSource.getRatingScoreListByFoodId(foodId)
+            val ratingScoreResponse = if (ratingScoreAll.isNotEmpty()) {
+                ratingScoreAll.sum() / ratingScoreAll.size
+            } else {
+                null
+            }
+            val ratingScoreCountResponse = toRatingScoreCount(ratingScoreAll.size)
+            val ratingScoreWebSocketsResponse = RatingScoreWebSocketsResponse(
+                foodId = foodId,
+                ratingScore = ratingScoreResponse,
+                ratingScoreCount = ratingScoreCountResponse,
+            )
+            response.result = ratingScoreWebSocketsResponse
             response.status = ResponseKeyConstant.SUCCESS
             Resource.Success(response)
         } else {
             response.error = BaseError(message = "Rating score is failed.")
             Resource.Error(response)
+        }
+    }
+
+    private fun toRatingScoreCount(ratingScore: Int?): String? {
+        val hasRatingScore = ratingScore != null && ratingScore != 0
+        return if (hasRatingScore) {
+            val decimalFormat = DecimalFormat("#,###")
+            decimalFormat.format(ratingScore)
+        } else {
+            null
         }
     }
 

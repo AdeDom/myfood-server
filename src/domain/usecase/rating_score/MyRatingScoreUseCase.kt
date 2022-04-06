@@ -3,6 +3,7 @@ package com.adedom.myfood.domain.usecase.rating_score
 import com.adedom.myfood.data.models.base.BaseError
 import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.data.models.request.MyRatingScoreRequest
+import com.adedom.myfood.data.models.web_sockets.RatingScoreWebSocketsResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.rating_score.RatingScoreRepository
 
@@ -13,8 +14,8 @@ class MyRatingScoreUseCase(
     suspend operator fun invoke(
         userId: String?,
         myRatingScoreRequest: MyRatingScoreRequest,
-    ): Resource<BaseResponse<String>> {
-        val response = BaseResponse<String>()
+    ): Resource<BaseResponse<RatingScoreWebSocketsResponse>> {
+        val response = BaseResponse<RatingScoreWebSocketsResponse>()
 
         val (foodId, ratingScore) = myRatingScoreRequest
         return when {
