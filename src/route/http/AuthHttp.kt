@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.controller.auth
+package com.adedom.myfood.route.http
 
 import com.adedom.myfood.data.models.request.ChangePasswordRequest
 import com.adedom.myfood.data.models.request.LoginRequest

@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.controller.random_user
+package com.adedom.myfood.route.http
 
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.random_user.GetRandomUserUseCase

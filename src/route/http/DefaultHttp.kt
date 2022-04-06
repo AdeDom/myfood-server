@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.controller.default
+package com.adedom.myfood.route.http
 
 import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.utility.constant.ResponseKeyConstant

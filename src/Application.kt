@@ -11,14 +11,7 @@ import com.adedom.myfood.di.domainModule
 import com.adedom.myfood.di.localDataSourceModule
 import com.adedom.myfood.di.remoteDataSourceModule
 import com.adedom.myfood.di.repositoryModule
-import com.adedom.myfood.route.controller.auth.authRoute
-import com.adedom.myfood.route.controller.category.categoryRoute
-import com.adedom.myfood.route.controller.default.defaultRoute
-import com.adedom.myfood.route.controller.favorite.favoriteRoute
-import com.adedom.myfood.route.controller.food.foodRoute
-import com.adedom.myfood.route.controller.profile.profileRoute
-import com.adedom.myfood.route.controller.random_user.randomUserRoute
-import com.adedom.myfood.route.controller.rating_score.ratingScoreRoute
+import com.adedom.myfood.route.http.*
 import com.adedom.myfood.route.web_sockets.chatWebSocketsRoute
 import com.adedom.myfood.route.web_sockets.foodWebSocketsRoute
 import com.adedom.myfood.utility.jwt.JwtConfig

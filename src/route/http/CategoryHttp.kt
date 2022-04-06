@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.controller.category
+package com.adedom.myfood.route.http
 
 import com.adedom.myfood.data.models.request.InsertCategoryRequest
 import com.adedom.myfood.data.repositories.Resource

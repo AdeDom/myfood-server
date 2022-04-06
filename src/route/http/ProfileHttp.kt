@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.controller.profile
+package com.adedom.myfood.route.http
 
 import com.adedom.myfood.data.models.request.ChangeProfileRequest
 import com.adedom.myfood.data.repositories.Resource

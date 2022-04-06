@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.controller.favorite
+package com.adedom.myfood.route.http
 
 import com.adedom.myfood.data.models.request.MyFavoriteRequest
 import com.adedom.myfood.data.repositories.Resource

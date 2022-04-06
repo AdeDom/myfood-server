@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.controller.food
+package com.adedom.myfood.route.http
 
 import com.adedom.myfood.data.models.request.InsertFoodRequest
 import com.adedom.myfood.data.repositories.Resource

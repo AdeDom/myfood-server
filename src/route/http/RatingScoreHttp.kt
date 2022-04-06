@@ -1,4 +1,4 @@
-package com.adedom.myfood.route.controller.rating_score
+package com.adedom.myfood.route.http
 
 import com.adedom.myfood.data.models.request.MyRatingScoreRequest
 import com.adedom.myfood.data.repositories.Resource
