@@ -3,7 +3,7 @@ package com.adedom.myfood.domain.usecase.favorite
 import com.adedom.myfood.data.models.base.BaseError
 import com.adedom.myfood.data.models.base.BaseResponse
 import com.adedom.myfood.data.models.request.MyFavoriteRequest
-import com.adedom.myfood.data.models.web_sockets.GetFavoriteWebSocketsResponse
+import com.adedom.myfood.data.models.web_sockets.FavoriteWebSocketsResponse
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.repositories.favorite.FavoriteRepository
 
@@ -14,8 +14,8 @@ class MyFavoriteUseCase(
     suspend operator fun invoke(
         userId: String?,
         myFavoriteRequest: MyFavoriteRequest
-    ): Resource<BaseResponse<GetFavoriteWebSocketsResponse>> {
-        val response = BaseResponse<GetFavoriteWebSocketsResponse>()
+    ): Resource<BaseResponse<FavoriteWebSocketsResponse>> {
+        val response = BaseResponse<FavoriteWebSocketsResponse>()
 
         val (foodId) = myFavoriteRequest
         return when {
