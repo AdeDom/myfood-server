@@ -3,8 +3,9 @@ package com.adedom.myfood.route.web_sockets
 import com.adedom.myfood.data.models.request.MyFavoriteRequest
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.favorite.MyFavoriteUseCase
-import com.adedom.myfood.utility.extension.userId
+import com.adedom.myfood.utility.constant.RequestKeyConstant
 import io.ktor.http.cio.websocket.*
+import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
 import kotlinx.serialization.decodeFromString
@@ -26,9 +27,9 @@ fun Route.favoriteWebSocketsRoute() {
                 frame as? Frame.Text ?: continue
                 val text = frame.readText()
 
-                val userId = call.userId
+                val authKey = call.request.header(RequestKeyConstant.AUTHORIZATION_KEY)
                 val myFavoriteRequest = Json.decodeFromString<MyFavoriteRequest>(text)
-                val resource = myFavoriteUseCase(userId, myFavoriteRequest)
+                val resource = myFavoriteUseCase(authKey, myFavoriteRequest)
                 when (resource) {
                     is Resource.Success -> {
                         val response = Json.encodeToString(resource.data)

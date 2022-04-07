@@ -3,8 +3,9 @@ package com.adedom.myfood.route.web_sockets
 import com.adedom.myfood.data.models.request.MyRatingScoreRequest
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.rating_score.MyRatingScoreUseCase
-import com.adedom.myfood.utility.extension.userId
+import com.adedom.myfood.utility.constant.RequestKeyConstant
 import io.ktor.http.cio.websocket.*
+import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
 import kotlinx.serialization.decodeFromString
@@ -26,9 +27,9 @@ fun Route.ratingScoreWebSocketsRoute() {
                 frame as? Frame.Text ?: continue
                 val text = frame.readText()
 
-                val userId = call.userId
+                val authKey = call.request.header(RequestKeyConstant.AUTHORIZATION_KEY)
                 val myRatingScoreRequest = Json.decodeFromString<MyRatingScoreRequest>(text)
-                val resource = myRatingScoreUseCase(userId, myRatingScoreRequest)
+                val resource = myRatingScoreUseCase(authKey, myRatingScoreRequest)
                 when (resource) {
                     is Resource.Success -> {
                         val response = Json.encodeToString(resource.data)
