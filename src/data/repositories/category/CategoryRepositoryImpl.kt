@@ -62,7 +62,7 @@ class CategoryRepositoryImpl(
         return Resource.Success(response)
     }
 
-    override suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Long {
+    override suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Int {
         var getCategoryAll = categoryLocalDataSource.getCategoryAll()
         if (getCategoryAll.isEmpty()) {
             getCategoryAll = categoryRemoteDataSource.getCategoryAll()

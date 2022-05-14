@@ -116,6 +116,6 @@ class GetFoodAndCategoryGroupAllUseCase(
     }
 
     private suspend fun isCategoryTypeRecommend(categoryId: Int): Boolean {
-        return categoryRepository.findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId) == 1L
+        return categoryRepository.findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId) == 1
     }
 }

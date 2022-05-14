@@ -10,5 +10,5 @@ interface UserLocalDataSource {
 
     suspend fun insertUserAll(userList: List<UserEntity>): Int
 
-    suspend fun deleteUserAll(): Int
+    suspend fun deleteUserAll()
 }

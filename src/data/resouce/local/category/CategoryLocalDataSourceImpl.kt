@@ -1,69 +1,33 @@
 package com.adedom.myfood.data.resouce.local.category
 
-import com.adedom.myfood.data.database.mysql.CategoryTable
 import com.adedom.myfood.data.models.entities.CategoryEntity
 import com.adedom.myfood.utility.constant.AppConstant
-import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
-class CategoryLocalDataSourceImpl(
-    private val db: Database,
-) : CategoryLocalDataSource {
+class CategoryLocalDataSourceImpl : CategoryLocalDataSource {
+
+    private val categoryList = mutableListOf<CategoryEntity>()
 
     override suspend fun getCategoryAll(): List<CategoryEntity> {
-        return newSuspendedTransaction(Dispatchers.IO, db) {
-            CategoryTable
-                .slice(
-                    CategoryTable.categoryId,
-                    CategoryTable.categoryName,
-                    CategoryTable.image,
-                    CategoryTable.categoryTypeName,
-                    CategoryTable.created,
-                    CategoryTable.updated,
-                )
-                .selectAll()
-                .map { row ->
-                    CategoryEntity(
-                        categoryId = row[CategoryTable.categoryId],
-                        categoryName = row[CategoryTable.categoryName],
-                        image = row[CategoryTable.image],
-                        categoryTypeName = row[CategoryTable.categoryTypeName],
-                        created = row[CategoryTable.created],
-                        updated = row[CategoryTable.updated],
-                    )
-                }
-        }
+        return this.categoryList
     }
 
     override suspend fun insertCategoryAll(categoryList: List<CategoryEntity>): Int {
-        val statement = newSuspendedTransaction(Dispatchers.IO, db) {
-            CategoryTable.batchInsert(categoryList) { categoryEntity ->
-                this[CategoryTable.categoryId] = categoryEntity.categoryId
-                this[CategoryTable.categoryName] = categoryEntity.categoryName
-                this[CategoryTable.image] = categoryEntity.image
-                this[CategoryTable.categoryTypeName] = categoryEntity.categoryTypeName
-                this[CategoryTable.created] = categoryEntity.created
-                this[CategoryTable.updated] = categoryEntity.updated
+        this.categoryList.addAll(categoryList)
+        return this.categoryList.size
+    }
+
+    override suspend fun deleteCategoryAll() {
+        this.categoryList.clear()
+    }
+
+    override suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Int {
+        return this.categoryList
+            .filter { categoryEntity ->
+                categoryEntity.categoryId == categoryId
             }
-        }
-
-        return statement.size
-    }
-
-    override suspend fun deleteCategoryAll(): Int {
-        return newSuspendedTransaction(Dispatchers.IO, db) {
-            CategoryTable.deleteAll()
-        }
-    }
-
-    override suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Long {
-        return newSuspendedTransaction(Dispatchers.IO, db) {
-            CategoryTable
-                .select {
-                    (CategoryTable.categoryId eq categoryId) and (CategoryTable.categoryTypeName eq AppConstant.CATEGORY_TYPE_RECOMMEND)
-                }
-                .count()
-        }
+            .filter { categoryEntity ->
+                categoryEntity.categoryTypeName == AppConstant.CATEGORY_TYPE_RECOMMEND
+            }
+            .size
     }
 }

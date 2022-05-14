@@ -1,9 +1,6 @@
 package com.adedom.myfood.data.database.h2
 
-import com.adedom.myfood.data.database.mysql.CategoryTable
-import com.adedom.myfood.data.database.mysql.UserTable
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class H2DatabaseImpl : H2Database {
@@ -12,10 +9,6 @@ class H2DatabaseImpl : H2Database {
 
     init {
         transaction(database) {
-            SchemaUtils.create(
-                UserTable,
-                CategoryTable,
-            )
         }
     }
 

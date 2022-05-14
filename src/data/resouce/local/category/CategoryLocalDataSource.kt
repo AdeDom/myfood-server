@@ -8,7 +8,7 @@ interface CategoryLocalDataSource {
 
     suspend fun insertCategoryAll(categoryList: List<CategoryEntity>): Int
 
-    suspend fun deleteCategoryAll(): Int
+    suspend fun deleteCategoryAll()
 
-    suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Long
+    suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Int
 }

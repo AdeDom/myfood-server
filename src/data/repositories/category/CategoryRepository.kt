@@ -13,5 +13,5 @@ interface CategoryRepository {
 
     suspend fun getCategoryAll(): Resource<BaseResponse<List<CategoryResponse>>>
 
-    suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Long
+    suspend fun findCategoryTypeCountByCategoryIdAndCategoryTypeRecommend(categoryId: Int): Int
 }
