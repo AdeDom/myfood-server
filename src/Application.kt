@@ -106,7 +106,6 @@ fun Application.module() {
         categoryRoute()
         favoriteRoute()
         ratingScoreRoute()
-        randomUserRoute()
 
         chatWebSocketsRoute()
         favoriteWebSocketsRoute()

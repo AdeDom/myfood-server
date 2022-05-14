@@ -11,7 +11,6 @@ import com.adedom.myfood.domain.usecase.food.*
 import com.adedom.myfood.domain.usecase.profile.ChangeProfileUseCase
 import com.adedom.myfood.domain.usecase.profile.DeleteAccountUseCase
 import com.adedom.myfood.domain.usecase.profile.UserProfileUseCase
-import com.adedom.myfood.domain.usecase.random_user.GetRandomUserUseCase
 import com.adedom.myfood.domain.usecase.rating_score.DeleteRatingScoreAllUseCase
 import com.adedom.myfood.domain.usecase.rating_score.GetRatingScoreAllUseCase
 import com.adedom.myfood.domain.usecase.rating_score.MyRatingScoreUseCase
@@ -46,6 +45,5 @@ val domainModule = DI.Module(name = "domain") {
     bindSingleton { MyRatingScoreUseCase(instance(), instance()) }
     bindSingleton { SyncDataRatingScoreUseCase(instance()) }
     bindSingleton { SyncDataAuthUseCase(instance()) }
-    bindSingleton { GetRandomUserUseCase(instance()) }
     bindSingleton { TokenUseCase(instance()) }
 }

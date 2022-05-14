@@ -10,7 +10,6 @@ import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.data.resouce.local.auth.AuthLocalDataSource
 import com.adedom.myfood.data.resouce.local.user.UserLocalDataSource
 import com.adedom.myfood.data.resouce.remote.profile.ProfileRemoteDataSource
-import com.adedom.myfood.data.resouce.remote.random_user.RandomUserRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.user.UserRemoteDataSource
 import com.adedom.myfood.utility.constant.AppConstant
 import com.adedom.myfood.utility.constant.ResponseKeyConstant
@@ -22,7 +21,6 @@ class ProfileRepositoryImpl(
     private val authLocalDataSource: AuthLocalDataSource,
     private val userRemoteDataSource: UserRemoteDataSource,
     private val profileRemoteDataSource: ProfileRemoteDataSource,
-    private val randomUserRemoteDataSource: RandomUserRemoteDataSource,
 ) : ProfileRepository {
 
     override suspend fun userProfile(userId: String): Resource<BaseResponse<UserProfileResponse>> {
@@ -61,18 +59,7 @@ class ProfileRepositoryImpl(
         }
     }
 
-    private suspend fun handleImageProfileDefaultList(userList: List<UserEntity>): List<UserEntity> {
-        val image = try {
-            val getRandomUser = randomUserRemoteDataSource.getRandomUser()
-            if (getRandomUser.results.isEmpty()) {
-                "https://blog.jetbrains.com/wp-content/uploads/2018/11/kotlin-Ktor.png"
-            } else {
-                getRandomUser.results[0].picture?.large
-            }
-        } catch (e: Throwable) {
-            "https://blog.jetbrains.com/wp-content/uploads/2018/11/kotlin-Ktor.png"
-        }
-
+    private fun handleImageProfileDefaultList(userList: List<UserEntity>): List<UserEntity> {
         return userList.map { userEntity ->
             UserEntity(
                 userId = userEntity.userId,
@@ -81,7 +68,7 @@ class ProfileRepositoryImpl(
                 name = userEntity.name,
                 mobileNo = userEntity.mobileNo,
                 address = userEntity.address,
-                image = userEntity.image ?: image,
+                image = userEntity.image ?: "https://picsum.photos/300/300",
                 status = userEntity.status,
                 created = userEntity.created,
                 updated = userEntity.updated,
