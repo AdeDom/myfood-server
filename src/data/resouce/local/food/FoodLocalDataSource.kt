@@ -12,5 +12,5 @@ interface FoodLocalDataSource {
 
     suspend fun insertFoodAll(foodList: List<FoodEntity>): Int
 
-    suspend fun deleteFoodAll(): Int
+    suspend fun deleteFoodAll()
 }

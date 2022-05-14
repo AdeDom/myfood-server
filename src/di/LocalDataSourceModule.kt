@@ -28,6 +28,6 @@ val localDataSourceModule = DI.Module(name = "local_data_source") {
 
     bindSingleton<UserLocalDataSource> { UserLocalDataSourceImpl(instance<H2Database>().getDatabase()) }
     bindSingleton<CategoryLocalDataSource> { CategoryLocalDataSourceImpl(instance<H2Database>().getDatabase()) }
-    bindSingleton<FoodLocalDataSource> { FoodLocalDataSourceImpl(instance<H2Database>().getDatabase()) }
-    bindSingleton<FoodAndCategoryLocalDataSource> { FoodAndCategoryLocalDataSourceImpl(instance<H2Database>().getDatabase()) }
+    bindSingleton<FoodLocalDataSource> { FoodLocalDataSourceImpl() }
+    bindSingleton<FoodAndCategoryLocalDataSource> { FoodAndCategoryLocalDataSourceImpl() }
 }

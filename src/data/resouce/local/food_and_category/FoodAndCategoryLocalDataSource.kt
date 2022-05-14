@@ -8,5 +8,5 @@ interface FoodAndCategoryLocalDataSource {
 
     suspend fun insertFoodAndCategoryAll(foodAndCategoryAll: List<FoodAndCategoryEntity>): Int
 
-    suspend fun deleteFoodAndCategoryAll(): Int
+    suspend fun deleteFoodAndCategoryAll()
 }

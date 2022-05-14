@@ -15,8 +15,6 @@ class H2DatabaseImpl : H2Database {
             SchemaUtils.create(
                 UserTable,
                 CategoryTable,
-                FoodTableH2,
-                FoodAndCategoryTableH2,
             )
         }
     }
