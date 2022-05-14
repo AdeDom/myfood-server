@@ -4,10 +4,9 @@ import org.joda.time.DateTime
 
 data class UserEntity(
     val userId: String,
-    val username: String,
+    val email: String,
     val password: String,
     val name: String,
-    val email: String?,
     val mobileNo: String?,
     val address: String?,
     val image: String?,

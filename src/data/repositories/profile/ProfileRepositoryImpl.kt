@@ -43,9 +43,8 @@ class ProfileRepositoryImpl(
         return if (userEntity != null) {
             val userProfileResponse = UserProfileResponse(
                 userId = userEntity.userId,
-                username = userEntity.username,
-                name = userEntity.name,
                 email = userEntity.email,
+                name = userEntity.name,
                 mobileNo = userEntity.mobileNo,
                 address = userEntity.address,
                 image = userEntity.image,
@@ -77,10 +76,9 @@ class ProfileRepositoryImpl(
         return userList.map { userEntity ->
             UserEntity(
                 userId = userEntity.userId,
-                username = userEntity.username,
+                email = userEntity.email,
                 password = userEntity.password,
                 name = userEntity.name,
-                email = userEntity.email,
                 mobileNo = userEntity.mobileNo,
                 address = userEntity.address,
                 image = userEntity.image ?: image,

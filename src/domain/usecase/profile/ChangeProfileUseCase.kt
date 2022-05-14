@@ -16,7 +16,7 @@ class ChangeProfileUseCase(
     ): Resource<BaseResponse<String>> {
         val response = BaseResponse<String>()
 
-        val (name, email, mobileNo, address) = changeProfileRequest
+        val (name, mobileNo, address) = changeProfileRequest
         return when {
             userId.isNullOrBlank() -> {
                 response.error = BaseError(message = "User id is null or blank.")
@@ -24,10 +24,6 @@ class ChangeProfileUseCase(
             }
             name.isNullOrBlank() -> {
                 response.error = BaseError(message = "Name is null or blank.")
-                Resource.Error(response)
-            }
-            email.isNullOrBlank() -> {
-                response.error = BaseError(message = "E-mail is null or blank.")
                 Resource.Error(response)
             }
             mobileNo.isNullOrBlank() -> {

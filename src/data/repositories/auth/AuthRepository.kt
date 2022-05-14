@@ -7,9 +7,9 @@ import com.adedom.myfood.data.repositories.Resource
 
 interface AuthRepository {
 
-    suspend fun login(username: String, password: String): Resource<BaseResponse<TokenResponse>>
+    suspend fun login(email: String, password: String): Resource<BaseResponse<TokenResponse>>
 
-    suspend fun findUserByUsername(username: String): Long
+    suspend fun findUserByEmail(email: String): Long
 
     suspend fun register(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>>
 

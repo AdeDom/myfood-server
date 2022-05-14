@@ -16,9 +16,8 @@ class UserRemoteDataSourceImpl(
             UserTable
                 .slice(
                     UserTable.userId,
-                    UserTable.username,
-                    UserTable.name,
                     UserTable.email,
+                    UserTable.name,
                     UserTable.mobileNo,
                     UserTable.address,
                     UserTable.image,
@@ -30,10 +29,9 @@ class UserRemoteDataSourceImpl(
                 .map { row ->
                     UserEntity(
                         userId = row[UserTable.userId],
-                        username = row[UserTable.username],
+                        email = row[UserTable.email],
                         password = "",
                         name = row[UserTable.name],
-                        email = row[UserTable.email],
                         mobileNo = row[UserTable.mobileNo],
                         address = row[UserTable.address],
                         image = row[UserTable.image],

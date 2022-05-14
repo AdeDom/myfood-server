@@ -14,10 +14,10 @@ class LoginUseCase(
     suspend operator fun invoke(loginRequest: LoginRequest): Resource<BaseResponse<TokenResponse>> {
         val response = BaseResponse<TokenResponse>()
 
-        val (username, password) = loginRequest
+        val (email, password) = loginRequest
         return when {
-            username.isNullOrBlank() -> {
-                response.error = BaseError(message = "Username is null or blank.")
+            email.isNullOrBlank() -> {
+                response.error = BaseError(message = "Email is null or blank.")
                 Resource.Error(response)
             }
             password.isNullOrBlank() -> {
@@ -25,7 +25,7 @@ class LoginUseCase(
                 Resource.Error(response)
             }
             else -> {
-                authRepository.login(username, password)
+                authRepository.login(email, password)
             }
         }
     }

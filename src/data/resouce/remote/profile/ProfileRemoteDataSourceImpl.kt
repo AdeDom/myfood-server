@@ -20,10 +20,9 @@ class ProfileRemoteDataSourceImpl(
             UserTable
                 .slice(
                     UserTable.userId,
-                    UserTable.username,
+                    UserTable.email,
                     UserTable.password,
                     UserTable.name,
-                    UserTable.email,
                     UserTable.mobileNo,
                     UserTable.address,
                     UserTable.image,
@@ -37,10 +36,9 @@ class ProfileRemoteDataSourceImpl(
                 .map { row ->
                     UserEntity(
                         userId = row[UserTable.userId],
-                        username = row[UserTable.username],
+                        email = row[UserTable.email],
                         password = row[UserTable.password],
                         name = row[UserTable.name],
-                        email = row[UserTable.email],
                         mobileNo = row[UserTable.mobileNo],
                         address = row[UserTable.address],
                         image = row[UserTable.image],
@@ -54,12 +52,11 @@ class ProfileRemoteDataSourceImpl(
     }
 
     override suspend fun updateUserProfile(userId: String, changeProfileRequest: ChangeProfileRequest): Int {
-        val (name, email, mobileNo, address) = changeProfileRequest
+        val (name, mobileNo, address) = changeProfileRequest
 
         return newSuspendedTransaction(Dispatchers.IO, db) {
             UserTable.update({ UserTable.userId eq userId }) {
                 it[UserTable.name] = name!!
-                it[UserTable.email] = email
                 it[UserTable.mobileNo] = mobileNo
                 it[UserTable.address] = address
                 it[updated] = DateTime(System.currentTimeMillis() + AppConstant.DATE_TIME_THAI)

@@ -23,11 +23,11 @@ class AuthRepositoryImpl(
     private val authRemoteDataSource: AuthRemoteDataSource,
 ) : AuthRepository {
 
-    override suspend fun login(username: String, password: String): Resource<BaseResponse<TokenResponse>> {
+    override suspend fun login(email: String, password: String): Resource<BaseResponse<TokenResponse>> {
         val response = BaseResponse<TokenResponse>()
 
-        val userId = authRemoteDataSource.findUserIdByUsernameAndPassword(
-            username,
+        val userId = authRemoteDataSource.findUserIdByEmailAndPassword(
+            email,
             encryptSHA(password),
             AppConstant.ACTIVE,
         )
@@ -74,13 +74,13 @@ class AuthRepositoryImpl(
                 Resource.Error(response)
             }
         } else {
-            response.error = BaseError(message = "Username or password incorrect.")
+            response.error = BaseError(message = "Email or password incorrect.")
             Resource.Error(response)
         }
     }
 
-    override suspend fun findUserByUsername(username: String): Long {
-        return authRemoteDataSource.findUserByUsername(username)
+    override suspend fun findUserByEmail(email: String): Long {
+        return authRemoteDataSource.findUserByEmail(email)
     }
 
     override suspend fun register(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>> {
@@ -92,7 +92,7 @@ class AuthRepositoryImpl(
             AppConstant.ACTIVE,
         ) ?: 0
         return if (insertUserCount > 0) {
-            login(registerRequest.username!!, registerRequest.password)
+            login(registerRequest.email!!, registerRequest.password)
         } else {
             response.error = BaseError(message = "Registration failed")
             Resource.Error(response)

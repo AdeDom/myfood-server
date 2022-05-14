@@ -15,9 +15,8 @@ class UserLocalDataSourceImpl(
             UserTable
                 .slice(
                     UserTable.userId,
-                    UserTable.username,
-                    UserTable.name,
                     UserTable.email,
+                    UserTable.name,
                     UserTable.mobileNo,
                     UserTable.address,
                     UserTable.image,
@@ -31,10 +30,9 @@ class UserLocalDataSourceImpl(
                 .map { row ->
                     UserEntity(
                         userId = row[UserTable.userId],
-                        username = row[UserTable.username],
+                        email = row[UserTable.email],
                         password = "",
                         name = row[UserTable.name],
-                        email = row[UserTable.email],
                         mobileNo = row[UserTable.mobileNo],
                         address = row[UserTable.address],
                         image = row[UserTable.image],
@@ -52,9 +50,8 @@ class UserLocalDataSourceImpl(
             UserTable
                 .slice(
                     UserTable.userId,
-                    UserTable.username,
-                    UserTable.name,
                     UserTable.email,
+                    UserTable.name,
                     UserTable.mobileNo,
                     UserTable.address,
                     UserTable.image,
@@ -66,10 +63,9 @@ class UserLocalDataSourceImpl(
                 .map { row ->
                     UserEntity(
                         userId = row[UserTable.userId],
-                        username = row[UserTable.username],
+                        email = row[UserTable.email],
                         password = "",
                         name = row[UserTable.name],
-                        email = row[UserTable.email],
                         mobileNo = row[UserTable.mobileNo],
                         address = row[UserTable.address],
                         image = row[UserTable.image],
@@ -85,10 +81,9 @@ class UserLocalDataSourceImpl(
         val statement = newSuspendedTransaction(Dispatchers.IO, db) {
             UserTable.batchInsert(userList) { userEntity ->
                 this[UserTable.userId] = userEntity.userId
-                this[UserTable.username] = userEntity.username
+                this[UserTable.email] = userEntity.email
                 this[UserTable.password] = ""
                 this[UserTable.name] = userEntity.name
-                this[UserTable.email] = userEntity.email
                 this[UserTable.mobileNo] = userEntity.mobileNo
                 this[UserTable.address] = userEntity.address
                 this[UserTable.image] = userEntity.image

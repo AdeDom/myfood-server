@@ -5,9 +5,9 @@ import com.adedom.myfood.data.models.request.RegisterRequest
 
 interface AuthRemoteDataSource {
 
-    suspend fun findUserIdByUsernameAndPassword(username: String, password: String, status: String): String?
+    suspend fun findUserIdByEmailAndPassword(email: String, password: String, status: String): String?
 
-    suspend fun findUserByUsername(username: String): Long
+    suspend fun findUserByEmail(email: String): Long
 
     suspend fun insertUser(userId: String, registerRequest: RegisterRequest, status: String): Int?
 

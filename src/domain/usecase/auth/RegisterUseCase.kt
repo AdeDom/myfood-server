@@ -14,10 +14,10 @@ class RegisterUseCase(
     suspend operator fun invoke(registerRequest: RegisterRequest): Resource<BaseResponse<TokenResponse>> {
         val response = BaseResponse<TokenResponse>()
 
-        val (username, password, name) = registerRequest
+        val (email, password, name) = registerRequest
         return when {
-            username.isNullOrBlank() -> {
-                response.error = BaseError(message = "Username is null or blank.")
+            email.isNullOrBlank() -> {
+                response.error = BaseError(message = "Email is null or blank.")
                 Resource.Error(response)
             }
             password.isNullOrBlank() -> {
@@ -28,8 +28,8 @@ class RegisterUseCase(
                 response.error = BaseError(message = "Name is null or blank.")
                 Resource.Error(response)
             }
-            isValidateUsername(username) -> {
-                response.error = BaseError(message = "This username already exists.")
+            isValidateEmail(email) -> {
+                response.error = BaseError(message = "This email already exists.")
                 Resource.Error(response)
             }
             else -> {
@@ -38,7 +38,7 @@ class RegisterUseCase(
         }
     }
 
-    private suspend fun isValidateUsername(username: String): Boolean {
-        return authRepository.findUserByUsername(username) > 0
+    private suspend fun isValidateEmail(email: String): Boolean {
+        return authRepository.findUserByEmail(email) > 0
     }
 }

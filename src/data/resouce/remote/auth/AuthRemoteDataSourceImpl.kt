@@ -15,14 +15,14 @@ class AuthRemoteDataSourceImpl(
     private val db: Database,
 ) : AuthRemoteDataSource {
 
-    override suspend fun findUserIdByUsernameAndPassword(username: String, password: String, status: String): String? {
+    override suspend fun findUserIdByEmailAndPassword(email: String, password: String, status: String): String? {
         return newSuspendedTransaction(Dispatchers.IO, db) {
             UserTable
                 .slice(
                     UserTable.userId,
                 )
                 .select {
-                    (UserTable.username eq username) and (UserTable.password eq password) and (UserTable.status eq status)
+                    (UserTable.email eq email) and (UserTable.password eq password) and (UserTable.status eq status)
                 }
                 .map { row ->
                     row[UserTable.userId]
@@ -31,30 +31,29 @@ class AuthRemoteDataSourceImpl(
         }
     }
 
-    override suspend fun findUserByUsername(username: String): Long {
+    override suspend fun findUserByEmail(email: String): Long {
         return newSuspendedTransaction(Dispatchers.IO, db) {
             UserTable
                 .slice(
-                    UserTable.username,
+                    UserTable.email,
                 )
                 .select {
-                    UserTable.username eq username
+                    UserTable.email eq email
                 }
                 .count()
         }
     }
 
     override suspend fun insertUser(userId: String, registerRequest: RegisterRequest, status: String): Int? {
-        val (username, password, name, email, mobileNo, address) = registerRequest
+        val (email, password, name, mobileNo, address) = registerRequest
 
         val statement = newSuspendedTransaction(Dispatchers.IO, db) {
             UserTable
                 .insert {
                     it[UserTable.userId] = userId
-                    it[UserTable.username] = username!!
+                    it[UserTable.email] = email!!
                     it[UserTable.password] = password!!
                     it[UserTable.name] = name!!
-                    it[UserTable.email] = email
                     it[UserTable.mobileNo] = mobileNo
                     it[UserTable.address] = address
                     it[UserTable.status] = status
