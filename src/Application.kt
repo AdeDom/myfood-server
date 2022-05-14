@@ -1,7 +1,5 @@
 package com.adedom.myfood
 
-import com.adedom.myfood.data.database.h2.H2Database
-import com.adedom.myfood.data.database.h2.H2DatabaseImpl
 import com.adedom.myfood.data.database.mysql.MySqlDatabase
 import com.adedom.myfood.data.database.mysql.MySqlDatabaseConfig
 import com.adedom.myfood.data.database.mysql.MySqlDatabaseImpl
@@ -75,7 +73,6 @@ fun Application.module() {
         }
         bindSingleton<MySqlDatabase> { MySqlDatabaseImpl(instance()) }
         bindSingleton<SqliteDatabase> { SqliteDatabaseImpl() }
-        bindSingleton<H2Database> { H2DatabaseImpl() }
 
         // structure
         importAll(
