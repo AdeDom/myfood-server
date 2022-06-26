@@ -1,11 +1,10 @@
 package com.adedom.myfood.route.web_sockets
 
-import io.ktor.http.cio.websocket.*
-import io.ktor.routing.*
+import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
-import kotlin.collections.LinkedHashSet
 
 fun Route.chatWebSocketsRoute() {
 

@@ -4,11 +4,11 @@ import com.adedom.myfood.data.models.request.InsertCategoryRequest
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.category.GetCategoryAllUseCase
 import com.adedom.myfood.domain.usecase.category.InsertCategoryUseCase
-import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
 

@@ -7,44 +7,45 @@ import com.adedom.myfood.data.resouce.local.auth.AuthLocalDataSource
 import com.adedom.myfood.utility.constant.RequestKeyConstant
 import com.auth0.jwt.JWT
 import com.auth0.jwt.impl.PublicClaims
-import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import io.ktor.util.*
 import io.ktor.util.pipeline.*
 import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
 
-@ContextDsl
+@KtorDsl
 fun Route.getAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     get(path) {
         authentication(body)
     }
 }
 
-@ContextDsl
+@KtorDsl
 fun Route.postAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     post(path) {
         authentication(body)
     }
 }
 
-@ContextDsl
+@KtorDsl
 fun Route.putAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     put(path) {
         authentication(body)
     }
 }
 
-@ContextDsl
+@KtorDsl
 fun Route.patchAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     patch(path) {
         authentication(body)
     }
 }
 
-@ContextDsl
+@KtorDsl
 fun Route.deleteAuth(path: String, body: PipelineInterceptor<Unit, ApplicationCall>) {
     delete(path) {
         authentication(body)

@@ -4,9 +4,9 @@ import com.adedom.myfood.data.models.request.MyFavoriteRequest
 import com.adedom.myfood.data.repositories.Resource
 import com.adedom.myfood.domain.usecase.favorite.MyFavoriteUseCase
 import com.adedom.myfood.utility.constant.RequestKeyConstant
-import io.ktor.http.cio.websocket.*
-import io.ktor.request.*
-import io.ktor.routing.*
+import io.ktor.server.request.*
+import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

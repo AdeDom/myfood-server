@@ -1,7 +1,6 @@
 package com.adedom.myfood.di
 
 import com.adedom.myfood.data.database.mysql.MySqlDatabase
-import com.adedom.myfood.data.resouce.data_source_provider.DataSourceProvider
 import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSource
 import com.adedom.myfood.data.resouce.remote.auth.AuthRemoteDataSourceImpl
 import com.adedom.myfood.data.resouce.remote.category.CategoryRemoteDataSource
@@ -23,8 +22,6 @@ import org.kodein.di.bindSingleton
 import org.kodein.di.instance
 
 val remoteDataSourceModule = DI.Module(name = "remote_data_source") {
-
-    bindSingleton { DataSourceProvider() }
 
     bindSingleton<UserRemoteDataSource> { UserRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
     bindSingleton<MyFoodRemoteDataSource> { MyFoodRemoteDataSourceImpl(instance<MySqlDatabase>().getDatabase()) }
